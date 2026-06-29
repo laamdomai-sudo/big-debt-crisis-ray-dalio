@@ -1,0 +1,2770 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ray Dalio – Nguyên Tắc Điều Hướng Khủng Hoảng Nợ Lớn</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:       #f4f1ec;
+    --surface:  #ffffff;
+    --surface2: #f8f5f0;
+    --border:   #ddd8ce;
+    --gold:     #a67c25;
+    --gold2:    #8b6010;
+    --red:      #c0392b;
+    --green:    #2e7d56;
+    --blue:     #1a5dc8;
+    --amber:    #b05a00;
+    --text:     #1a1612;
+    --muted:    #8a8070;
+    --accent:   #a67c25;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* === NAV === */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,11,14,0.97);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center;
+    padding: 0 2rem;
+    height: 56px;
+    gap: 0;
+  }
+  .nav-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: .85rem;
+    color: var(--gold);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-right: 2.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav-tabs {
+    display: flex; gap: 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: .5rem 1.1rem;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* === SECTIONS === */
+  section { display: none; padding: 2.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+  section.active { display: block; }
+
+  /* Hero banner */
+  .hero {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 3.5rem 3rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffffff 0%, #eeeae3 100%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(166,124,37,.1) 0%, transparent 70%);
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    color: #1a1612;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    max-width: 680px;
+    font-size: 1rem;
+    color: #6a5f50;
+    line-height: 1.8;
+  }
+  .hero-meta {
+    display: flex; gap: 2rem; margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    border-left: 2px solid var(--gold);
+    padding-left: .85rem;
+  }
+  .hero-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--gold2);
+    line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: .25rem;
+  }
+
+  /* Section headings */
+  .sec-head {
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .sec-head h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a1612;
+  }
+  .sec-head .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .14em;
+    color: var(--gold);
+    text-transform: uppercase;
+    border: 1px solid rgba(166,124,37,.35);
+    border-radius: 2px;
+    padding: .15rem .5rem;
+  }
+
+  /* Cards grid */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  @media(max-width:900px) { .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; } }
+  @media(min-width:600px) and (max-width:900px) { .grid-2 { grid-template-columns: repeat(2,1fr); } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .card-gold { border-color: rgba(166,124,37,.35); }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--gold2);
+    margin-bottom: .75rem;
+  }
+  .card p { font-size: .88rem; color: #6a5f50; line-height: 1.75; }
+
+  /* Phase timeline */
+  .timeline {
+    position: relative;
+    padding: 1.5rem 0;
+  }
+  .tl-track {
+    display: flex; gap: 0; align-items: stretch;
+    margin-bottom: 2rem;
+  }
+  .tl-phase {
+    flex: 1;
+    padding: .75rem .5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    border-bottom: 3px solid transparent;
+    user-select: none;
+  }
+  .tl-phase:hover { background: rgba(0,0,0,.03); }
+  .tl-phase.active { border-bottom-color: var(--gold); background: rgba(166,124,37,.06); }
+  .tl-phase .ph-num {
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem;
+    color: var(--muted);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .tl-phase .ph-name {
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: .2rem;
+    line-height: 1.3;
+  }
+  .tl-phase .ph-bar {
+    height: 4px;
+    margin-top: .5rem;
+    border-radius: 2px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .tl-phase .ph-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width .4s ease;
+  }
+
+  .phase-detail {
+    display: none;
+    animation: fadeIn .3s ease;
+  }
+  .phase-detail.active { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media(max-width:700px) { .phase-detail.active { grid-template-columns: 1fr; } }
+
+  @keyframes fadeIn { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0); } }
+
+  /* Lever cards */
+  .levers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  @media(max-width:800px) { .levers { grid-template-columns: repeat(2,1fr); } }
+
+  .lever {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .lever::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .lever.deflationary::before { background: var(--red); }
+  .lever.inflationary::before { background: var(--amber); }
+  .lever.monetary::before { background: var(--blue); }
+  .lever.transfer::before { background: var(--green); }
+
+  .lever .lnum {
+    font-family: 'DM Mono', monospace;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: .5rem;
+    opacity: .15;
+  }
+  .lever.deflationary .lnum { color: var(--red); }
+  .lever.inflationary .lnum { color: var(--amber); }
+  .lever.monetary .lnum { color: var(--blue); }
+  .lever.transfer .lnum { color: var(--green); }
+
+  .lever h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: .5rem;
+  }
+  .lever.deflationary h4 { color: var(--red); }
+  .lever.inflationary h4 { color: var(--amber); }
+  .lever.monetary h4 { color: var(--blue); }
+  .lever.transfer h4 { color: var(--green); }
+
+  .lever p { font-size: .82rem; color: #7a6e60; line-height: 1.7; }
+
+  /* Balance indicator */
+  .balance-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .balance-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--gold2);
+    margin-bottom: 1rem;
+  }
+  .balance-scale {
+    display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+  }
+  .scale-side {
+    flex: 1; min-width: 200px;
+    padding: 1rem;
+    border-radius: 3px;
+    text-align: center;
+  }
+  .scale-side.deflation { background: rgba(192,57,43,.06); border: 1px solid rgba(192,57,43,.2); }
+  .scale-side.inflation { background: rgba(176,90,0,.06); border: 1px solid rgba(176,90,0,.2); }
+  .scale-side .side-label { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+  .scale-side .side-title { font-size: 1rem; font-weight: 600; }
+  .scale-side.deflation .side-title { color: var(--red); }
+  .scale-side.inflation .side-title { color: var(--amber); }
+  .scale-side ul { list-style: none; margin-top: .5rem; }
+  .scale-side ul li { font-size: .8rem; color: #6a6055; padding: .2rem 0; }
+
+  .balance-arrow {
+    text-align: center; flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .beautiful-label {
+    text-align: center; margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(46,125,86,.08);
+    border: 1px solid rgba(46,125,86,.2);
+    border-radius: 3px;
+    padding: .5rem 1rem;
+    display: inline-block;
+  }
+
+  /* Case study cards */
+  .case-study {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .cs-header {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: all .2s;
+    user-select: none;
+  }
+  .cs-header:hover { background: rgba(0,0,0,.02); }
+  .cs-header.open { border-bottom-color: var(--border); background: rgba(166,124,37,.04); }
+  .cs-year {
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(166,124,37,.1);
+    border: 1px solid rgba(166,124,37,.3);
+    border-radius: 2px;
+    padding: .15rem .5rem;
+    margin-right: .75rem;
+    flex-shrink: 0;
+  }
+  .cs-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .cs-toggle { color: var(--muted); font-size: 1.2rem; transition: transform .3s; flex-shrink: 0; }
+  .cs-header.open .cs-toggle { transform: rotate(180deg); }
+  .cs-body { display: none; padding: 1.5rem; animation: fadeIn .3s ease; }
+  .cs-body.open { display: block; }
+
+  .cs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+  @media(max-width:700px) { .cs-grid { grid-template-columns: 1fr; } }
+
+  .cs-stat {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1rem;
+  }
+  .cs-stat .sval {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--gold2);
+  }
+  .cs-stat .sval.red { color: var(--red); }
+  .cs-stat .sval.blue { color: var(--blue); }
+  .cs-stat .slabel { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .3rem; }
+
+  .cs-timeline { margin-top: 1rem; }
+  .cs-ev {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: .6rem 0;
+    border-bottom: 1px solid rgba(0,0,0,.04);
+  }
+  .cs-ev:last-child { border-bottom: none; }
+  .cs-ev .ev-date {
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    color: var(--gold);
+    min-width: 60px;
+    padding-top: .1rem;
+    flex-shrink: 0;
+  }
+  .cs-ev .ev-text { font-size: .84rem; color: #6a6055; line-height: 1.6; }
+  .cs-ev .ev-phase {
+    flex-shrink: 0;
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .1rem .4rem;
+    border-radius: 2px;
+    border: 1px solid;
+    align-self: flex-start;
+  }
+  .ev-phase.bubble { color: var(--amber); border-color: rgba(176,90,0,.3); background: rgba(240,168,48,.06); }
+  .ev-phase.peak { color: var(--red); border-color: rgba(224,82,82,.3); background: rgba(224,82,82,.06); }
+  .ev-phase.dep { color: var(--blue); border-color: rgba(26,93,200,.3); background: rgba(91,141,238,.06); }
+  .ev-phase.recovery { color: var(--green); border-color: rgba(76,175,125,.3); background: rgba(76,175,125,.06); }
+
+  /* MP types */
+  .mp-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1.25rem; }
+  @media(max-width:700px) { .mp-cards { grid-template-columns: 1fr; } }
+  .mp-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .mp-card::after {
+    content: attr(data-num);
+    position: absolute;
+    right: 1rem; top: .75rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    opacity: .05;
+    line-height: 1;
+    color: #1a1612;
+  }
+  .mp-card.mp1 { background: rgba(91,141,238,.05); border-color: rgba(91,141,238,.2); }
+  .mp-card.mp2 { background: rgba(240,168,48,.05); border-color: rgba(176,90,0,.2); }
+  .mp-card.mp3 { background: rgba(76,175,125,.05); border-color: rgba(46,125,86,.2); }
+  .mp-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: .5rem; }
+  .mp-card.mp1 h4 { color: var(--blue); }
+  .mp-card.mp2 h4 { color: var(--amber); }
+  .mp-card.mp3 h4 { color: var(--green); }
+  .mp-card .mp-tool { font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--muted); margin-bottom: .5rem; }
+  .mp-card p { font-size: .82rem; color: #7a6e60; line-height: 1.7; }
+
+  /* Comparison table */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .84rem;
+    margin-top: 1rem;
+  }
+  .compare-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: .75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .compare-table td {
+    padding: .75rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,.04);
+    vertical-align: top;
+    line-height: 1.6;
+    color: #6a6055;
+  }
+  .compare-table td:first-child { color: var(--text); font-weight: 500; width: 25%; }
+  .compare-table td.highlight-d { color: var(--red); }
+  .compare-table td.highlight-i { color: var(--amber); }
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  /* Summary principles */
+  .principles { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+  @media(max-width:700px) { .principles { grid-template-columns: 1fr; } }
+  .principle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 1.25rem;
+  }
+  .principle .p-num {
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: .4rem;
+  }
+  .principle p { font-size: .87rem; color: #6a6055; line-height: 1.75; }
+
+  /* Inline label */
+  .inline-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: .1rem .4rem;
+    margin-left: .4rem;
+    vertical-align: middle;
+  }
+  .tag-red { color: var(--red); background: rgba(224,82,82,.1); border: 1px solid rgba(224,82,82,.25); }
+  .tag-green { color: var(--green); background: rgba(76,175,125,.1); border: 1px solid rgba(76,175,125,.25); }
+  .tag-amber { color: var(--amber); background: rgba(240,168,48,.1); border: 1px solid rgba(240,168,48,.25); }
+  .tag-blue { color: var(--blue); background: rgba(91,141,238,.1); border: 1px solid rgba(91,141,238,.25); }
+
+  /* Cycle diagram SVG area */
+  .cycle-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .cycle-svg { max-width: 600px; margin: 0 auto; display: block; }
+
+  /* Decorative divider */
+  .divider {
+    height: 1px; background: var(--border);
+    margin: 2rem 0;
+  }
+
+  /* Infobox */
+  .infobox {
+    background: rgba(166,124,37,.05);
+    border: 1px solid rgba(166,124,37,.25);
+    border-radius: 4px;
+    padding: 1.1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: .86rem;
+    color: #5a4e3a;
+    line-height: 1.75;
+  }
+  .infobox strong { color: var(--gold2); font-weight: 600; }
+
+  /* War economy section */
+  .war-factors { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  @media(max-width:700px) { .war-factors { grid-template-columns: 1fr; } }
+  .war-factor {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1.2rem;
+  }
+  .war-factor .wf-icon { font-size: 1.5rem; margin-bottom: .5rem; }
+  .war-factor h4 { font-size: .9rem; font-weight: 600; color: var(--red); margin-bottom: .4rem; }
+  .war-factor p { font-size: .8rem; color: #7a6e60; line-height: 1.7; }
+
+  /* Scroll fade-in */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .1em;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+
+  /* === PART 3 ADDITIONAL STYLES === */
+
+  
+
+  
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+  /* NAV */
+  
+  .nav-brand {
+    font-family: 'Playfair Display', serif; font-size: .82rem; color: var(--gold);
+    letter-spacing: .12em; text-transform: uppercase; margin-right: 2rem; flex-shrink: 0; white-space: nowrap;
+  }
+  .nav-tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    padding: .45rem 1rem; font-size: .75rem; font-weight: 500; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted); cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all .18s; white-space: nowrap; user-select: none;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* SECTIONS */
+  section { display: none; padding: 2rem 1.5rem; max-width: 1440px; margin: 0 auto; }
+  section.active { display: block; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--s1) 0%, #ede9e0 100%);
+    border: 1px solid var(--bdr); border-radius: 4px;
+    padding: 3rem; margin-bottom: 2rem; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 55% 60% at 85% 50%, rgba(166,124,37,.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag { font-family: 'DM Mono',monospace; font-size: .7rem; letter-spacing: .18em; color: var(--gold); text-transform: uppercase; margin-bottom: .75rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 900; color: #1a1612; line-height: 1.1; margin-bottom: .9rem; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: .93rem; color: var(--mid); max-width: 680px; line-height: 1.8; }
+  .hero-stats { display: flex; gap: 2rem; margin-top: 1.75rem; flex-wrap: wrap; }
+  .hstat { border-left: 2px solid var(--gold); padding-left: .85rem; }
+  .hstat .n { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold2); line-height: 1; }
+  .hstat .l { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .2rem; }
+
+  /* HEADINGS */
+  .sh { display: flex; align-items: baseline; gap: .85rem; margin-bottom: 1.5rem; }
+  .sh h2 { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; color: #1a1612; }
+  .sh .tag { font-family: 'DM Mono',monospace; font-size: .67rem; letter-spacing: .14em; color: var(--gold); text-transform: uppercase; border: 1px solid rgba(166,124,37,.3); border-radius: 2px; padding: .12rem .45rem; }
+
+  /* GRIDS */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: .85rem; }
+  @media(max-width:900px) { .g2,.g3,.g4 { grid-template-columns: 1fr; } }
+  @media(min-width:600px) and (max-width:900px) { .g2,.g3 { grid-template-columns: 1fr 1fr; } }
+
+  /* CARDS */
+  .card { background: var(--s1); border: 1px solid var(--bdr); border-radius: 4px; padding: 1.25rem; }
+  .card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--gold2); margin-bottom: .65rem; }
+  .card p { font-size: .85rem; color: var(--mid); line-height: 1.75; }
+  .card-red  { border-color: rgba(224,82,82,.25); }
+  .card-grn  { border-color: rgba(76,175,125,.25); }
+  .card-amb  { border-color: rgba(240,168,48,.25); }
+  .card-blu  { border-color: rgba(91,141,238,.25); }
+  .card-gold { border-color: rgba(166,124,37,.3); }
+
+  .divider { height: 1px; background: var(--bdr); margin: 1.75rem 0; }
+
+  .infobox { background: rgba(166,124,37,.05); border: 1px solid rgba(166,124,37,.18); border-radius: 4px; padding: 1rem 1.2rem; font-size: .85rem; color: #5a4e3a; line-height: 1.75; margin-bottom: 1.5rem; }
+  .infobox strong { color: var(--gold2); font-weight: 600; }
+
+  /* SEARCH BAR */
+  .search-wrap { display: flex; gap: .75rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .search-wrap input {
+    background: var(--s1); border: 1px solid var(--bdr); border-radius: 4px;
+    padding: .55rem 1rem; font-size: .85rem; color: var(--text); font-family: 'DM Sans',sans-serif;
+    outline: none; width: 240px; transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--gold); }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .filter-btn {
+    padding: .45rem .9rem; border: 1px solid var(--bdr); border-radius: 3px;
+    background: var(--s1); color: var(--mid); font-size: .75rem; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: all .18s;
+    font-family: 'DM Sans', sans-serif; user-select: none;
+  }
+  .filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(166,124,37,.06); }
+
+  /* CASES GRID */
+  #cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+  .case-card {
+    background: var(--s1); border: 1px solid var(--bdr); border-radius: 4px;
+    overflow: hidden; cursor: pointer; transition: all .2s;
+  }
+  .case-card:hover { border-color: rgba(166,124,37,.3); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(30,25,20,.15); }
+  .case-card.def { border-top: 3px solid var(--blu); }
+  .case-card.inf { border-top: 3px solid var(--amb); }
+  .case-card.war { border-top: 3px solid var(--prp); }
+  .case-card.hide { display: none; }
+
+  .cc-head {
+    padding: 1rem 1.1rem .6rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cc-year { font-family: 'DM Mono',monospace; font-size: .68rem; letter-spacing: .12em; color: var(--gold); text-transform: uppercase; background: rgba(166,124,37,.08); border: 1px solid rgba(166,124,37,.25); border-radius: 2px; padding: .1rem .4rem; margin-right: .5rem; flex-shrink: 0; }
+  .cc-name { font-weight: 600; font-size: .92rem; color: var(--text); line-height: 1.3; }
+  .cc-type { font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; padding: .1rem .35rem; border-radius: 2px; border: 1px solid; flex-shrink: 0; }
+  .cc-type.def { color: var(--blu); border-color: rgba(26,93,200,.3); background: rgba(26,93,200,.07); }
+  .cc-type.inf { color: var(--amb); border-color: rgba(176,90,0,.3); background: rgba(176,90,0,.07); }
+  .cc-type.war { color: var(--prp); border-color: rgba(96,48,160,.25); background: rgba(96,48,160,.06); }
+
+  .cc-stats {
+    padding: .5rem 1.1rem 1rem;
+    display: grid; grid-template-columns: repeat(3,1fr); gap: .5rem;
+    border-top: 1px solid rgba(0,0,0,.04);
+  }
+  .cc-stat { text-align: center; }
+  .cc-stat .v { font-family: 'Playfair Display',serif; font-size: 1.1rem; font-weight: 700; line-height: 1.1; }
+  .cc-stat .v.red { color: var(--red2); }
+  .cc-stat .v.grn { color: var(--grn2); }
+  .cc-stat .v.amb { color: var(--amb2); }
+  .cc-stat .v.blu { color: var(--blu2); }
+  .cc-stat .v.gld { color: var(--gold2); }
+  .cc-stat .l { font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-top: .1rem; line-height: 1.2; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(30,25,20,.5); z-index: 500;
+    display: none; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--s1); border: 1px solid var(--bdr); border-radius: 6px;
+    max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto;
+    animation: slideUp .25s ease;
+    scrollbar-width: thin; scrollbar-color: var(--bdr) transparent;
+  }
+  .modal::-webkit-scrollbar { width: 4px; }
+  .modal::-webkit-scrollbar-thumb { background: var(--bdr); border-radius: 2px; }
+  @keyframes slideUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+
+  .modal-head {
+    padding: 1.5rem; border-bottom: 1px solid var(--bdr);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+    position: sticky; top: 0; background: var(--s1); z-index: 1;
+  }
+  .modal-head .mh-left { display: flex; flex-direction: column; gap: .4rem; }
+  .modal-head .mh-year { font-family: 'DM Mono',monospace; font-size: .72rem; color: var(--gold); letter-spacing: .12em; text-transform: uppercase; }
+  .modal-head h2 { font-family: 'Playfair Display',serif; font-size: 1.4rem; font-weight: 700; color: #1a1612; }
+  .modal-close { background: none; border: 1px solid var(--bdr); border-radius: 3px; color: var(--muted); cursor: pointer; font-size: 1.1rem; padding: .2rem .6rem; transition: all .15s; flex-shrink: 0; }
+  .modal-close:hover { color: var(--text); border-color: var(--mid); }
+
+  .modal-body { padding: 1.5rem; }
+  .modal-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: .75rem; margin-bottom: 1.25rem; }
+  @media(max-width:600px) { .modal-stats { grid-template-columns: repeat(2,1fr); } }
+  .ms { background: var(--s2); border: 1px solid var(--bdr); border-radius: 3px; padding: .85rem; text-align: center; }
+  .ms .mv { font-family: 'Playfair Display',serif; font-size: 1.35rem; font-weight: 700; line-height: 1; color: var(--gold2); }
+  .ms .mv.red { color: var(--red2); }
+  .ms .mv.grn { color: var(--grn2); }
+  .ms .ml { font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: .25rem; }
+
+  .modal-phases { margin-bottom: 1.25rem; }
+  .mphase { padding: .85rem 1rem; border-left: 3px solid var(--bdr); margin-bottom: .65rem; background: rgba(0,0,0,.02); border-radius: 0 3px 3px 0; }
+  .mphase.bubble { border-left-color: var(--amb); }
+  .mphase.dep { border-left-color: var(--red); }
+  .mphase.rec { border-left-color: var(--grn); }
+  .mphase.war { border-left-color: var(--prp); }
+  .mphase .mp-label { font-family: 'DM Mono',monospace; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+  .mphase.bubble .mp-label { color: var(--amb); }
+  .mphase.dep .mp-label { color: var(--red); }
+  .mphase.rec .mp-label { color: var(--grn); }
+  .mphase.war .mp-label { color: var(--prp); }
+  .mphase p { font-size: .84rem; color: var(--mid); line-height: 1.7; }
+
+  .modal-lesson { background: rgba(166,124,37,.05); border: 1px solid rgba(166,124,37,.25); border-radius: 3px; padding: .85rem 1rem; font-size: .84rem; color: #5a4530; line-height: 1.75; }
+  .modal-lesson strong { color: var(--gold2); }
+
+  /* CHARTS section */
+  .chart-bar-wrap { margin-bottom: 1.5rem; }
+  .chart-bar-item { display: flex; align-items: center; gap: .75rem; margin-bottom: .55rem; }
+  .chart-bar-label { font-size: .78rem; color: var(--mid); min-width: 150px; flex-shrink: 0; text-align: right; }
+  .chart-bar-track { flex: 1; height: 22px; background: rgba(0,0,0,.04); border-radius: 2px; overflow: hidden; position: relative; }
+  .chart-bar-fill { height: 100%; border-radius: 2px; transition: width .5s ease; display: flex; align-items: center; padding-left: .5rem; }
+  .chart-bar-val { font-family: 'DM Mono',monospace; font-size: .7rem; font-weight: 500; color: rgba(255,255,255,.85); white-space: nowrap; }
+
+  /* ANALYSIS section */
+  .pattern-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media(max-width:800px) { .pattern-cards { grid-template-columns: 1fr 1fr; } }
+  @media(max-width:500px) { .pattern-cards { grid-template-columns: 1fr; } }
+  .pcard {
+    background: var(--s1); border: 1px solid var(--bdr); border-radius: 4px; padding: 1.2rem;
+    position: relative; overflow: hidden;
+  }
+  .pcard::before { content: attr(data-icon); position: absolute; right: .75rem; top: .65rem; font-size: 1.5rem; opacity: .15; }
+  .pcard .ptitle { font-family: 'Playfair Display',serif; font-size: 1rem; font-weight: 600; color: var(--gold2); margin-bottom: .5rem; }
+  .pcard p { font-size: .82rem; color: var(--mid); line-height: 1.7; }
+  .pcard .pnum { font-family: 'DM Mono',monospace; font-size: 1.6rem; font-weight: 500; color: var(--gold); opacity: .2; margin-bottom: .3rem; }
+
+  .timeline-row { display: flex; gap: 0; margin-bottom: 2rem; overflow-x: auto; padding-bottom: .5rem; }
+  .timeline-row::-webkit-scrollbar { height: 3px; }
+  .timeline-row::-webkit-scrollbar-thumb { background: var(--bdr); }
+  .tl-item { flex-shrink: 0; min-width: 120px; text-align: center; padding: 0 .5rem; position: relative; }
+  .tl-item::before { content: ''; position: absolute; top: 10px; left: 0; right: 0; height: 1px; background: var(--bdr); }
+  .tl-item:first-child::before { left: 50%; }
+  .tl-item:last-child::before { right: 50%; }
+  .tl-dot { width: 20px; height: 20px; border-radius: 50%; margin: 0 auto .5rem; border: 2px solid; position: relative; z-index: 1; }
+  .tl-dot.d1 { background: rgba(76,175,125,.15); border-color: var(--grn); }
+  .tl-dot.d2 { background: rgba(240,168,48,.15); border-color: var(--amb); }
+  .tl-dot.d3 { background: rgba(192,57,43,.2); border-color: var(--red); }
+  .tl-dot.d4 { background: rgba(91,141,238,.15); border-color: var(--blu); }
+  .tl-dot.d5 { background: rgba(76,175,125,.15); border-color: var(--grn); }
+  .tl-name { font-size: .75rem; font-weight: 600; }
+  .tl-name.d1 { color: var(--grn); }
+  .tl-name.d2 { color: var(--amb); }
+  .tl-name.d3 { color: var(--red); }
+  .tl-name.d4 { color: var(--blu); }
+  .tl-name.d5 { color: var(--grn); }
+  .tl-desc { font-size: .72rem; color: var(--muted); margin-top: .2rem; line-height: 1.4; }
+
+  /* APPENDIX */
+  .term-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
+  @media(max-width:700px) { .term-grid { grid-template-columns: 1fr; } }
+  .term { background: var(--s1); border: 1px solid var(--bdr); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; padding: 1rem 1.1rem; }
+  .term .tname { font-family: 'DM Mono',monospace; font-size: .75rem; color: var(--gold2); font-weight: 500; margin-bottom: .3rem; }
+  .term .tdef { font-size: .83rem; color: var(--mid); line-height: 1.7; }
+
+  /* TABLE */
+  .stable { width: 100%; border-collapse: collapse; font-size: .82rem; margin-bottom: 1.5rem; }
+  .stable th { font-family: 'DM Mono',monospace; font-size: .67rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); text-align: left; padding: .65rem .85rem; border-bottom: 1px solid var(--bdr); background: var(--s1); white-space: nowrap; }
+  .stable td { padding: .65rem .85rem; border-bottom: 1px solid rgba(0,0,0,.03); vertical-align: top; line-height: 1.55; color: var(--mid); }
+  .stable td:first-child { color: var(--text); font-weight: 500; }
+  .stable tr:last-child td { border-bottom: none; }
+  .stable tr:hover td { background: rgba(0,0,0,.04); }
+  .tv-red { color: var(--red2) !important; }
+  .tv-grn { color: var(--grn2) !important; }
+  .tv-amb { color: var(--amb2) !important; }
+  .tv-gld { color: var(--gold2) !important; }
+
+  .badge { display: inline-block; font-family: 'DM Mono',monospace; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; padding: .1rem .35rem; border-radius: 2px; border: 1px solid; }
+  .badge-def { color: var(--blu); border-color: rgba(26,93,200,.3); background: rgba(26,93,200,.07); }
+  .badge-inf { color: var(--amb); border-color: rgba(176,90,0,.3); background: rgba(176,90,0,.07); }
+  .badge-war { color: var(--prp); border-color: rgba(96,48,160,.25); background: rgba(96,48,160,.06); }
+
+  .footer { text-align: center; padding: 2.5rem; font-family: 'DM Mono',monospace; font-size: .7rem; letter-spacing: .1em; color: var(--muted); border-top: 1px solid var(--bdr); margin-top: 2.5rem; }
+
+
+  /* Nav group divider */
+  .nav-sep {
+    display: flex; align-items: center; padding: 0 .4rem;
+    color: var(--border); font-size: 1rem; flex-shrink: 0;
+    user-select: none;
+  }
+  .nav-group-label {
+    font-family: 'DM Mono', monospace; font-size: .6rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--muted); padding: 0 .6rem;
+    flex-shrink: 0; white-space: nowrap; opacity: .7;
+  }
+
+
+  /* ── LIGHT MODE OVERRIDES ── */
+  body { background: #f4f1ec; }
+  nav { background: rgba(244,241,236,.97); border-bottom-color: #ddd8ce; }
+  .hero { background: linear-gradient(135deg, #fff 0%, #f5f1e8 100%) !important; }
+  .hero::before { background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(166,124,37,.1) 0%, transparent 70%) !important; }
+  .hero h1 { color: #1a1612; }
+  .hero p { color: #7a6e60; }
+  .hero-stat .num { color: #8b6010; }
+  .card { background: #fff; border-color: #ddd8ce; }
+  .card h3 { color: #8b6010; }
+  .card p { color: #6a6055; }
+  .card-gold { border-color: rgba(166,124,37,.35); }
+  .card-red  { border-color: rgba(192,57,43,.25); }
+  .card-grn  { border-color: rgba(46,125,86,.25); }
+  .card-amb  { border-color: rgba(176,90,0,.25); }
+  .card-blu  { border-color: rgba(26,93,200,.25); }
+  .infobox { background: rgba(166,124,37,.06); border-color: rgba(166,124,37,.25); color: #6a5a35; }
+  .infobox strong { color: #8b6010; }
+  .balance-box { background: #fff; border-color: #ddd8ce; }
+  .balance-box h3 { color: #8b6010; }
+  .beautiful-label { color: #2e7d56; background: rgba(46,125,86,.08); border-color: rgba(46,125,86,.3); }
+  .principle { background: #fff; border-color: #ddd8ce; border-left-color: #a67c25; }
+  .principle .p-num { color: #a67c25; }
+  .principle p { color: #6a6055; }
+  .tl-phase { border-bottom-color: transparent; }
+  .tl-phase:hover { background: rgba(0,0,0,.02); }
+  .tl-phase.active { border-bottom-color: #a67c25; background: rgba(166,124,37,.06); }
+  .tl-phase .ph-num { color: #8a8070; }
+  .tl-phase .ph-name { color: #1a1612; }
+  .tl-phase .ph-bar { background: #ddd8ce; }
+  .phase-detail .card { background: #fff; }
+  .lever { background: #fff; border-color: #ddd8ce; }
+  .lever p { color: #7a6e60; }
+  .scale-side.deflation { background: rgba(192,57,43,.05); border-color: rgba(192,57,43,.2); }
+  .scale-side.inflation { background: rgba(176,90,0,.05); border-color: rgba(176,90,0,.2); }
+  .scale-side ul li { color: #7a6e60; }
+  .compare-table th { background: #f8f5f0; color: #8a8070; border-bottom-color: #ddd8ce; }
+  .compare-table td { color: #6a6055; border-bottom-color: rgba(0,0,0,.04); }
+  .compare-table td:first-child { color: #1a1612; }
+  .mp-card { background: #f8f5f0 !important; }
+  .mp-card.mp1 { background: rgba(26,93,200,.04) !important; border-color: rgba(26,93,200,.2) !important; }
+  .mp-card.mp2 { background: rgba(176,90,0,.04) !important; border-color: rgba(176,90,0,.2) !important; }
+  .mp-card.mp3 { background: rgba(46,125,86,.04) !important; border-color: rgba(46,125,86,.2) !important; }
+  .mp-card p { color: #7a6e60; }
+  .mp-card .mp-tool { color: #8a8070; }
+  .case-study { background: #fff; border-color: #ddd8ce; }
+  .cs-header { }
+  .cs-header:hover { background: rgba(0,0,0,.02); }
+  .cs-header.open { background: rgba(166,124,37,.04); border-bottom-color: #ddd8ce; }
+  .cs-title { color: #1a1612; }
+  .cs-toggle { color: #8a8070; }
+  .cs-body { }
+  .cs-stat { background: #f8f5f0; border-color: #ddd8ce; }
+  .cs-stat .sval { color: #8b6010; }
+  .cs-ev .ev-text { color: #6a6055; }
+  .war-factor { background: #fff; border-color: #ddd8ce; }
+  .war-factor p { color: #7a6e60; }
+  .cycle-wrap { background: #fff; border-color: #ddd8ce; }
+  .cycle-wrap p { color: #8a8070; }
+  .divider { background: #ddd8ce; }
+  /* Part 3 light overrides */
+  .case-card { background: #fff; border-color: #ddd8ce; }
+  .case-card:hover { border-color: rgba(166,124,37,.4); box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  .cc-name { color: #1a1612; }
+  .cc-stats { border-top-color: rgba(0,0,0,.05); }
+  .cc-stat .l { color: #8a8070; }
+  .search-wrap input { background: #fff; border-color: #ddd8ce; color: #1a1612; }
+  .search-wrap input:focus { border-color: #a67c25; }
+  .search-wrap input::placeholder { color: #8a8070; }
+  .filter-btn { background: #fff; border-color: #ddd8ce; color: #6a6055; }
+  .filter-btn:hover { border-color: #a67c25; color: #a67c25; }
+  .filter-btn.active { border-color: #a67c25; color: #a67c25; background: rgba(166,124,37,.06); }
+  .modal { background: #fff; border-color: #ddd8ce; }
+  .modal-head { background: #fff; border-bottom-color: #ddd8ce; }
+  .modal-head h2 { color: #1a1612; }
+  .modal-head .mh-year { color: #a67c25; }
+  .modal-close { border-color: #ddd8ce; color: #8a8070; }
+  .modal-close:hover { color: #1a1612; border-color: #8a8070; }
+  .ms { background: #f8f5f0; border-color: #ddd8ce; }
+  .ms .mv { color: #8b6010; }
+  .mphase { background: rgba(0,0,0,.02); }
+  .mphase .mp-label { color: #8a8070; }
+  .mphase p { color: #6a6055; }
+  .mphase.bubble .mp-label { color: #b05a00; }
+  .mphase.dep .mp-label { color: #c0392b; }
+  .mphase.rec .mp-label { color: #2e7d56; }
+  .modal-lesson { background: rgba(166,124,37,.06); border-color: rgba(166,124,37,.2); color: #5a4a25; }
+  .modal-lesson strong { color: #8b6010; }
+  .stable th { background: #f8f5f0; color: #8a8070; border-bottom-color: #ddd8ce; }
+  .stable td { color: #6a6055; border-bottom-color: rgba(0,0,0,.04); }
+  .stable td:first-child { color: #1a1612; }
+  .stable tr:hover td { background: rgba(0,0,0,.015); }
+  .term { background: #fff; border-color: #ddd8ce; border-left-color: #a67c25; }
+  .term .tname { color: #8b6010; }
+  .term .tdef { color: #6a6055; }
+  .pcard { background: #fff; border-color: #ddd8ce; }
+  .pcard .ptitle { color: #8b6010; }
+  .pcard p { color: #6a6055; }
+  .pcard .pnum { color: #a67c25; }
+  .chart-bar-track { background: rgba(0,0,0,.06); }
+  .chart-bar-val { color: rgba(255,255,255,.9); }
+  .tl-dot.d1 { background: rgba(46,125,86,.12); border-color: #2e7d56; }
+  .tl-dot.d2 { background: rgba(176,90,0,.12); border-color: #b05a00; }
+  .tl-dot.d3 { background: rgba(192,57,43,.12); border-color: #c0392b; }
+  .tl-dot.d4 { background: rgba(26,93,200,.12); border-color: #1a5dc8; }
+  .tl-dot.d5 { background: rgba(46,125,86,.12); border-color: #2e7d56; }
+  .tl-name.d1 { color: #2e7d56; }
+  .tl-name.d2 { color: #b05a00; }
+  .tl-name.d3 { color: #c0392b; }
+  .tl-name.d4 { color: #1a5dc8; }
+  .tl-name.d5 { color: #2e7d56; }
+  .tl-desc { color: #8a8070; }
+  .tl-item::before { background: #ddd8ce; }
+  .timeline-row::-webkit-scrollbar-thumb { background: #ddd8ce; }
+  .sh h2 { color: #1a1612; }
+  .sh .tag { color: #a67c25; border-color: rgba(166,124,37,.35); }
+  .hstat .n { color: #8b6010; }
+  .hstat .l { color: #8a8070; }
+  .hero-tag { color: #a67c25; }
+  .sec-head h2 { color: #1a1612; }
+  .sec-head .tag { color: #a67c25; border-color: rgba(166,124,37,.35); }
+  .nav-brand { color: #a67c25; }
+  .nav-tab { color: #8a8070; }
+  .nav-tab:hover { color: #1a1612; }
+  .nav-tab.active { color: #a67c25; border-bottom-color: #a67c25; }
+  .nav-group-label { color: #8a8070; }
+  .nav-sep { color: #ddd8ce; }
+  .footer { border-top-color: #ddd8ce; color: #8a8070; }
+  /* SVG text in cycle diagram */
+  .cycle-svg text { fill: #5a5048 !important; }
+  /* Hero h1 span gold */
+  .hero h1 span { color: #a67c25; }
+  /* hero meta stats border */
+  .hero-stat { border-left-color: #a67c25; }
+  /* War factor */
+  .war-factor h4 { color: #c0392b; }
+  /* Inline style overrides for gradient mesh in hero */
+
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">Ray Dalio · Chu Kỳ Nợ</div>
+  <div class="nav-tabs">
+    <span class="nav-group-label">Phần 1&2</span>
+    <div class="nav-tab active" onclick="showSection('p1-overview',this)">Tổng Quan</div>
+    <div class="nav-tab" onclick="showSection('p1-deflation',this)">Chu Kỳ Giảm Phát</div>
+    <div class="nav-tab" onclick="showSection('p1-inflation',this)">Chu Kỳ Lạm Phát</div>
+    <div class="nav-tab" onclick="showSection('p1-levers',this)">4 Đòn Bẩy</div>
+    <div class="nav-tab" onclick="showSection('p1-mp',this)">Chính Sách Tiền Tệ</div>
+    <div class="nav-tab" onclick="showSection('p1-cases',this)">Case Studies P2</div>
+    <div class="nav-tab" onclick="showSection('p1-compare',this)">So Sánh</div>
+    <span class="nav-sep">│</span>
+    <span class="nav-group-label">Phần 3</span>
+    <div class="nav-tab" onclick="show('p3-overview',this)">Tổng Quan P3</div>
+    <div class="nav-tab" onclick="show('p3-cases48',this)">48 Trường Hợp</div>
+    <div class="nav-tab" onclick="show('p3-stats',this)">Thống Kê</div>
+    <div class="nav-tab" onclick="show('p3-patterns',this)">Mẫu Hình</div>
+    <div class="nav-tab" onclick="show('p3-appendix',this)">Phụ Lục</div>
+  </div>
+</nav>
+
+<section id="p1-overview" class="active" class="active">
+  <div class="hero">
+    <div class="hero-label">Ray Dalio · Bridgewater Associates · Principles for Navigating Big Debt Crises</div>
+    <h1>Chu Kỳ Nợ Lớn <span>Điển Hình</span></h1>
+    <p>Một khuôn mẫu để hiểu cách thức vận hành của mọi cuộc khủng hoảng nợ lớn — được xây dựng từ việc nghiên cứu 48 chu kỳ trong 100 năm qua. Đây là bản đồ tư duy để điều hướng qua những cơn bão tài chính.</p>
+    <div class="hero-meta">
+      <div class="hero-stat"><div class="num">48</div><div class="lbl">Chu Kỳ Nghiên Cứu</div></div>
+      <div class="hero-stat"><div class="num">100</div><div class="lbl">Năm Lịch Sử</div></div>
+      <div class="hero-stat"><div class="num">2</div><div class="lbl">Loại Khủng Hoảng</div></div>
+      <div class="hero-stat"><div class="num">4</div><div class="lbl">Đòn Bẩy Chính</div></div>
+    </div>
+  </div>
+
+  <!-- Fundamental philosophy -->
+  <div class="sec-head">
+    <h2>Tín Dụng & Nợ</h2>
+    <span class="tag">Nền Tảng</span>
+  </div>
+
+  <div class="grid-3" style="margin-bottom:2rem">
+    <div class="card card-gold">
+      <h3>Tín dụng là gì?</h3>
+      <p>Tín dụng là việc cung cấp <strong style="color:var(--gold2)">sức mua</strong> đổi lấy lời hứa trả nợ. Khi được sử dụng hiệu quả, tín dụng tạo ra tăng trưởng; khi không, nó tạo ra khủng hoảng.</p>
+    </div>
+    <div class="card card-gold">
+      <h3>Vì sao có chu kỳ?</h3>
+      <p>Mỗi lần vay tiền tạo ra một chu kỳ: chi tiêu nhiều hơn thu nhập → phải trả nợ → chi tiêu ít hơn. Chu kỳ ngắn hạn cộng dồn thành <strong style="color:var(--gold2)">chu kỳ nợ dài hạn</strong> lớn.</p>
+    </div>
+    <div class="card card-gold">
+      <h3>Nợ xấu có thể quản lý?</h3>
+      <p>Hầu hết khủng hoảng nợ đều có thể quản lý nếu nhà hoạch định chính sách <strong style="color:var(--gold2)">biết cách và có thẩm quyền</strong> phân bổ tổn thất hợp lý theo thời gian.</p>
+    </div>
+  </div>
+
+  <div class="infobox">
+    <strong>Quy tắc vàng:</strong> Nợ/tín dụng là tốt khi nó tạo ra đủ thu nhập để tự trả nợ. Câu hỏi không phải là "nợ nhiều hay ít?" mà là "nợ đó tạo ra gì và cách trả nợ có khả thi không?"
+  </div>
+
+  <!-- Two types -->
+  <div class="divider"></div>
+  <div class="sec-head">
+    <h2>Hai Loại Khủng Hoảng</h2>
+    <span class="tag">Phân Loại</span>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:2rem">
+    <div class="card" style="border-color:rgba(224,82,82,.3)">
+      <h3 style="color:var(--red)">🔵 Suy Thoái Giảm Phát</h3>
+      <p>Phần lớn nợ được tính bằng <strong style="color:var(--text)">nội tệ</strong>. Ngân hàng trung ương có thể in tiền để quản lý. Giảm phát, tài sản sụp đổ nhưng đồng tiền không mất giá mạnh.</p>
+      <p style="margin-top:.75rem; font-family:'DM Mono',monospace; font-size:.72rem; color:var(--red); letter-spacing:.08em">VD: Hoa Kỳ 1929–33 • Hoa Kỳ 2008–09</p>
+    </div>
+    <div class="card" style="border-color:rgba(176,90,0,.3)">
+      <h3 style="color:var(--amber)">🔴 Suy Thoái Lạm Phát</h3>
+      <p>Nợ lớn tính bằng <strong style="color:var(--text)">ngoại tệ</strong>. Khó in tiền để trả nợ. Vốn chạy khỏi đất nước → đồng tiền mất giá → lạm phát bùng phát → khủng hoảng tiền tệ.</p>
+      <p style="margin-top:.75rem; font-family:'DM Mono',monospace; font-size:.72rem; color:var(--amber); letter-spacing:.08em">VD: Đức 1918–24 • Argentina 1980s</p>
+    </div>
+  </div>
+
+  <!-- Cycle macro diagram -->
+  <div class="cycle-wrap fade-in">
+    <div style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem">Chu kỳ nợ dài hạn điển hình</div>
+    <svg class="cycle-svg" viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gline" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#4caf7d"/>
+          <stop offset="40%" stop-color="#c9a84c"/>
+          <stop offset="65%" stop-color="#e05252"/>
+          <stop offset="80%" stop-color="#5b8dee"/>
+          <stop offset="100%" stop-color="#4caf7d"/>
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- grid lines -->
+      <line x1="0" y1="130" x2="600" y2="130" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+      <line x1="0" y1="80" x2="600" y2="80" stroke="rgba(0,0,0,.04)" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="0" y1="180" x2="600" y2="180" stroke="rgba(0,0,0,.04)" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- GDP trend line -->
+      <line x1="30" y1="150" x2="570" y2="100" stroke="rgba(0,0,0,.05)" stroke-width="1" stroke-dasharray="6,4"/>
+      <!-- Main cycle curve -->
+      <path d="M30,160 Q90,140 150,100 Q200,65 240,55 Q270,48 300,70 Q330,100 350,140 Q370,175 390,195 Q410,205 430,185 Q460,155 490,120 Q520,90 560,80" 
+            stroke="url(#gline)" stroke-width="2.5" fill="none" filter="url(#glow)" stroke-linejoin="round" stroke-linecap="round"/>
+      <!-- Phase dots and labels -->
+      <!-- Early -->
+      <circle cx="100" cy="122" r="4" fill="#2e7d56"/>
+      <text x="100" y="115" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#2e7d56" font-weight="600">Khởi đầu</text>
+      <!-- Bubble -->
+      <circle cx="200" cy="68" r="4" fill="#a67c25"/>
+      <text x="200" y="61" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#a67c25" font-weight="600">Bong bóng</text>
+      <!-- Top -->
+      <circle cx="295" cy="68" r="5" fill="#c0392b"/>
+      <text x="295" y="61" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#c0392b" font-weight="600">Đỉnh</text>
+      <!-- Depression -->
+      <circle cx="395" cy="202" r="4" fill="#c0392b"/>
+      <text x="395" y="222" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#c0392b" font-weight="600">Suy Thoái</text>
+      <!-- Beautiful Delev -->
+      <circle cx="440" cy="185" r="4" fill="#1a5dc8"/>
+      <text x="440" y="175" text-anchor="middle" font-family="DM Sans" font-size="8" fill="#1a5dc8" font-weight="600">Giảm ĐB Đẹp</text>
+      <!-- Recovery -->
+      <circle cx="540" cy="92" r="4" fill="#2e7d56"/>
+      <text x="540" y="85" text-anchor="middle" font-family="DM Sans" font-size="9" fill="#2e7d56" font-weight="600">Bình thường</text>
+
+      <!-- Debt/GDP arrow annotation -->
+      <text x="30" y="248" font-family="DM Mono" font-size="8" fill="rgba(0,0,0,.3)" letter-spacing="1">THỜI GIAN →</text>
+      <text x="30" y="20" font-family="DM Mono" font-size="8" fill="rgba(0,0,0,.3)" letter-spacing="1">↑ TÀI SẢN / GDP</text>
+    </svg>
+    <p style="font-size:.78rem; color:var(--muted); margin-top:.75rem">Chu kỳ nợ dài hạn điển hình: từ khởi đầu lành mạnh → bong bóng → đỉnh → suy thoái → giảm đòn bẩy đẹp → bình thường hóa</p>
+  </div>
+
+  <!-- Key principles summary -->
+  <div class="sec-head">
+    <h2>Nguyên Tắc Cốt Lõi</h2>
+    <span class="tag">Dalio's Framework</span>
+  </div>
+  <div class="principles">
+    <div class="principle">
+      <div class="p-num">01</div>
+      <p>Tăng trưởng nợ nhanh hơn thu nhập là <strong style="color:var(--gold2)">không bền vững</strong>. Mỗi bong bóng đều kết thúc bằng sự đảo ngược khi chi phí dịch vụ nợ vượt quá dòng tiền.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">02</div>
+      <p>Có <strong style="color:var(--gold2)">75% tương quan</strong> giữa lượng nợ ngoại tệ và mức lạm phát trong khủng hoảng. Nợ ngoại tệ lớn → khủng hoảng lạm phát nhiều hơn.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">03</div>
+      <p>Rủi ro lớn nhất không phải từ nợ, mà từ <strong style="color:var(--gold2)">thiếu hiểu biết và thiếu thẩm quyền</strong> của nhà hoạch định chính sách để xử lý khủng hoảng.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">04</div>
+      <p>"Giảm đòn bẩy đẹp" xảy ra khi <strong style="color:var(--gold2)">tốc độ tăng trưởng danh nghĩa > lãi suất danh nghĩa</strong>, đạt được nhờ cân bằng lực giảm phát và lực lạm phát.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">05</div>
+      <p>Các nhà hoạch định chính sách <strong style="color:var(--gold2)">luôn cuối cùng in tiền</strong>. Vì thắt lưng buộc bụng gây quá nhiều đau đớn; vỡ nợ lớn xóa quá nhiều tài sản; chuyển giao của cải quá khó về chính trị.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">06</div>
+      <p>Những người phản ứng nhanh và thông minh <strong style="color:var(--gold2)">đạt kết quả tốt hơn nhiều</strong>: Hoa Kỳ 2008 (nhanh) vs 1930 (chậm) — sự khác biệt rất lớn về tác động kinh tế xã hội.</p>
+    </div>
+  </div>
+</section>
+
+<section id="p1-deflation">
+  <div class="sec-head">
+    <h2>Chu Kỳ Suy Thoái Giảm Phát</h2>
+    <span class="tag">21 Trường Hợp</span>
+  </div>
+  <div class="infobox">
+    <strong>Đặc điểm:</strong> Phần lớn nợ bằng nội tệ. Ngân hàng trung ương có thể in tiền. Kết thúc bằng giảm phát, tài sản sụp đổ, nhưng đồng tiền không mất giá thảm họa.
+  </div>
+
+  <!-- Phase selector -->
+  <div class="timeline" style="margin-bottom:1.5rem">
+    <div class="tl-track" id="def-phases">
+      <div class="tl-phase active" onclick="showPhase('def',0,this)">
+        <div class="ph-num">Phase 1</div>
+        <div class="ph-name">Goldilocks</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:15%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',1,this)">
+        <div class="ph-num">Phase 2</div>
+        <div class="ph-name">Bong Bóng</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:35%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',2,this)">
+        <div class="ph-num">Phase 3</div>
+        <div class="ph-name">Cao Trào</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:70%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',3,this)">
+        <div class="ph-num">Phase 4</div>
+        <div class="ph-name">Suy Thoái</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',4,this)">
+        <div class="ph-num">Phase 5</div>
+        <div class="ph-name">Giảm ĐB Đẹp</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:60%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',5,this)">
+        <div class="ph-num">Phase 6</div>
+        <div class="ph-name">Đẩy Dây</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:30%"></div></div>
+      </div>
+      <div class="tl-phase" onclick="showPhase('def',6,this)">
+        <div class="ph-num">Phase 7</div>
+        <div class="ph-name">Bình Thường</div>
+        <div class="ph-bar"><div class="ph-bar-fill" style="width:10%"></div></div>
+      </div>
+    </div>
+
+    <!-- Phase details -->
+    <div class="phase-detail active" id="def-p0">
+      <div class="card">
+        <h3>🟢 Giai Đoạn Goldilocks</h3>
+        <p>Nợ không tăng nhanh hơn thu nhập. Tăng trưởng nợ lành mạnh, tài trợ cho hoạt động tạo ra thu nhập. Bảng cân đối kế toán lành mạnh, nhiều dư địa để tăng đòn bẩy.</p>
+        <p style="margin-top:.75rem"><strong style="color:var(--gold2)">Đặc điểm:</strong> Tăng trưởng không quá nóng, không quá lạnh. Mọi thứ vẻ như ổn định và bền vững.</p>
+      </div>
+      <div class="card">
+        <h3>Chỉ Số Nhận Biết</h3>
+        <p>✓ Nợ/GDP tăng cùng tốc độ với thu nhập<br>✓ Lãi suất thực dương và ổn định<br>✓ Lạm phát trong tầm kiểm soát<br>✓ Tăng trưởng kinh tế bền vững<br>✓ Bảng cân đối ngân hàng lành mạnh</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p1">
+      <div class="card">
+        <h3>🟡 Giai Đoạn Bong Bóng</h3>
+        <p>Nợ tăng <strong style="color:var(--amber)">nhanh hơn thu nhập</strong>. Quá trình tự củng cố: thu nhập tăng → giá tài sản tăng → tài sản thế chấp tăng → vay thêm → chu kỳ lặp lại. Mọi người cảm thấy giàu có, tiêu nhiều hơn kiếm.</p>
+        <p style="margin-top:.75rem"><strong style="color:var(--amber)">Dấu hiệu bong bóng:</strong> Đòn bẩy tăng 20-25% GDP trong 3 năm. Tổng nợ đạt ~300% GDP tại đỉnh.</p>
+      </div>
+      <div class="card">
+        <h3>7 Dấu Hiệu Bong Bóng</h3>
+        <p>① Giá cao bất thường so với lịch sử<br>② Giá phản ánh kỳ vọng tăng tiếp<br>③ Tâm lý lạc quan rộng rãi<br>④ Mua bằng đòn bẩy cao<br>⑤ Mua trước (stockpile, hợp đồng)<br>⑥ Người mới tham gia thị trường<br>⑦ Thắt chặt tiền tệ = vỡ bong bóng</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p2">
+      <div class="card">
+        <h3>🔴 Cao Trào & Đỉnh</h3>
+        <p>Thị trường dài hạn, đòn bẩy cao, định giá quá mức → <strong style="color:var(--red)">chín muồi để đảo ngược</strong>. Thường bị kích hoạt bởi ngân hàng trung ương thắt chặt. Đường cong lợi suất phẳng hoặc đảo ngược.</p>
+        <p style="margin-top:.75rem">Lãi suất ngắn hạn đạt đỉnh ~5 tháng trước đỉnh chứng khoán. Tín dụng bắt đầu thắt chặt ở những "túi dễ tổn thương" nhất.</p>
+      </div>
+      <div class="card">
+        <h3>Cơ Chế Đảo Ngược</h3>
+        <p>↑ Lãi suất → ↓ Giá tài sản → ↓ Tài sản thế chấp → ↑ Áp lực bán → ↓ Giá tiếp<br><br>Chi phí dịch vụ nợ vượt dòng tiền → Con nợ gặp khó → Ngân hàng e ngại cho vay → Tín dụng thắt chặt → Kinh tế suy yếu → Vòng xoáy tử thần</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p3">
+      <div class="card">
+        <h3>🔵 Đại Suy Thoái (Depression)</h3>
+        <p>Lãi suất chạm <strong style="color:var(--blue)">0%</strong> nhưng vẫn không kích thích được. Vỡ nợ và tái cấu trúc lan rộng như "tuyết lở". Tài sản tín dụng biến mất — tín dụng không phải tiền thật, nó có thể biến mất.</p>
+        <p style="margin-top:.75rem"><strong style="color:var(--red)">Thực tế:</strong> Cổ phiếu giảm ~50%, thu nhập sụt giảm, thất nghiệp 10-15%, "vòng xoáy tử thần nợ" tự củng cố.</p>
+      </div>
+      <div class="card">
+        <h3>Tại Sao Không Thể Cắt Lãi Suất?</h3>
+        <p>Trong suy thoái bình thường: cắt lãi suất → kích thích kinh tế ✓<br><br>Trong Đại Suy Thoái: lãi suất đã = 0% → không còn dư địa → phải dùng các công cụ khác.<br><br>Đồng thời: credit spreads tăng → lãi suất thực với người vay vẫn cao → khủng hoảng dòng tiền và khả năng thanh toán song song.</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p4">
+      <div class="card">
+        <h3>✨ Giảm Đòn Bẩy Đẹp (Beautiful Deleveraging)</h3>
+        <p>Cân bằng <strong style="color:var(--green)">4 đòn bẩy</strong> để: tỷ lệ nợ/thu nhập giảm + lạm phát ở mức chấp nhận + tăng trưởng tích cực. <strong>Điều kiện cốt lõi:</strong> Tăng trưởng danh nghĩa > Lãi suất danh nghĩa.</p>
+        <p style="margin-top:.75rem">In tiền ~4% GDP/năm. Phá giá tiền tệ ~50% so với vàng ban đầu. Thâm hụt tài khóa ~6% GDP. Sau 2-3 năm suy thoái.</p>
+      </div>
+      <div class="card">
+        <h3>In Tiền Không Gây Lạm Phát?</h3>
+        <p>Đúng — nếu in tiền chỉ để <strong style="color:var(--gold2)">bù đắp tín dụng đang biến mất</strong>. Chi tiêu bằng tiền = chi tiêu bằng tín dụng về tác động giá. Khi tín dụng thu hẹp, in tiền thay thế tín dụng, không tạo lạm phát ròng.<br><br>Rủi ro: In quá nhiều → Giảm đòn bẩy lạm phát xấu (như Weimar).</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p5">
+      <div class="card">
+        <h3>📉 "Đẩy Vào Sợi Dây" (Pushing on a String)</h3>
+        <p>Giai đoạn cuối chu kỳ dài hạn: kích thích tiền tệ ngày càng kém hiệu quả. QE không thúc đẩy chi tiêu thực vì rủi ro premium đã thấp, tài sản đã cao. Các nhà đầu tư giàu nhận thêm tiền nhưng không chi tiêu.</p>
+      </div>
+      <div class="card">
+        <h3>Phải Làm Gì Khi MP1 & MP2 Cạn Kiệt?</h3>
+        <p>Chuyển sang <strong style="color:var(--green)">Chính Sách Tiền Tệ 3</strong>: đưa tiền trực tiếp vào tay người tiêu dùng — kích thích tài khóa, "tiền trực thăng", thu nhập cơ bản, phối hợp chính sách tiền tệ-tài khóa để đảm bảo tiền vừa được tạo ra vừa được chi tiêu.</p>
+      </div>
+    </div>
+
+    <div class="phase-detail" id="def-p6">
+      <div class="card">
+        <h3>🟢 Bình Thường Hóa</h3>
+        <p>Hệ thống dần trở lại bình thường, nhưng <strong style="color:var(--green)">chậm</strong>. Trung bình ~72 tháng (6 năm) để GDP thực trở về đỉnh trước. ~119 tháng (~10 năm) để thị trường chứng khoán phục hồi đỉnh cũ.</p>
+      </div>
+      <div class="card">
+        <h3>Thống Kê Phục Hồi</h3>
+        <p>⏱ Thời gian rút vốn chủ sở hữu: <strong style="color:var(--gold2)">60–249 tháng</strong><br>⏱ Thời gian GDP phục hồi: <strong style="color:var(--gold2)">25–106 tháng</strong><br>📉 Nợ/GDP giảm sau kích thích: <strong style="color:var(--green)">−54% (trung bình)</strong><br><br>"Thập kỷ mất mát" — thuật ngữ phổ biến cho giai đoạn này.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicators table -->
+  <div class="divider"></div>
+  <div class="sec-head"><h2>Chỉ Số Điển Hình</h2><span class="tag">Trung Bình 21 Trường Hợp</span></div>
+  <div class="grid-4">
+    <div class="card"><h3>+40%</h3><p style="font-size:.8rem">Nợ tăng nhanh hơn thu nhập trong giai đoạn bong bóng (phạm vi: 14-79%)</p></div>
+    <div class="card"><h3 style="color:var(--red)">−50%</h3><p style="font-size:.8rem">Cổ phiếu giảm trung bình trong giai đoạn suy thoái từ đỉnh</p></div>
+    <div class="card"><h3>55 tháng</h3><p style="font-size:.8rem">Thời gian co thắt trung bình trước khi chuyển sang giảm đòn bẩy đẹp</p></div>
+    <div class="card"><h3 style="color:var(--green)">−44%</h3><p style="font-size:.8rem">Phá giá tiền tệ so với vàng (trung bình) để kích thích tái lạm phát</p></div>
+  </div>
+</section>
+
+<section id="p1-inflation">
+  <div class="sec-head">
+    <h2>Chu Kỳ Suy Thoái Lạm Phát</h2>
+    <span class="tag">27 Trường Hợp</span>
+  </div>
+  <div class="infobox">
+    <strong>Đặc điểm cốt lõi:</strong> Nợ lớn bằng <strong>ngoại tệ</strong> → không thể in tiền để trả nợ → dòng vốn chạy → đồng tiền mất giá → lạm phát bùng → vòng xoáy nguy hiểm. Khó quản lý hơn giảm phát nhiều.
+  </div>
+
+  <!-- Dynamic mechanism -->
+  <div class="sec-head" style="margin-top:1.5rem"><h2>Cơ Chế Vòng Xoáy</h2></div>
+  <div class="grid-2" style="margin-bottom:2rem">
+    <div class="card" style="border-color:rgba(240,168,48,.25)">
+      <h3 style="color:var(--amber)">Vòng Xoáy Dòng Vốn</h3>
+      <p>
+        Môi trường bất lợi (nợ, kinh tế yếu, chính trị xấu)<br>
+        → Vốn nước ngoài rút đi<br>
+        → Đồng tiền mất giá<br>
+        → Những ai vay đồng tiền mạnh để đầu tư trong nước bị thiệt đôi<br>
+        → Đồng tiền giảm tiếp<br>
+        → Lạm phát nhập khẩu tăng<br>
+        → Dân mất tin tưởng vào đồng tiền<br>
+        → Vòng xoáy tự củng cố
+      </p>
+    </div>
+    <div class="card" style="border-color:rgba(224,82,82,.25)">
+      <h3 style="color:var(--red)">Bẫy Chính Sách Tiền Tệ</h3>
+      <p>
+        Ngân hàng trung ương đối mặt với:<br><br>
+        ① <strong style="color:var(--text)">Tăng lãi suất</strong> → giữ vốn nhưng bóp chết kinh tế<br>
+        ② <strong style="color:var(--text)">Hạ lãi suất</strong> → kích thích kinh tế nhưng vốn chạy tiếp<br>
+        ③ <strong style="color:var(--text)">In tiền</strong> → thanh khoản nhưng đồng tiền mất giá thêm<br><br>
+        Không có lựa chọn tốt — chỉ có lựa chọn ít tệ hơn.
+      </p>
+    </div>
+  </div>
+
+  <!-- Vulnerable countries -->
+  <div class="sec-head"><h2>Quốc Gia Dễ Bị Tổn Thương Nhất</h2></div>
+  <div class="grid-3" style="margin-bottom:2rem">
+    <div class="card">
+      <h3>💱 Đồng Tiền Yếu</h3>
+      <p>Không có đồng tiền dự trữ quốc tế. Nhu cầu toàn cầu nắm giữ không có → dễ bị bán tháo khi có bất ổn.</p>
+    </div>
+    <div class="card">
+      <h3>🏦 Dự Trữ Mỏng</h3>
+      <p>Dự trữ ngoại hối thấp → vùng đệm chống dòng vốn rút ra mỏng. Khi vốn rút, không có gì để bảo vệ tỷ giá.</p>
+    </div>
+    <div class="card">
+      <h3>💸 Nợ Ngoại Tệ Lớn</h3>
+      <p>Dễ bị tổn thương khi lãi suất tăng hoặc đồng tiền phải trả nợ tăng giá. Chi phí nợ tăng đột biến.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Thâm Hụt Lớn</h3>
+      <p>Thâm hụt ngân sách và/hoặc tài khoản vãng lai lớn → phải vay hoặc in tiền → áp lực liên tục.</p>
+    </div>
+    <div class="card">
+      <h3>📉 Lãi Suất Thực Âm</h3>
+      <p>Lãi suất thấp hơn lạm phát → không bù đắp đủ cho người cho vay → họ tìm nơi khác an toàn hơn.</p>
+    </div>
+    <div class="card">
+      <h3>📜 Lịch Sử Lạm Phát</h3>
+      <p>Mất lòng tin vào đồng tiền tích lũy qua nhiều năm. Tổng lợi nhuận âm của đồng tiền trong dài hạn.</p>
+    </div>
+  </div>
+
+  <!-- Stages -->
+  <div class="sec-head"><h2>Các Giai Đoạn Điển Hình</h2></div>
+  <div class="grid-2">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <div class="p-num" style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--green); margin-bottom:.5rem">Giai đoạn 1</div>
+      <h3>Khởi Đầu Lành Mạnh</h3>
+      <p>Dòng vốn nước ngoài chảy vào vì cơ bản tốt. Nợ thấp, bảng cân đối lành mạnh. Cạnh tranh xuất khẩu mạnh. Ngân hàng trung ương tích lũy dự trữ ngoại hối. Tỷ giá thực hấp dẫn.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--amber)">
+      <div class="p-num" style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--amber); margin-bottom:.5rem">Giai đoạn 2</div>
+      <h3>Bong Bóng Vốn Nước Ngoài</h3>
+      <p>Dòng vốn nước ngoài cao (~10% GDP). Đồng tiền định giá quá cao ~15% PPP. Cổ phiếu tăng mạnh. Vay bằng ngoại tệ tăng vì rẻ. Ngân hàng tích lũy dự trữ nhưng rủi ro tăng.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div class="p-num" style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:.5rem">Giai đoạn 3</div>
+      <h3>Đỉnh & Bảo Vệ Đồng Tiền</h3>
+      <p>Ngân hàng trung ương tăng lãi suất hoặc dùng dự trữ để bảo vệ tỷ giá. Nhưng chi phí này quá cao. Cuối cùng phải thả nổi đồng tiền. Cổ phiếu sụp đổ, lãi suất tăng vọt.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--blue)">
+      <div class="p-num" style="font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--blue); margin-bottom:.5rem">Giai đoạn 4</div>
+      <h3>Suy Thoái Lạm Phát</h3>
+      <p>Đồng tiền thả nổi → mất giá mạnh → lạm phát bùng. Đồng thời kinh tế suy thoái. Chính sách tiền tệ không thể kích thích vì sẽ làm đồng tiền mất giá thêm. Cực kỳ khó xử lý.</p>
+    </div>
+  </div>
+
+  <!-- Hyperinflation spiral -->
+  <div class="divider"></div>
+  <div class="sec-head"><h2>Vòng Xoáy Siêu Lạm Phát</h2><span class="tag">Weimar 1921-1923</span></div>
+  <div class="balance-box" style="border-color:rgba(224,82,82,.3)">
+    <h3 style="color:var(--red)">⚠ Khi Nào Siêu Lạm Phát Xảy Ra</h3>
+    <p style="font-size:.88rem; color:#9a9dac; margin-bottom:1rem">Khi chính phủ liên tục in tiền để trang trải thâm hụt và trả nợ, mất kiểm soát hoàn toàn:</p>
+    <div class="grid-3">
+      <div style="background:rgba(224,82,82,.06); border:1px solid rgba(192,57,43,.2); border-radius:3px; padding:1rem; text-align:center">
+        <div style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--red)">In tiền ↑</div>
+        <p style="font-size:.78rem; color:#9a9dac; margin-top:.4rem">Để trả nợ bồi thường chiến tranh và thâm hụt chính phủ</p>
+      </div>
+      <div style="background:rgba(240,168,48,.06); border:1px solid rgba(176,90,0,.2); border-radius:3px; padding:1rem; text-align:center">
+        <div style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--amber)">Mark mất giá ↓</div>
+        <p style="font-size:.78rem; color:#9a9dac; margin-top:.4rem">Dân không tin tưởng → tích vàng, hàng hóa, ngoại tệ</p>
+      </div>
+      <div style="background:rgba(224,82,82,.06); border:1px solid rgba(192,57,43,.2); border-radius:3px; padding:1rem; text-align:center">
+        <div style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--red)">Lạm phát x10⁶</div>
+        <p style="font-size:.78rem; color:#9a9dac; margin-top:.4rem">1 USD = 4.2 nghìn tỷ Mark. Tiền không còn là thước đo giá trị</p>
+      </div>
+    </div>
+    <div style="margin-top:1rem; font-size:.84rem; color:#8a8d9c; border-top:1px solid rgba(0,0,0,.06); padding-top:1rem">
+      <strong style="color:var(--gold2)">Kết thúc:</strong> Đồng Rentenmark ra đời (1923), được hỗ trợ bởi đất đai và tài sản công nghiệp. Kế hoạch Dawes (1924) cơ cấu lại nợ bồi thường. Siêu lạm phát chấm dứt chỉ trong vài tháng khi lòng tin được khôi phục.
+    </div>
+  </div>
+
+  <!-- War economy -->
+  <div class="sec-head"><h2>Kinh Tế Chiến Tranh</h2><span class="tag">Đặc Thù</span></div>
+  <div class="war-factors">
+    <div class="war-factor">
+      <div class="wf-icon">⚔️</div>
+      <h4>Phân Bổ Tài Nguyên Cưỡng Bức</h4>
+      <p>Chính phủ kiểm soát và phân bổ tài nguyên qua sắc lệnh. Thị trường tự do bị hạn chế. Sản xuất chiến tranh ưu tiên.</p>
+    </div>
+    <div class="war-factor">
+      <div class="wf-icon">💰</div>
+      <h4>Tài Trợ Bằng Nợ Lớn</h4>
+      <p>Chi phí chiến tranh cực lớn → nợ công tăng vọt → in tiền → lạm phát. Ép buộc mua trái phiếu chiến tranh.</p>
+    </div>
+    <div class="war-factor">
+      <div class="wf-icon">🏭</div>
+      <h4>Đầu Tư Tập Trung</h4>
+      <p>Đầu tư vào vũ khí, cơ sở hạ tầng quân sự. Sau chiến tranh cần chuyển đổi → cơ hội hoặc khủng hoảng.</p>
+    </div>
+    <div class="war-factor">
+      <div class="wf-icon">🌍</div>
+      <h4>Trật Tự Thế Giới Thay Đổi</h4>
+      <p>Chiến tranh thay đổi quyền lực kinh tế, tiền tệ dự trữ, và cấu trúc nợ toàn cầu. Bretton Woods sau WWII.</p>
+    </div>
+    <div class="war-factor">
+      <div class="wf-icon">📊</div>
+      <h4>Kiểm Soát Giá & Phân Phối</h4>
+      <p>Giá cả bị kiểm soát, phân phối hàng hóa theo tem phiếu. Sau chiến tranh bãi bỏ → bùng nổ lạm phát.</p>
+    </div>
+    <div class="war-factor">
+      <div class="wf-icon">🔄</div>
+      <h4>Tái Cơ Cấu Sau Chiến Tranh</h4>
+      <p>Bồi thường chiến tranh (như Đức) tạo gánh nặng nợ khổng lồ. Mất đất đai, tài sản → thu nhập giảm nhưng nghĩa vụ không giảm.</p>
+    </div>
+  </div>
+</section>
+
+<section id="p1-levers">
+  <div class="sec-head">
+    <h2>4 Đòn Bẩy Chính Sách</h2>
+    <span class="tag">Công Cụ Xử Lý Khủng Hoảng</span>
+  </div>
+  <div class="infobox">
+    <strong>Nguyên tắc then chốt:</strong> Chìa khóa để thoát khủng hoảng là <strong>kết hợp đúng cân bằng</strong> giữa 4 đòn bẩy — không đòn bẩy nào đủ hiệu quả một mình, và kết hợp sai sẽ làm khủng hoảng kéo dài hoặc chuyển sang lạm phát/giảm phát xấu.
+  </div>
+
+  <div class="levers">
+    <div class="lever deflationary">
+      <div class="lnum">01</div>
+      <h4>Thắt Lưng Buộc Bụng</h4>
+      <p>Chi tiêu ít hơn — cả chính phủ lẫn tư nhân. Tính chất: <strong style="color:var(--red)">giảm phát</strong>. Hiệu quả giới hạn vì cắt chi tiêu → cắt thu nhập → tỷ lệ nợ/thu nhập vẫn tăng.</p>
+      <p style="margin-top:.75rem; font-size:.75rem; color:var(--red)">⚠ Tạo đau đớn xã hội lớn. Một mình không đủ.</p>
+    </div>
+    <div class="lever inflationary">
+      <div class="lnum">02</div>
+      <h4>Vỡ Nợ & Tái Cấu Trúc</h4>
+      <p>Xóa/giảm/tái cơ cấu các khoản nợ không thể trả. Tính chất: <strong style="color:var(--amber)">giảm phát</strong>. Chủ nợ mất nhiều, của cải bị xóa nhanh. Cần thực hiện có trật tự.</p>
+      <p style="margin-top:.75rem; font-size:.75rem; color:var(--amber)">⚠ Xóa quá nhiều tài sản quá nhanh nếu không kiểm soát.</p>
+    </div>
+    <div class="lever monetary">
+      <div class="lnum">03</div>
+      <h4>In Tiền & Tiền Tệ Hóa</h4>
+      <p>Ngân hàng trung ương mua tài sản, bảo lãnh. Tính chất: <strong style="color:var(--blue)">lạm phát & kích thích</strong>. Đây là đòn bẩy mạnh nhất để bù lực giảm phát, nhưng dễ lạm dụng.</p>
+      <p style="margin-top:.75rem; font-size:.75rem; color:var(--blue)">✓ Cần thiết. Nhưng phải đúng liều lượng.</p>
+    </div>
+    <div class="lever transfer">
+      <div class="lnum">04</div>
+      <h4>Chuyển Giao Của Cải</h4>
+      <p>Tăng thuế người giàu, trợ cấp người nghèo. Tính chất: <strong style="color:var(--green)">trung hòa</strong>. Hiếm khi đủ quy mô để tạo khác biệt lớn, trừ khi có cách mạng.</p>
+      <p style="margin-top:.75rem; font-size:.75rem; color:var(--green)">📊 Phạm vi: thuế thu nhập, tài sản, tiêu dùng.</p>
+    </div>
+  </div>
+
+  <!-- Balance equation -->
+  <div class="balance-box">
+    <h3>⚖ Cân Bằng Giảm Đòn Bẩy Đẹp</h3>
+    <div class="balance-scale">
+      <div class="scale-side deflation">
+        <div class="side-label">Lực Giảm Phát</div>
+        <div class="side-title">Thắt Chặt</div>
+        <ul>
+          <li>Thắt lưng buộc bụng</li>
+          <li>Vỡ nợ & tái cấu trúc</li>
+          <li>Giảm chi tiêu</li>
+          <li>Giảm đòn bẩy</li>
+        </ul>
+      </div>
+      <div class="balance-arrow">=</div>
+      <div class="scale-side inflation">
+        <div class="side-label">Lực Lạm Phát</div>
+        <div class="side-title">Kích Thích</div>
+        <ul>
+          <li>In tiền / QE</li>
+          <li>Phá giá tiền tệ</li>
+          <li>Thâm hụt tài khóa</li>
+          <li>Bảo lãnh chính phủ</li>
+        </ul>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:1.25rem">
+      <span class="beautiful-label">✨ Kết Quả: Giảm Đòn Bẩy Đẹp — Tỷ Lệ Nợ/Thu Nhập ↓ + Tăng Trưởng Danh Nghĩa > Lãi Suất Danh Nghĩa</span>
+    </div>
+  </div>
+
+  <!-- Policy frequency table -->
+  <div class="sec-head"><h2>Tần Suất Sử Dụng</h2><span class="tag">Trong 48 Trường Hợp</span></div>
+  <table class="compare-table">
+    <thead><tr><th>Biện Pháp</th><th>Loại</th><th>Tần Suất</th></tr></thead>
+    <tbody>
+      <tr><td>Cho vay khẩn cấp / Thanh khoản</td><td style="color:var(--blue)">Tiền tệ</td><td><strong style="color:var(--gold2)">88%</strong></td></tr>
+      <tr><td>Tái cấu trúc / Sáp nhập ngân hàng</td><td style="color:var(--amber)">Tái cơ cấu</td><td><strong style="color:var(--gold2)">81%</strong></td></tr>
+      <tr><td>Tái cấp vốn ngân hàng</td><td style="color:var(--amber)">Tái cơ cấu</td><td><strong style="color:var(--gold2)">73%</strong></td></tr>
+      <tr><td>Bảo lãnh trách nhiệm ngân hàng</td><td style="color:var(--blue)">Tiền tệ</td><td>58%</td></tr>
+      <tr><td>Chương trình IMF</td><td style="color:var(--muted)">Đa phương</td><td>52%</td></tr>
+      <tr><td>Quốc hữu hóa</td><td style="color:var(--red)">Cực đoan</td><td>60%</td></tr>
+      <tr><td>Vỡ nợ chủ quyền / Tái cấu trúc</td><td style="color:var(--red)">Cực đoan</td><td>35%</td></tr>
+      <tr><td>Đóng băng tiền gửi</td><td style="color:var(--red)">Cực đoan</td><td>21%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="p1-mp">
+  <div class="sec-head">
+    <h2>Ba Loại Chính Sách Tiền Tệ</h2>
+    <span class="tag">Framework Của Dalio</span>
+  </div>
+  <div class="infobox">
+    Khi một loại chính sách tiền tệ mất hiệu quả, cần chuyển sang loại tiếp theo. Hiểu rõ từng loại và giới hạn của nó là chìa khóa để điều hướng trong khủng hoảng.
+  </div>
+
+  <div class="mp-cards">
+    <div class="mp-card mp1" data-num="1">
+      <div class="mp-tool">Công cụ: Lãi suất</div>
+      <h4>Chính Sách Tiền Tệ 1</h4>
+      <p><strong style="color:var(--blue)">Cơ chế:</strong> Ngân hàng trung ương thay đổi lãi suất để kích thích/thắt chặt.<br><br><strong style="color:var(--blue)">Hiệu quả nhất</strong> vì tác động rộng rãi: hiệu ứng tài sản, tín dụng tiêu dùng rẻ hơn, gánh nặng nợ giảm.<br><br><strong style="color:var(--text)">Giới hạn:</strong> Khi lãi suất = 0% → không còn dư địa → phải chuyển sang MP2.</p>
+    </div>
+    <div class="mp-card mp2" data-num="2">
+      <div class="mp-tool">Công cụ: QE — Mua tài sản</div>
+      <h4>Chính Sách Tiền Tệ 2</h4>
+      <p><strong style="color:var(--amber)">Cơ chế:</strong> Ngân hàng trung ương in tiền mua tài sản tài chính (trái phiếu, cổ phiếu).<br><br><strong style="color:var(--amber)">Tác động:</strong> Lợi cho nhà đầu tư/người tiết kiệm; ít ảnh hưởng người tiêu dùng. Nới rộng bất bình đẳng.<br><br><strong style="color:var(--text)">Giới hạn:</strong> Khi phí bảo hiểm rủi ro đã thấp, giá tài sản đã cao → QE không còn tạo "wealth effect".</p>
+    </div>
+    <div class="mp-card mp3" data-num="3">
+      <div class="mp-tool">Công cụ: Trực tiếp đến người chi tiêu</div>
+      <h4>Chính Sách Tiền Tệ 3</h4>
+      <p><strong style="color:var(--green)">Cơ chế:</strong> Tiền đến thẳng tay người tiêu dùng — kích thích tài khóa, "tiền trực thăng", phối hợp chính sách tài khóa-tiền tệ.<br><br><strong style="color:var(--green)">Hiệu quả nhất</strong> khi khoảng cách giàu nghèo lớn và cần kích thích chi tiêu thực.<br><br><strong style="color:var(--text)">Rủi ro:</strong> Nếu không có kỷ luật, có thể gây lạm phát.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MP3 variants -->
+  <div class="sec-head"><h2>Các Biến Thể MP3</h2></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>📊 Kích Thích Tài Khóa + QE</h3>
+      <p>Chính phủ tăng chi tiêu/giảm thuế, ngân hàng trung ương mua phần lớn trái phiếu mới phát hành. Phối hợp giữa bộ tài chính và ngân hàng trung ương đảm bảo tiền vừa được tạo vừa được chi tiêu. <span class="inline-tag tag-green">Hiệu quả nhất</span></p>
+      <p style="margin-top:.5rem; font-size:.78rem; color:var(--muted)">VD: Nhật Bản 1930s, Hoa Kỳ WWII, Anh 2000s</p>
+    </div>
+    <div class="card">
+      <h3>🏦 In Tiền Trực Tiếp</h3>
+      <p>Ngân hàng trung ương in tiền để trang trải chi tiêu chính phủ mà không phát hành nợ. Nguy hiểm nếu mất kiểm soát → siêu lạm phát Weimar.</p>
+      <p style="margin-top:.5rem; font-size:.78rem; color:var(--muted)">VD: Đức 1930s, Đế quốc Trung Hoa, Cách mạng Hoa Kỳ</p>
+    </div>
+    <div class="card">
+      <h3>🚁 Tiền Trực Thăng</h3>
+      <p>Chuyển tiền thẳng vào tay hộ gia đình — cùng mức hoặc hướng đến người thu nhập thấp. Một lần hoặc định kỳ (thu nhập cơ bản toàn dân). Có thể kèm điều kiện chi tiêu.</p>
+      <p style="margin-top:.5rem; font-size:.78rem; color:var(--muted)">VD: Tiền thưởng cựu chiến binh Mỹ thời Đại Suy Thoái, Iceland</p>
+    </div>
+    <div class="card">
+      <h3>🔄 Xóa Nợ + In Tiền</h3>
+      <p>"Năm Đại Xá" — xóa nợ quy mô lớn đi kèm với việc tạo ra tiền lớn. Phục hồi nhanh nhưng đòi hỏi sự đồng thuận chính trị và xã hội rộng lớn.</p>
+      <p style="margin-top:.5rem; font-size:.78rem; color:var(--muted)">VD: La Mã cổ đại, Đại Suy Thoái, Iceland</p>
+    </div>
+  </div>
+
+  <div class="infobox" style="margin-top:1.5rem">
+    <strong>Quan sát quan trọng của Dalio:</strong> Hầu hết ngân hàng trung ương chỉ nhắm mục tiêu lạm phát và tăng trưởng, KHÔNG nhắm mục tiêu quản lý bong bóng nợ. Đây là một trong những vấn đề hệ thống lớn nhất. Ngân hàng trung ương nên theo dõi tăng trưởng nợ và bảo đảm nó ở mức bền vững — tức là thu nhập có khả năng đủ để trả nợ đó.
+  </div>
+</section>
+
+<section id="p1-cases">
+  <div class="sec-head">
+    <h2>Phần 2: Nghiên Cứu Trường Hợp Chi Tiết</h2>
+    <span class="tag">3 Case Studies Lớn</span>
+  </div>
+  <div class="infobox">
+    Dalio chọn 3 trường hợp đại diện cho: siêu lạm phát cực đoan (Đức), giảm phát cổ điển (Đại Suy Thoái Mỹ), và khủng hoảng hiện đại được xử lý tốt hơn (Mỹ 2008). Mỗi trường hợp minh họa các giai đoạn được mô tả trong Phần 1.
+  </div>
+
+  <!-- Case 1: Germany -->
+  <div class="case-study">
+    <div class="cs-header open" onclick="toggleCase(this)">
+      <div style="display:flex; align-items:center; gap:.75rem; flex:1; min-width:0">
+        <span class="cs-year">1918–1924</span>
+        <span class="cs-title">Đức — Siêu Lạm Phát & Khủng Hoảng Nợ</span>
+      </div>
+      <span class="cs-toggle">▼</span>
+    </div>
+    <div class="cs-body open">
+      <div class="cs-grid">
+        <div class="cs-stat"><div class="sval red">4.2 nghìn tỷ</div><div class="slabel">Mark/1 USD tại đỉnh (1923)</div></div>
+        <div class="cs-stat"><div class="sval red">~1000%</div><div class="slabel">Lạm phát hàng tháng tại đỉnh</div></div>
+        <div class="cs-stat"><div class="sval">Kế hoạch Dawes</div><div class="slabel">Giải pháp tái cơ cấu 1924</div></div>
+      </div>
+      <p style="font-size:.88rem; color:#9a9dac; margin-bottom:1rem">Đây là ví dụ điển hình nhất về <strong style="color:var(--amber)">suy thoái lạm phát cực đoan</strong>. Sau WWI, Đức phải gánh nợ bồi thường khổng lồ được tính bằng ngoại tệ, trong khi kinh tế suy yếu. Chính phủ in tiền để trang trải → Mark mất giá theo vòng xoáy tử thần.</p>
+      <div class="cs-timeline">
+        <div class="cs-ev">
+          <span class="ev-date">1918–19</span>
+          <span class="ev-text">Đức thua WWI. Hiệp ước Versailles áp đặt bồi thường chiến tranh khổng lồ — 132 tỷ Mark vàng. Cộng hòa Weimar ra đời trong hỗn loạn.</span>
+          <span class="ev-phase peak">Đỉnh/Khủng hoảng</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">1919–21</span>
+          <span class="ev-text">Lạm phát bắt đầu tăng khi chính phủ in tiền để chi trả. Đình công, bất ổn chính trị. Pháp chiếm vùng Ruhr (1923) — Đức mất nguồn thu chính từ công nghiệp.</span>
+          <span class="ev-phase bubble">Lạm phát</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">1921–23</span>
+          <span class="ev-text">Vòng xoáy siêu lạm phát. Công nhân được trả lương nhiều lần/ngày để mua hàng trước khi tiền mất giá. 1 USD = 4.2 nghìn tỷ Mark. Người tiết kiệm bị xóa sổ hoàn toàn.</span>
+          <span class="ev-phase dep">Siêu LF</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">Nov 1923</span>
+          <span class="ev-text">Đồng Rentenmark ra đời — được "hỗ trợ" bởi đất đai và tài sản công nghiệp. Lòng tin được khôi phục. 1 Rentenmark = 1 nghìn tỷ Mark cũ. Lạm phát dừng ngay.</span>
+          <span class="ev-phase recovery">Phục hồi</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">1924</span>
+          <span class="ev-text">Kế hoạch Dawes: tái cơ cấu nợ bồi thường, khoản vay 200 triệu USD từ Hoa Kỳ. Đức ổn định kinh tế. Bắt đầu thời kỳ "Những năm 20 vàng son" — kéo dài đến 1929.</span>
+          <span class="ev-phase recovery">Bình thường</span>
+        </div>
+      </div>
+      <div class="infobox" style="margin-top:1rem">
+        <strong>Bài học:</strong> Khi nợ bằng ngoại tệ và bồi thường không thể trả, in tiền nội tệ không giải quyết được vấn đề — chỉ tạo siêu lạm phát. Cần tái cơ cấu nợ và lòng tin từ bên ngoài (Kế hoạch Dawes).
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 2: USA 1929-1937 -->
+  <div class="case-study">
+    <div class="cs-header" onclick="toggleCase(this)">
+      <div style="display:flex; align-items:center; gap:.75rem; flex:1; min-width:0">
+        <span class="cs-year">1928–1937</span>
+        <span class="cs-title">Hoa Kỳ — Đại Suy Thoái (Deflationary)</span>
+      </div>
+      <span class="cs-toggle">▼</span>
+    </div>
+    <div class="cs-body">
+      <div class="cs-grid">
+        <div class="cs-stat"><div class="sval red">−89%</div><div class="slabel">Thị trường chứng khoán từ đỉnh 1929</div></div>
+        <div class="cs-stat"><div class="sval red">25%</div><div class="slabel">Tỷ lệ thất nghiệp đỉnh điểm (1933)</div></div>
+        <div class="cs-stat"><div class="sval blue">1933</div><div class="slabel">Roosevelt phá neo vàng — bước ngoặt</div></div>
+      </div>
+      <p style="font-size:.88rem; color:#9a9dac; margin-bottom:1rem">Ví dụ kinh điển của <strong style="color:var(--blue)">suy thoái giảm phát</strong>. Bong bóng những năm 1920 vỡ tung, Fed phản ứng chậm và sai. Hàng nghìn ngân hàng phá sản. Khi Roosevelt và Fed thay đổi cách tiếp cận (phá neo vàng, New Deal), phục hồi bắt đầu.</p>
+      <div class="cs-timeline">
+        <div class="cs-ev">
+          <span class="ev-date">1924–29</span>
+          <span class="ev-text">Bong bóng "Những năm 20 vàng son". Cổ phiếu tăng 5x. Đòn bẩy cao, vay ký quỹ phổ biến. Tín dụng nông nghiệp và bất động sản phình to.</span>
+          <span class="ev-phase bubble">Bong bóng</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">Okt 1929</span>
+          <span class="ev-text">"Ngày Thứ Năm Đen Tối" — thị trường chứng khoán sụp đổ. -48% trong vài ngày. Fed không hành động đủ nhanh. Tín dụng co cụm.</span>
+          <span class="ev-phase peak">Đỉnh → Sụp đổ</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">1930–32</span>
+          <span class="ev-text">Đại Suy Thoái. 9,000+ ngân hàng phá sản. GDP giảm 30%. Fed thậm chí thắt chặt thêm để bảo vệ neo vàng. Smoot-Hawley Tariff Act → chiến tranh thương mại toàn cầu.</span>
+          <span class="ev-phase dep">Suy Thoái</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">Mar 1933</span>
+          <span class="ev-text">Roosevelt nhậm chức: nghỉ lễ ngân hàng, bảo hiểm tiền gửi FDIC, phá neo vàng (Executive Order 6102). Cổ phiếu tăng 67% chỉ trong 1 năm. Bước ngoặt quyết định.</span>
+          <span class="ev-phase recovery">Chuyển Đổi</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">1933–37</span>
+          <span class="ev-text">New Deal: WPA, CCC, Social Security. Phục hồi mạnh. Nhưng 1937: Fed thắt chặt sớm → suy thoái kép. Bài học: không thắt chặt quá sớm trong phục hồi.</span>
+          <span class="ev-phase recovery">Phục hồi</span>
+        </div>
+      </div>
+      <div class="infobox" style="margin-top:1rem">
+        <strong>Bài học:</strong> Fed phản ứng chậm và sai (giữ neo vàng, thắt chặt khi lẽ ra phải nới lỏng). Khi Roosevelt phá neo vàng và tung New Deal — phục hồi bắt đầu ngay. Đừng tái áp đặt thắt chặt quá sớm.
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 3: USA 2008 -->
+  <div class="case-study">
+    <div class="cs-header" onclick="toggleCase(this)">
+      <div style="display:flex; align-items:center; gap:.75rem; flex:1; min-width:0">
+        <span class="cs-year">2007–2011</span>
+        <span class="cs-title">Hoa Kỳ — Đại Suy Thoái Tài Chính (Managed Well)</span>
+      </div>
+      <span class="cs-toggle">▼</span>
+    </div>
+    <div class="cs-body">
+      <div class="cs-grid">
+        <div class="cs-stat"><div class="sval red">−55%</div><div class="slabel">S&P 500 từ đỉnh 2007 đến đáy 2009</div></div>
+        <div class="cs-stat"><div class="sval blue">10%</div><div class="slabel">Tỷ lệ thất nghiệp đỉnh (2009–10)</div></div>
+        <div class="cs-stat"><div class="sval" style="color:var(--green)">~2 năm</div><div class="slabel">Thời gian suy thoái sắc nhọn (ngắn hơn 1930s)</div></div>
+      </div>
+      <p style="font-size:.88rem; color:#9a9dac; margin-bottom:1rem">Khủng hoảng 2008 được xử lý tốt hơn nhiều nhờ <strong style="color:var(--green)">Fed học từ bài học 1930s</strong>: hạ lãi suất nhanh xuống 0%, QE quy mô lớn, bảo lãnh hệ thống tài chính, TARP. Bridgewater của Dalio đã dự báo từ 2001 nhờ mô hình này.</p>
+      <div class="cs-timeline">
+        <div class="cs-ev">
+          <span class="ev-date">2003–06</span>
+          <span class="ev-text">Bong bóng bất động sản. Lãi suất thấp + cho vay dưới chuẩn (subprime) + chứng khoán hóa MBS/CDO. Mọi người tin "nhà không bao giờ mất giá". Đòn bẩy cực cao.</span>
+          <span class="ev-phase bubble">Bong bóng</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">2006–07</span>
+          <span class="ev-text">Giá nhà bắt đầu giảm. Subprime mortgage defaults tăng. Bear Stearns hedge funds vỡ. Credit spreads mở rộng. Hệ thống shadow banking bắt đầu đóng băng.</span>
+          <span class="ev-phase peak">Đỉnh vỡ</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">Sep 2008</span>
+          <span class="ev-text">Lehman Brothers phá sản. AIG cần cứu trợ. Money market funds "breaking the buck". Hệ thống tài chính đứng bên bờ sụp đổ. Tín dụng đóng băng hoàn toàn.</span>
+          <span class="ev-phase dep">Khủng hoảng</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">Sep–Dec 2008</span>
+          <span class="ev-text">Fed hạ lãi suất xuống 0%. TARP $700B. Fed mua MBS, trái phiếu kho bạc (QE1). Bảo lãnh money market, ngân hàng. Nhanh và quyết đoán hơn 1930s rất nhiều.</span>
+          <span class="ev-phase recovery">Phản Ứng</span>
+        </div>
+        <div class="cs-ev">
+          <span class="ev-date">2009–11</span>
+          <span class="ev-text">Gói kích thích tài khóa $787B (ARRA). Stress test ngân hàng. Phục hồi chậm nhưng ổn định. Thất nghiệp giảm dần. S&P 500 phục hồi đỉnh vào 2013.</span>
+          <span class="ev-phase recovery">Phục hồi</span>
+        </div>
+      </div>
+      <div class="infobox" style="margin-top:1rem">
+        <strong>Bài học:</strong> Phản ứng nhanh, quyết liệt với đủ công cụ (lãi suất + QE + bảo lãnh + tài khóa) giúp suy thoái ngắn và ít đau hơn rất nhiều so với 1930s. Nhưng phục hồi vẫn mất nhiều năm và tạo bất bình đẳng lớn do QE chủ yếu lợi cho người giàu.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="p1-compare">
+  <div class="sec-head">
+    <h2>So Sánh Toàn Diện</h2>
+    <span class="tag">Giảm Phát vs Lạm Phát</span>
+  </div>
+
+  <table class="compare-table" style="margin-bottom:2rem">
+    <thead>
+      <tr>
+        <th>Tiêu Chí</th>
+        <th style="color:var(--blue)">🔵 Suy Thoái Giảm Phát</th>
+        <th style="color:var(--amber)">🔴 Suy Thoái Lạm Phát</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Loại Nợ</td>
+        <td class="highlight-d">Phần lớn nội tệ</td>
+        <td class="highlight-i">Nhiều nợ ngoại tệ</td>
+      </tr>
+      <tr>
+        <td>Khả năng in tiền</td>
+        <td class="highlight-d">Có — hiệu quả</td>
+        <td class="highlight-i">Có — nhưng phản tác dụng</td>
+      </tr>
+      <tr>
+        <td>Tỷ giá hối đoái</td>
+        <td class="highlight-d">Tương đối ổn định</td>
+        <td class="highlight-i">Mất giá mạnh và nhanh</td>
+      </tr>
+      <tr>
+        <td>Lạm phát</td>
+        <td class="highlight-d">Giảm phát — giá giảm</td>
+        <td class="highlight-i">Lạm phát cao hoặc siêu LF</td>
+      </tr>
+      <tr>
+        <td>Lãi suất</td>
+        <td class="highlight-d">Giảm về 0%</td>
+        <td class="highlight-i">Tăng vọt hoặc không kiểm soát</td>
+      </tr>
+      <tr>
+        <td>Tài sản</td>
+        <td class="highlight-d">Giá giảm mạnh (−50%+)</td>
+        <td class="highlight-i">Giá bằng nội tệ tăng; thực tế giảm</td>
+      </tr>
+      <tr>
+        <td>Công cụ chính</td>
+        <td class="highlight-d">In tiền + thắt lưng + tái cơ cấu</td>
+        <td class="highlight-i">Tái cơ cấu nợ + phục hồi lòng tin</td>
+      </tr>
+      <tr>
+        <td>Mức độ khó quản lý</td>
+        <td class="highlight-d">Khó nhưng quản lý được</td>
+        <td class="highlight-i">Rất khó — ít công cụ hơn</td>
+      </tr>
+      <tr>
+        <td>Ví dụ điển hình</td>
+        <td class="highlight-d">Mỹ 1929–33, Mỹ 2008</td>
+        <td class="highlight-i">Đức 1921–23, Argentina, Brazil</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3 case studies comparison -->
+  <div class="sec-head"><h2>So Sánh 3 Trường Hợp</h2></div>
+  <table class="compare-table" style="margin-bottom:2rem">
+    <thead>
+      <tr>
+        <th>Tiêu Chí</th>
+        <th>🇩🇪 Đức 1918–24</th>
+        <th>🇺🇸 Mỹ 1929–37</th>
+        <th>🇺🇸 Mỹ 2007–11</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Loại khủng hoảng</td>
+        <td style="color:var(--amber)">Siêu lạm phát</td>
+        <td style="color:var(--blue)">Giảm phát cổ điển</td>
+        <td style="color:var(--green)">Giảm phát hiện đại</td>
+      </tr>
+      <tr>
+        <td>Nguyên nhân gốc</td>
+        <td>Nợ bồi thường chiến tranh ngoại tệ</td>
+        <td>Bong bóng 1920s + Neo vàng cứng nhắc</td>
+        <td>Bong bóng BĐS + Shadow banking</td>
+      </tr>
+      <tr>
+        <td>Phản ứng ban đầu</td>
+        <td style="color:var(--red)">In tiền tràn lan</td>
+        <td style="color:var(--red)">Giữ neo vàng, thắt chặt</td>
+        <td style="color:var(--green)">Hạ lãi suất nhanh, QE</td>
+      </tr>
+      <tr>
+        <td>Đỉnh thiệt hại</td>
+        <td>Lạm phát vô cực</td>
+        <td>−30% GDP, 25% thất nghiệp</td>
+        <td>−4% GDP, 10% thất nghiệp</td>
+      </tr>
+      <tr>
+        <td>Thời gian suy thoái</td>
+        <td>~5 năm (1918–1923)</td>
+        <td>~4 năm (1929–1933)</td>
+        <td>~18 tháng (2007–2009)</td>
+      </tr>
+      <tr>
+        <td>Giải pháp then chốt</td>
+        <td>Rentenmark + Kế hoạch Dawes</td>
+        <td>Phá neo vàng + New Deal</td>
+        <td>QE + TARP + ARRA</td>
+      </tr>
+      <tr>
+        <td>Đánh giá xử lý</td>
+        <td style="color:var(--red)">Xử lý kém → siêu LF</td>
+        <td style="color:var(--amber)">Chậm nhưng cuối cùng đúng</td>
+        <td style="color:var(--green)">Nhanh và hiệu quả hơn</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Key takeaways -->
+  <div class="sec-head"><h2>Tóm Tắt Bài Học Cốt Lõi</h2></div>
+  <div class="principles">
+    <div class="principle">
+      <div class="p-num">Bài học 01</div>
+      <p>Chu kỳ nợ là bất biến — chúng luôn xảy ra vì bản chất con người: vay nhiều khi tốt, đau khi trả nợ. Hiểu mẫu giúp chuẩn bị trước, không phải ngăn chặn hoàn toàn.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">Bài học 02</div>
+      <p>Loại tiền tệ của khoản nợ quyết định số phận: <strong style="color:var(--gold2)">nội tệ → có thể quản lý; ngoại tệ → cực kỳ nguy hiểm</strong>. Đây là sự khác biệt căn bản nhất giữa hai loại khủng hoảng.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">Bài học 03</div>
+      <p>Tốc độ và quy mô phản ứng chính sách là then chốt. Ngân hàng trung ương nên <strong style="color:var(--gold2)">in tiền sớm và đủ lượng</strong> — chờ đợi chỉ kéo dài đau khổ.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">Bài học 04</div>
+      <p>"Giảm đòn bẩy đẹp" không phải may mắn — là <strong style="color:var(--gold2)">kết quả của chính sách thông minh</strong>: cân bằng đủ lực lạm phát để bù lực giảm phát, không thái quá.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">Bài học 05</div>
+      <p>Bất bình đẳng là nhiên liệu chính trị nguy hiểm. Khi khoảng cách giàu nghèo lớn trong khủng hoảng, <strong style="color:var(--gold2)">chủ nghĩa dân túy nổi lên</strong> — cần quản lý phân phối gánh nặng cẩn thận.</p>
+    </div>
+    <div class="principle">
+      <div class="p-num">Bài học 06</div>
+      <p>Ngân hàng trung ương nên nhắm mục tiêu <strong style="color:var(--gold2)">tăng trưởng nợ bền vững</strong> — không chỉ lạm phát và tăng trưởng. Bong bóng có thể xảy ra khi lạm phát thấp nhưng nợ tăng nguy hiểm.</p>
+    </div>
+  </div>
+</section>
+
+<section id="p3-overview">
+  <div class="hero">
+    <div class="hero-tag">Phần 3 · Ray Dalio · Bridgewater Associates</div>
+    <h1>Tổng Hợp <span>48 Trường Hợp</span> Nghiên Cứu</h1>
+    <p>Sàng lọc có hệ thống tất cả giai đoạn giảm đòn bẩy lớn trong thế kỷ qua — tập trung vào các trường hợp có mức giảm GDP thực tế hơn 3%. Đây là "trải nghiệm ảo" cho phép bạn học từ lịch sử như thể đang trực tiếp sống trong từng cuộc khủng hoảng.</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">21</div><div class="l">Trường hợp giảm phát</div></div>
+      <div class="hstat"><div class="n">27</div><div class="l">Trường hợp lạm phát</div></div>
+      <div class="hstat"><div class="n">100+</div><div class="l">Năm lịch sử</div></div>
+      <div class="hstat"><div class="n">9</div><div class="l">Đòn bẩy chính sách</div></div>
+    </div>
+  </div>
+
+  <div class="sh"><h2>Phân Loại 48 Trường Hợp</h2><span class="tag">Theo Nhóm</span></div>
+  <div class="g3" style="margin-bottom:2rem">
+    <div class="card card-blu">
+      <h3 style="color:var(--blu2)">🔵 21 Trường Hợp Giảm Phát</h3>
+      <p>Nợ chủ yếu bằng <strong style="color:var(--text)">nội tệ</strong>. Ngân hàng trung ương có thể in tiền. Thường xảy ra ở các nền kinh tế phát triển.</p>
+      <p style="margin-top:.6rem; font-size:.78rem; color:var(--blu); font-family:'DM Mono',monospace">Mỹ, Anh, Nhật, Pháp, EU, Bắc Âu</p>
+    </div>
+    <div class="card card-amb">
+      <h3 style="color:var(--amb2)">🟡 27 Trường Hợp Lạm Phát</h3>
+      <p>Nợ lớn bằng <strong style="color:var(--text)">ngoại tệ</strong>. Rất khó quản lý. Đồng tiền mất giá mạnh, lạm phát tăng vọt, vốn tháo chạy.</p>
+      <p style="margin-top:.6rem; font-size:.78rem; color:var(--amb); font-family:'DM Mono',monospace">EM Châu Á, Mỹ Latin, Đông Âu, Nga</p>
+    </div>
+    <div class="card" style="border-color:rgba(96,48,160,.2)">
+      <h3 style="color:var(--prp)">🟣 Đặc Biệt: Kinh Tế Chiến Tranh</h3>
+      <p>Nợ tăng vọt do chi phí chiến tranh. Người thắng phục hồi nhanh hơn người thua. Cần chuyển đổi nền kinh tế sau chiến tranh.</p>
+      <p style="margin-top:.6rem; font-size:.78rem; color:var(--prp); font-family:'DM Mono',monospace">Anh 1941, Mỹ 1943, Đức 1918</p>
+    </div>
+  </div>
+
+  <div class="sh"><h2>Cách Đọc Mỗi Trường Hợp</h2></div>
+  <div class="infobox">
+    Mỗi trường hợp trong Phần 3 được phân tích qua <strong>3 giai đoạn</strong>: (1) Giai đoạn Bong Bóng — các điều kiện dẫn đến khủng hoảng, (2) Giai đoạn Suy Thoái — quy mô thiệt hại và vòng xoáy tự củng cố, (3) Giai đoạn Tái Lạm Phát — cách các nhà hoạch định chính sách xử lý. Dalio sử dụng "văn bản tự động do máy tính tạo ra" — các quan sát định lượng nhất quán — để so sánh khách quan 48 trường hợp.
+  </div>
+
+  <!-- Key pattern stats -->
+  <div class="sh"><h2>Số Liệu Trung Bình</h2><span class="tag">21 Trường Hợp Giảm Phát</span></div>
+  <div class="g4" style="margin-bottom:2rem">
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--red2)">−50%</div><p style="font-size:.78rem;margin-top:.3rem">Cổ phiếu giảm trung bình từ đỉnh</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--red2)">55 tháng</div><p style="font-size:.78rem;margin-top:.3rem">Thời gian co thắt (22-79 tháng)</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--grn2)">4% GDP</div><p style="font-size:.78rem;margin-top:.3rem">Mức in tiền mỗi năm để phục hồi</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold2)">6 năm</div><p style="font-size:.78rem;margin-top:.3rem">Trung bình để GDP thực phục hồi</p></div>
+  </div>
+
+  <div class="sh"><h2>Số Liệu Trung Bình</h2><span class="tag">27 Trường Hợp Lạm Phát</span></div>
+  <div class="g4">
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--amb2)">−75%</div><p style="font-size:.78rem;margin-top:.3rem">Đồng tiền mất giá trung bình</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--red2)">−88%</div><p style="font-size:.78rem;margin-top:.3rem">Cổ phiếu tính theo ngoại tệ</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--grn2)">5 năm</div><p style="font-size:.78rem;margin-top:.3rem">GDP phục hồi sau khủng hoảng</p></div>
+    <div class="card"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--gold2)">IMF</div><p style="font-size:.78rem;margin-top:.3rem">52% trường hợp cần hỗ trợ IMF</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sh"><h2>Biểu Đồ Phân Bổ Nợ</h2><span class="tag">Cơ Chế Tăng Nợ/GDP Trong Suy Thoái</span></div>
+  <div class="g2">
+    <div class="card">
+      <h3>Tại sao Nợ/GDP Tăng Khi Muốn Giảm?</h3>
+      <p>Nghịch lý: trong suy thoái, dù cần giảm đòn bẩy, tỷ lệ Nợ/GDP thường <strong style="color:var(--red2)">tăng</strong> trước khi giảm. 4 nguyên nhân:<br><br>
+      <strong style="color:var(--gold2)">①</strong> Thu nhập thực tế giảm → mẫu số GDP thu nhỏ<br>
+      <strong style="color:var(--gold2)">②</strong> Lãi suất được tài trợ bằng nợ mới<br>
+      <strong style="color:var(--gold2)">③</strong> Giảm phát → nợ danh nghĩa lớn hơn tương đối<br>
+      <strong style="color:var(--gold2)">④</strong> Thâm hụt tài khóa chính phủ tăng (chi tiêu ứng phó)</p>
+    </div>
+    <div class="card">
+      <h3>Khi Nào Nợ/GDP Bắt Đầu Giảm?</h3>
+      <p>Chỉ giảm được khi đạt "Beautiful Deleveraging" — tức là khi:<br><br>
+      <strong style="color:var(--grn2)">①</strong> Tăng trưởng danh nghĩa > Lãi suất danh nghĩa<br>
+      <strong style="color:var(--grn2)">②</strong> In tiền bù đủ cho tín dụng co lại<br>
+      <strong style="color:var(--grn2)">③</strong> Cơ cấu lại nợ giảm nghĩa vụ<br>
+      <strong style="color:var(--grn2)">④</strong> Thu nhập thực tế bắt đầu phục hồi<br><br>
+      Thường mất 2-3 năm từ đỉnh để đạt được điểm này.</p>
+    </div>
+  </div>
+</section>
+
+<section id="p3-cases48">
+  <div class="sh"><h2>48 Trường Hợp Khủng Hoảng Nợ</h2><span class="tag">Toàn Bộ Danh Sách</span></div>
+  <div class="search-wrap">
+    <input type="text" id="srch" placeholder="Tìm kiếm quốc gia..." oninput="filterCases()">
+    <button class="filter-btn active" onclick="filterType('all',this)">Tất Cả (48)</button>
+    <button class="filter-btn" onclick="filterType('def',this)">Giảm Phát (21)</button>
+    <button class="filter-btn" onclick="filterType('inf',this)">Lạm Phát (27)</button>
+    <button class="filter-btn" onclick="filterType('war',this)">Chiến Tranh (3)</button>
+  </div>
+  <div id="cases-grid"></div>
+</section>
+
+<section id="p3-stats">
+  <div class="sh"><h2>So Sánh & Thống Kê Tổng Hợp</h2></div>
+
+  <div class="sh" style="margin-top:0"><h2 style="font-size:1.2rem">Nhóm Giảm Phát — Các Trường Hợp Nổi Bật</h2></div>
+  <div style="overflow-x:auto; margin-bottom:2rem">
+    <table class="stable">
+      <thead><tr>
+        <th>Quốc Gia / Giai Đoạn</th><th>Nợ/GDP Đỉnh</th><th>GDP Giảm</th><th>Cổ Phiếu ↓</th><th>Thất Nghiệp ↑</th><th>Thời Gian Phục Hồi</th><th>Đòn Bẩy Dùng</th><th>Đánh Giá</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>🇺🇸 Mỹ 1926–36</td><td class="tv-amb">125%</td><td class="tv-red">−26%</td><td class="tv-red">−84%</td><td class="tv-red">+23%</td><td>7 năm GDP, 25 năm CP</td><td>8/9</td><td class="tv-grn">Tốt (cuối)</td></tr>
+        <tr><td>🇬🇧 Anh 1927–36</td><td class="tv-amb">210%</td><td class="tv-red">−10%</td><td class="tv-red">−61%</td><td class="tv-red">+7%</td><td>5 năm GDP, 8 năm CP</td><td>1/9</td><td class="tv-amb">Trung bình</td></tr>
+        <tr><td>🇯🇵 Nhật 1925–36</td><td>65%</td><td class="tv-red">−4%</td><td class="tv-red">−47%</td><td>—</td><td>Nhanh</td><td>3/9</td><td class="tv-grn">Khá tốt</td></tr>
+        <tr><td>🇫🇷 Pháp 1926–38</td><td class="tv-amb">205%</td><td class="tv-red">−17%</td><td class="tv-red">−57%</td><td>—</td><td>21 năm GDP</td><td>3/9</td><td class="tv-red">Chậm</td></tr>
+        <tr><td>🇯🇵 Nhật 1987–2017</td><td class="tv-red">307%</td><td>—</td><td class="tv-red">−67%</td><td>+3%</td><td>20+ năm</td><td>7/9</td><td class="tv-red">Chậm nhất</td></tr>
+        <tr><td>🇸🇪 Thụy Điển 1987–2000</td><td class="tv-amb">239%</td><td class="tv-red">−6%</td><td class="tv-red">−34%</td><td>+9%</td><td>3 năm GDP, 4 năm CP</td><td>7/9</td><td class="tv-grn">Xuất sắc</td></tr>
+        <tr><td>🇫🇮 Phần Lan 1987–2001</td><td class="tv-amb">272%</td><td class="tv-red">−12%</td><td class="tv-red">−36%</td><td>+13%</td><td>7 năm GDP, 5 năm CP</td><td>7/9</td><td class="tv-grn">Tốt</td></tr>
+        <tr><td>🇺🇸 Mỹ 2004–14</td><td class="tv-red">349%</td><td class="tv-red">−4%</td><td class="tv-red">−50%</td><td>+5%</td><td>4 năm GDP, 5 năm CP</td><td>6/9</td><td class="tv-grn">Tốt</td></tr>
+        <tr><td>🇬🇷 Hy Lạp 2005–18</td><td class="tv-amb">206%</td><td class="tv-red">−27%</td><td class="tv-red">−91%</td><td>+15%</td><td>Chưa phục hồi</td><td>—</td><td class="tv-red">Rất tệ</td></tr>
+        <tr><td>🇮🇪 Ireland 2005–17</td><td class="tv-red">600%+</td><td class="tv-red">−10%</td><td class="tv-red">−75%</td><td>+9%</td><td>7 năm GDP</td><td>4/9</td><td class="tv-amb">Trung bình</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sh"><h2 style="font-size:1.2rem">Nhóm Lạm Phát — Các Trường Hợp Nổi Bật</h2></div>
+  <div style="overflow-x:auto; margin-bottom:2rem">
+    <table class="stable">
+      <thead><tr>
+        <th>Quốc Gia / Giai Đoạn</th><th>Nợ Ngoại Tệ</th><th>GDP Giảm</th><th>Tiền Mất Giá</th><th>Lạm Phát Đỉnh</th><th>Thời Gian Phục Hồi</th><th>Hỗ Trợ IMF</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>🇩🇪 Đức 1918–25</td><td class="tv-red">64% GDP</td><td class="tv-red">−5%</td><td class="tv-red">−99.99%</td><td class="tv-red">>10,000%</td><td>15 năm GDP</td><td>Không (Dawes)</td></tr>
+        <tr><td>🇹🇭 Thái Lan 1993–04</td><td class="tv-red">51% GDP</td><td class="tv-red">−14%</td><td class="tv-red">−19%</td><td>8%</td><td>5 năm GDP</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇮🇩 Indonesia 1994–12</td><td class="tv-red">51% GDP</td><td class="tv-red">−14%</td><td class="tv-red">−110%</td><td class="tv-red">59%</td><td>5 năm GDP</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇰🇷 Hàn Quốc 1994–01</td><td>Cao</td><td class="tv-red">−7%</td><td class="tv-amb">−30%+</td><td>~8%</td><td>3 năm GDP</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇲🇾 Malaysia 1994–01</td><td>Cao</td><td class="tv-red">−8%</td><td class="tv-amb">−30%</td><td>~6%</td><td>4 năm GDP</td><td class="tv-red">Không (KK)</td></tr>
+        <tr><td>🇦🇷 Argentina 1998–12</td><td class="tv-red">47% GDP</td><td class="tv-red">−15%</td><td class="tv-red">−77%</td><td class="tv-red">32%</td><td>5 năm GDP</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇷🇺 Nga 1996–06</td><td>Cao</td><td class="tv-red">−10%</td><td class="tv-red">Mất giá lớn</td><td class="tv-red">Cao</td><td>Phục hồi nhờ dầu</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇮🇸 Iceland 2005–16</td><td>Rất cao</td><td class="tv-red">−10%</td><td class="tv-red">Mất giá</td><td>~12%</td><td>5 năm GDP</td><td class="tv-grn">Có</td></tr>
+        <tr><td>🇹🇷 Thổ Nhĩ Kỳ 1997–03</td><td>Cao</td><td class="tv-red">−6%</td><td class="tv-red">−50%+</td><td class="tv-red">Rất cao</td><td>5 năm GDP</td><td class="tv-grn">Có</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bar chart: Recovery times -->
+  <div class="sh"><h2>Thời Gian Phục Hồi GDP Thực</h2><span class="tag">Các Trường Hợp Chọn Lọc</span></div>
+  <div class="card" style="margin-bottom:2rem">
+    <div class="chart-bar-wrap" id="recovery-chart"></div>
+  </div>
+
+  <div class="sh"><h2>Mức Độ Sử Dụng Đòn Bẩy Chính Sách</h2><span class="tag">Số Đòn Bẩy / 9 Đòn Bẩy Cổ Điển</span></div>
+  <div class="card" style="margin-bottom:2rem">
+    <div class="chart-bar-wrap" id="lever-chart"></div>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:.75rem">9 đòn bẩy bao gồm: thanh khoản khẩn cấp, bảo lãnh, tái cơ cấu, sáp nhập, tái cấp vốn, quốc hữu hóa, mua tài sản xấu, vỡ nợ chủ quyền, chương trình IMF</p>
+  </div>
+</section>
+
+<section id="p3-patterns">
+  <div class="sh"><h2>Mẫu Hình Chung Trong 48 Trường Hợp</h2></div>
+  <div class="infobox">
+    Dalio xây dựng mẫu từ việc quan sát sự <strong>tương đồng lặp lại</strong> trong tất cả 48 trường hợp. Mỗi trường hợp đều trải qua cùng một chuỗi sự kiện với cùng nguyên nhân nhân quả — dù bối cảnh và chi tiết khác nhau.
+  </div>
+
+  <!-- Timeline -->
+  <div class="sh" style="margin-top:.5rem"><h2>Chuỗi Giai Đoạn Điển Hình</h2></div>
+  <div class="timeline-row">
+    <div class="tl-item"><div class="tl-dot d1"></div><div class="tl-name d1">Khởi Đầu</div><div class="tl-desc">Nợ/Thu nhập ổn định. Bảng cân đối lành mạnh</div></div>
+    <div class="tl-item"><div class="tl-dot d2"></div><div class="tl-name d2">Bong Bóng</div><div class="tl-desc">Nợ tăng nhanh hơn thu nhập. Tự củng cố</div></div>
+    <div class="tl-item"><div class="tl-dot d3"></div><div class="tl-name d3">Đỉnh/Sụp Đổ</div><div class="tl-desc">Tín dụng siết. Tài sản sụp đổ. Vòng xoáy tử thần</div></div>
+    <div class="tl-item"><div class="tl-dot d3"></div><div class="tl-name d3">Suy Thoái</div><div class="tl-desc">GDP giảm. Vỡ nợ. Thất nghiệp tăng. Lãi suất ≈ 0%</div></div>
+    <div class="tl-item"><div class="tl-dot d4"></div><div class="tl-name d4">Giảm ĐB</div><div class="tl-desc">In tiền. 4 đòn bẩy cân bằng. Chuyển đổi</div></div>
+    <div class="tl-item"><div class="tl-dot d5"></div><div class="tl-name d5">Bình Thường</div><div class="tl-desc">Phục hồi. Nợ/GDP giảm. Mất 5-10 năm</div></div>
+  </div>
+
+  <div class="sh"><h2>Mẫu Hình Quan Sát Được</h2></div>
+  <div class="pattern-cards">
+    <div class="pcard" data-icon="📈">
+      <div class="pnum">01</div>
+      <div class="ptitle">Bong Bóng Luôn Bắt Đầu Từ Cơ Bản Tốt</div>
+      <p>Không có bong bóng nào bắt đầu từ hư không. Luôn có một đợt tăng giá có lý do chính đáng ban đầu — sau đó bị ngoại suy quá mức. Bong bóng là sự tự củng cố quá mức của điều kiện tốt thực sự.</p>
+    </div>
+    <div class="pcard" data-icon="🏦">
+      <div class="pnum">02</div>
+      <div class="ptitle">Ngân Hàng Trung Ương Luôn Phản Ứng Chậm</div>
+      <p>Trong hầu hết 48 trường hợp, ngân hàng trung ương tập trung vào lạm phát và tăng trưởng, bỏ qua bong bóng nợ. Khi vỡ bong bóng, họ cũng thường thắt chặt hoặc chậm nới lỏng. Đây là mẫu hình lặp lại nhất.</p>
+    </div>
+    <div class="pcard" data-icon="💸">
+      <div class="pnum">03</div>
+      <div class="ptitle">In Tiền Luôn Là Giải Pháp Cuối Cùng</div>
+      <p>100% trường hợp được quản lý thành công đều thông qua giai đoạn in tiền quy mô lớn. Không có trường hợp nào thoát ra chỉ bằng thắt lưng buộc bụng và vỡ nợ mà không cần in tiền hoặc phá giá tiền tệ.</p>
+    </div>
+    <div class="pcard" data-icon="🔄">
+      <div class="pnum">04</div>
+      <div class="ptitle">Hai Sóng In Tiền Kinh Điển</div>
+      <p>Gần như mọi trường hợp đều có hai sóng: (1) Cấp thanh khoản khẩn cấp cho tổ chức tài chính, (2) Mua tài sản quy mô lớn để kích thích nền kinh tế rộng hơn. Sóng thứ nhất ngăn sụp đổ; sóng thứ hai kích thích phục hồi.</p>
+    </div>
+    <div class="pcard" data-icon="⚖️">
+      <div class="pnum">05</div>
+      <div class="ptitle">Phá Neo Vàng / Tỷ Giá Cố Định = Bước Ngoặt</div>
+      <p>Trong 80%+ trường hợp giảm phát có neo tỷ giá, khoảnh khắc phá vỡ neo tỷ giá chính là đáy của chu kỳ và bắt đầu phục hồi. Mỹ 1933, Anh 1931, Nhật 1931 đều xác nhận mẫu này.</p>
+    </div>
+    <div class="pcard" data-icon="🗳️">
+      <div class="pnum">06</div>
+      <div class="ptitle">Khủng Hoảng → Dân Túy</div>
+      <p>Trong hầu hết trường hợp nghiêm trọng, khủng hoảng kinh tế tạo tiền đề cho nhà lãnh đạo dân túy lên nắm quyền: FDR (Mỹ), Tojo (Nhật), Blum (Pháp), Tsipras (Hy Lạp), Thaksin (Thái Lan), Duhalde (Argentina)...</p>
+    </div>
+    <div class="pcard" data-icon="⏱️">
+      <div class="pnum">07</div>
+      <div class="ptitle">Phản Ứng Nhanh = Ít Đau Hơn</div>
+      <p>Rõ ràng nhất qua so sánh: Mỹ 1930 (chậm, thắt chặt sai, thiệt hại 10 năm) vs Mỹ 2008 (nhanh, QE, phục hồi 4 năm). Thụy Điển 1991 và Phần Lan 1991 cũng phục hồi nhanh nhờ quyết đoán ngay từ đầu.</p>
+    </div>
+    <div class="pcard" data-icon="🌐">
+      <div class="pnum">08</div>
+      <div class="ptitle">Nợ Ngoại Tệ = Rủi Ro Nghiêm Trọng Nhất</div>
+      <p>Trong 27 trường hợp lạm phát, mẫu hình nhất quán: nợ ngoại tệ lớn → vốn chạy → tiền mất giá → lạm phát bùng → không thể in tiền để giải quyết → cần tái cơ cấu nợ ngoại tệ và hỗ trợ từ IMF/bên ngoài.</p>
+    </div>
+    <div class="pcard" data-icon="🏛️">
+      <div class="pnum">09</div>
+      <div class="ptitle">IMF: Người Cho Vay Cuối Cùng Quốc Tế</div>
+      <p>52% các trường hợp nghiêm trọng (đặc biệt lạm phát) cần hỗ trợ IMF. IMF đóng vai trò ngân hàng trung ương quốc tế — cung cấp ngoại tệ cứng trong khi các quốc gia mất khả năng tiếp cận thị trường vốn quốc tế.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sh"><h2>Khủng Hoảng Châu Á 1997-98</h2><span class="tag">Cụm Lạm Phát Điển Hình</span></div>
+  <div class="infobox">
+    <strong>Bài học từ Khủng Hoảng Châu Á:</strong> 6 quốc gia bị ảnh hưởng đồng thời (Thái Lan, Indonesia, Hàn Quốc, Malaysia, Philippines, Nga) — tất cả đều có cùng yếu tố rủi ro: nợ ngoại tệ lớn, neo tỷ giá, thâm hụt tài khoản vãng lai. Khi Thailand thả nổi Baht, hiệu ứng lây lan (contagion) kéo toàn khu vực. <strong>Malaysia là ngoại lệ duy nhất không dùng IMF</strong> — thay vào đó kiểm soát vốn (capital controls). Khác biệt chính: Hàn Quốc phục hồi nhanh nhất (3 năm) nhờ cải tổ cơ cấu quyết liệt.
+  </div>
+  <div class="g3">
+    <div class="card card-amb">
+      <h3>🇹🇭 Thái Lan</h3>
+      <p>Khởi phát: phá giá Baht tháng 7/1997. GDP giảm 14%. Cổ phiếu giảm 87%. Dự trữ kiệt sức bảo vệ tỷ giá. IMF + 8/9 đòn bẩy. Phục hồi 5 năm.</p>
+    </div>
+    <div class="card card-amb">
+      <h3>🇮🇩 Indonesia</h3>
+      <p>Nghiêm trọng nhất: tiền mất giá 110%, lạm phát 59%, GDP giảm 14%, cổ phiếu giảm 89%. Mất ổn định chính trị (Suharto từ chức). Phục hồi chậm nhất trong khu vực.</p>
+    </div>
+    <div class="card card-amb">
+      <h3>🇰🇷 Hàn Quốc</h3>
+      <p>Phục hồi nhanh nhất (3 năm): cải tổ chaebol mạnh mẽ, mở cửa FDI, cơ cấu lại nợ có hệ thống. IMF hỗ trợ $58B. Bài học: khủng hoảng như cơ hội cải tổ.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sh"><h2>Khủng Hoảng Eurozone 2008-18</h2><span class="tag">Trường Hợp Đặc Biệt: Mất Chủ Quyền Tiền Tệ</span></div>
+  <div class="infobox">
+    <strong>Đặc thù Eurozone:</strong> Các nước dùng Euro không có đồng nội tệ riêng để in. ECB kiểm soát chính sách tiền tệ chung. Điều này tạo ra bẫy: Hy Lạp có nợ bằng "ngoại tệ" (Euro) trong khi kỹ thuật là đồng nội tệ. Dalio xếp phần lớn nước Eurozone vào nhóm giảm phát vì nợ bằng Euro, nhưng ghi chú quan trọng: <strong>họ không kiểm soát đồng tiền của mình</strong>. Đây tạo ra các ràng buộc chính sách đặc biệt khó khăn — đặc biệt với Hy Lạp và Bồ Đào Nha.
+  </div>
+</section>
+
+<section id="p3-appendix">
+  <div class="sh"><h2>Phụ Lục: Chính Sách Thận Trọng Vĩ Mô</h2><span class="tag">Macroprudential Policy</span></div>
+  <div class="infobox">
+    Chính sách thận trọng vĩ mô là các công cụ chính sách cho phép <strong>nhắm mục tiêu vào các bộ phận cụ thể</strong> của nền kinh tế — thay vì dùng lãi suất áp dụng đồng loạt. Đặc biệt quan trọng khi muốn hạn chế tín dụng ở một khu vực đang bong bóng nhưng vẫn kích thích phần còn lại.
+  </div>
+
+  <div class="g2" style="margin-bottom:2rem">
+    <div class="card">
+      <h3>Trong Giai Đoạn Bong Bóng</h3>
+      <p>▸ Tăng tỷ lệ dự trữ bắt buộc cho vay vào khu vực bong bóng (bất động sản, cổ phiếu)<br>
+      ▸ Giảm tỷ lệ LTV (loan-to-value) cho vay mua nhà<br>
+      ▸ Yêu cầu vốn cao hơn cho loại cho vay rủi ro<br>
+      ▸ Hạn chế cho vay ngoại tệ<br>
+      ▸ Tăng biên độ ký quỹ giao dịch đòn bẩy</p>
+    </div>
+    <div class="card">
+      <h3>Trong Giai Đoạn Khủng Hoảng / Phục Hồi</h3>
+      <p>▸ Cung cấp thanh khoản có chọn lọc cho tổ chức quan trọng hệ thống<br>
+      ▸ Bảo lãnh có điều kiện cho khu vực mục tiêu<br>
+      ▸ Nới lỏng yêu cầu vốn tạm thời<br>
+      ▸ Chương trình mua tài sản tập trung vào khu vực cụ thể<br>
+      ▸ Định hướng tín dụng đến lĩnh vực tăng trưởng (cho vay ngân hàng phát triển)</p>
+    </div>
+  </div>
+
+  <div class="sh"><h2>Thuật Ngữ Kinh Tế Chính</h2></div>
+  <div class="term-grid">
+    <div class="term"><div class="tname">Tín dụng (Credit)</div><div class="tdef">Cung cấp sức mua đổi lấy lời hứa trả nợ trong tương lai. Khi tín dụng biến mất, chi tiêu giảm vì chi tiêu bằng tín dụng = chi tiêu bằng tiền mặt về tác động kinh tế.</div></div>
+    <div class="term"><div class="tname">Giảm Đòn Bẩy Đẹp (Beautiful Deleveraging)</div><div class="tdef">Quá trình giảm tỷ lệ Nợ/GDP kết hợp với tăng trưởng tích cực và lạm phát chấp nhận được. Đạt được khi Tăng trưởng Danh nghĩa > Lãi suất Danh nghĩa.</div></div>
+    <div class="term"><div class="tname">Suy Thoái Giảm Phát (Deflationary Depression)</div><div class="tdef">Suy thoái với giá cả giảm, xảy ra khi nợ chủ yếu bằng nội tệ. Lãi suất chạm 0%, vỡ nợ lan rộng nhưng đồng tiền không mất giá thảm.</div></div>
+    <div class="term"><div class="tname">Suy Thoái Lạm Phát (Inflationary Depression)</div><div class="tdef">Suy thoái với lạm phát cao, xảy ra khi nợ lớn bằng ngoại tệ và vốn rút khỏi đồng tiền. Khó quản lý hơn vì in tiền làm đồng tiền mất giá thêm.</div></div>
+    <div class="term"><div class="tname">Tiền Tệ Hóa Nợ (Debt Monetization)</div><div class="tdef">Ngân hàng trung ương in tiền mua nợ chính phủ hoặc tài sản tư nhân. Chuyển nghĩa vụ nợ thành tiền mới, làm giảm giá trị thực của nợ nếu lạm phát cho phép.</div></div>
+    <div class="term"><div class="tname">Đồng Tiền Dự Trữ (Reserve Currency)</div><div class="tdef">Đồng tiền mà các ngân hàng trung ương thế giới nắm giữ làm dự trữ. Ưu thế lớn vì tạo nhu cầu toàn cầu, giảm rủi ro suy thoái lạm phát. Ví dụ: USD.</div></div>
+    <div class="term"><div class="tname">Chênh Lệch Tín Dụng (Credit Spreads)</div><div class="tdef">Khoảng chênh giữa lãi suất cho người vay rủi ro cao và lãi suất phi rủi ro (trái phiếu chính phủ). Tăng cao trong khủng hoảng, phản ánh lo ngại vỡ nợ.</div></div>
+    <div class="term"><div class="tname">Hiệu Ứng Tài Sản (Wealth Effect)</div><div class="tdef">Khi giá tài sản tăng, người sở hữu cảm thấy giàu hơn và chi tiêu nhiều hơn. Ngược lại khi giá giảm. QE hoạt động một phần qua kênh này nhưng chủ yếu lợi người giàu.</div></div>
+    <div class="term"><div class="tname">Vòng Xoáy Tử Thần Nợ (Debt Death Spiral)</div><div class="tdef">Vòng xoáy tự củng cố: nợ lớn → thu nhập không đủ trả lãi → phải vay thêm → nợ lớn hơn → lãi suất tăng → vòng xoáy tồi hơn. Phá vỡ cần can thiệp ngoại sinh.</div></div>
+    <div class="term"><div class="tname">Tái Cơ Cấu Nợ (Debt Restructuring)</div><div class="tdef">Thỏa thuận giữa chủ nợ và con nợ về việc giảm số tiền nợ, kéo dài thời gian hoặc giảm lãi suất. Thường đi kèm với thiệt hại (haircut) cho chủ nợ.</div></div>
+    <div class="term"><div class="tname">Lây Lan (Contagion)</div><div class="tdef">Khi khủng hoảng ở một quốc gia/thị trường lan sang các quốc gia/thị trường khác — dù không có mối liên hệ trực tiếp. Khủng hoảng Châu Á 1997 là ví dụ điển hình.</div></div>
+    <div class="term"><div class="tname">Đường Cong Lợi Suất (Yield Curve)</div><div class="tdef">Biểu đồ lãi suất theo kỳ hạn. Đảo ngược (ngắn hạn > dài hạn) thường báo hiệu suy thoái. Phẳng là dấu hiệu đỉnh chu kỳ sắp đến.</div></div>
+    <div class="term"><div class="tname">Chính Sách Tiền Tệ 3 (MP3)</div><div class="tdef">Đưa tiền trực tiếp vào tay người chi tiêu qua các kênh tài khóa-tiền tệ phối hợp, "tiền trực thăng", hoặc kích thích có mục tiêu. Cần khi MP1 và MP2 đã cạn kiệt hiệu quả.</div></div>
+    <div class="term"><div class="tname">Vốn Kiểm Soát (Capital Controls)</div><div class="tdef">Hạn chế dòng tiền vào/ra khỏi đất nước. Malaysia 1998 là ví dụ nổi tiếng — áp dụng capital controls thay vì IMF để chặn dòng vốn rút khỏi Ringgit.</div></div>
+    <div class="term"><div class="tname">Cán Cân Thanh Toán (Balance of Payments)</div><div class="tdef">Tổng hợp tất cả giao dịch giữa một quốc gia và thế giới. Thặng dư = nhiều tiền vào hơn ra. Thâm hụt = cần vay hoặc dùng dự trữ. Quan trọng trong phân tích lạm phát.</div></div>
+    <div class="term"><div class="tname">Ngân Hàng Ngầm (Shadow Banking)</div><div class="tdef">Các tổ chức tài chính phi ngân hàng (quỹ tín thác, hedge fund, SPV...) hoạt động như ngân hàng nhưng không chịu quy định ngân hàng. Thường phình to trong bong bóng.</div></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sh"><h2>Tóm Tắt Toàn Bộ Nghiên Cứu</h2></div>
+  <div class="g2">
+    <div class="card card-gold">
+      <h3>Thông Điệp Cốt Lõi của Dalio</h3>
+      <p>Các cuộc khủng hoảng nợ lớn không phải ngẫu nhiên — chúng tuân theo <strong style="color:var(--gold2)">mẫu có thể dự đoán và học được</strong>. Bằng cách nghiên cứu 48 trường hợp lịch sử, chúng ta có thể:<br><br>
+      ① Nhận ra sớm bong bóng đang hình thành<br>
+      ② Chuẩn bị trước cho các giai đoạn khác nhau<br>
+      ③ Biết các nhà hoạch định chính sách cần làm gì<br>
+      ④ Đánh giá mức độ xử lý khủng hoảng tốt hay kém</p>
+    </div>
+    <div class="card card-gold">
+      <h3>Điều Làm Nên Sự Khác Biệt</h3>
+      <p>Giữa "Beautiful Deleveraging" và thảm kịch kéo dài:<br><br>
+      ✓ Phản ứng <strong style="color:var(--gold2)">nhanh và đủ mạnh</strong><br>
+      ✓ <strong style="color:var(--gold2)">Cân bằng đúng</strong> lực lạm phát và giảm phát<br>
+      ✓ <strong style="color:var(--gold2)">Bảo vệ</strong> tổ chức tài chính quan trọng hệ thống<br>
+      ✓ <strong style="color:var(--gold2)">Phá neo</strong> tỷ giá/vàng khi cần<br>
+      ✓ Không thắt chặt quá sớm trong giai đoạn phục hồi<br>
+      ✗ Không thể kiểm soát được khi nợ bằng ngoại tệ lớn</p>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-head">
+      <div class="mh-left">
+        <div class="mh-year" id="m-year"></div>
+        <h2 id="m-title"></h2>
+      </div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-stats" id="m-stats"></div>
+      <div class="modal-phases" id="m-phases"></div>
+      <div class="modal-lesson" id="m-lesson"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>RAY DALIO · PRINCIPLES FOR NAVIGATING BIG DEBT CRISES</div>
+  <div style="margin-top:.5rem; opacity:.5">Phần 1+2: Chu Kỳ Nợ Lớn Điển Hình &amp; Case Studies &nbsp;|&nbsp; Phần 3: 48 Trường Hợp Nghiên Cứu</div>
+</div>
+
+<script>
+
+  // Navigation
+  function showSection(id, tab) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+    window.scrollTo({ top: 56, behavior: 'smooth' });
+  }
+
+  // Phase selector for deflationary cycle
+  function showPhase(prefix, idx, el) {
+    const track = document.getElementById(prefix + '-phases');
+    track.querySelectorAll('.tl-phase').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+
+    document.querySelectorAll('[id^="' + prefix + '-p"]').forEach(d => {
+      d.classList.remove('active');
+    });
+    const target = document.getElementById(prefix + '-p' + idx);
+    if (target) target.classList.add('active');
+  }
+
+  // Case study toggle
+  function toggleCase(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+
+  // Intersection observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+
+  // ─── PART 3 FUNCTIONS ───
+
+// ──────────── DATA ────────────
+const cases = [
+  // DEFLATIONARY
+  { id:'us1929', name:'Hoa Kỳ', year:'1926–1936', type:'def', debtPeak:125, gdpDrop:-26, stockDrop:-84, unemployment:23, recoveryGDP:7, levers:8, trigger:'Sụp đổ chứng khoán 1929, tín dụng thắt chặt',
+    bubble:'Nợ/GDP đạt 125%. Cổ phiếu tăng 31%/năm trong bong bóng. Tín dụng nới lỏng rộng rãi. Thắt chặt vừa phải trước khi vỡ.',
+    dep:'GDP giảm 26%. Cổ phiếu giảm 84%. Thất nghiệp tăng 23%. 9000+ ngân hàng phá sản. Fed giữ neo vàng sai lầm — thắt chặt thay vì nới lỏng.',
+    rec:'Roosevelt 1933 phá neo vàng → bước ngoặt. New Deal kích thích lớn. M0 tăng 6% GDP. Nhưng 1937 thắt chặt sớm → suy thoái kép. Phục hồi: 7 năm GDP, 25 năm cổ phiếu.',
+    lesson:'Phản ứng chậm ban đầu kéo dài đau khổ 4 năm. Khi Roosevelt hành động quyết đoán (phá neo vàng, New Deal), phục hồi bắt đầu ngay. Đừng thắt chặt quá sớm.' },
+
+  { id:'uk1929', name:'Vương quốc Anh', year:'1927–1936', type:'def', debtPeak:210, gdpDrop:-10, stockDrop:-61, unemployment:7, recoveryGDP:5, levers:1,
+    trigger:'Sóng lan từ sụp đổ chứng khoán Mỹ, không có bong bóng nội địa lớn',
+    bubble:'Không có bong bóng rộng rãi nhưng nợ cao 210% GDP. Liên kết với các nền kinh tế đang bong bóng.',
+    dep:'GDP giảm 10%. Cổ phiếu giảm 61%. Thất nghiệp tăng 7%. Tương đối nhẹ hơn Mỹ.',
+    rec:'Phá neo vàng 1931, M0 tăng 2% GDP. Chỉ dùng 1/9 đòn bẩy — không tích cực. Phục hồi 5 năm GDP, 8 năm cổ phiếu.',
+    lesson:'Thoát khỏi neo vàng sớm giúp Anh nhẹ hơn Mỹ. Nhưng ít chủ động với tổ chức tài chính hơn.' },
+
+  { id:'jp1929', name:'Nhật Bản', year:'1925–1936', type:'def', debtPeak:65, gdpDrop:-4, stockDrop:-47, unemployment:null, recoveryGDP:4, levers:3,
+    trigger:'Sóng lan từ sụp đổ 1929. Nợ thấp nên tương đối nhẹ.',
+    bubble:'Không có bong bóng lớn. Nợ 65% GDP thấp. Gắn kết với kinh tế toàn cầu đang bong bóng.',
+    dep:'GDP giảm 4% tương đối nhẹ. Cổ phiếu giảm 47%.',
+    rec:'Phá neo vàng 1931 sớm. Tỷ giá thực giảm 26%. Tăng trưởng phục hồi nhanh. Nhưng chính trị dẫn đến Tojo và con đường chiến tranh.',
+    lesson:'Phản ứng tiền tệ nhanh và phá neo vàng sớm giúp phục hồi nhanh. Nhưng khủng hoảng kinh tế dẫn đến bất ổn chính trị nghiêm trọng.' },
+
+  { id:'fr1929', name:'Pháp', year:'1926–1938', type:'def', debtPeak:205, gdpDrop:-17, stockDrop:-57, unemployment:null, recoveryGDP:21, levers:3,
+    trigger:'Sóng lan Đại Suy Thoái. Pháp giữ neo vàng quá lâu.',
+    bubble:'Cổ phiếu tăng 45%/năm trong bong bóng. Nợ 205% GDP.',
+    dep:'GDP giảm 17%, cổ phiếu giảm 57%. Kéo dài 7 năm vì giữ neo vàng đến 1936.',
+    rec:'Phá neo vàng 1936 (muộn nhất trong các nước lớn). Lạm phát được phép tăng 10% → giảm nợ thực. Phục hồi 21 năm GDP — rất chậm. Leon Blum dân túy lên nắm quyền.',
+    lesson:'Giữ neo vàng quá lâu → Pháp chịu đau đớn dài nhất trong nhóm 1929. Phục hồi chậm nhất.' },
+
+  { id:'uk1943', name:'Anh (Thế Chiến II)', year:'1941–1967', type:'war', debtPeak:400, gdpDrop:-15, stockDrop:null, unemployment:null, recoveryGDP:10, levers:null,
+    trigger:'Chi phí Thế Chiến II, nợ tăng vọt do chi tiêu quân sự',
+    bubble:'Không phải bong bóng mà là chiến tranh. Nợ tăng do thâm hụt chiến tranh. Tăng trưởng 6% nhờ sản xuất quân sự.',
+    dep:'Suy thoái hậu chiến khi chuyển đổi kinh tế. GDP giảm 15%. Nợ tăng 102% GDP trong giai đoạn xấu.',
+    rec:'Phá giá so với vàng 30%. Lạm phát 4%/năm giảm gánh nợ dần. Tăng trưởng danh nghĩa 7%. Phục hồi 10 năm GDP.',
+    lesson:'Người thắng cuộc chiến phục hồi tốt hơn nhiều so với người thua. Lạm phát nhẹ kéo dài là cách giảm nợ chiến tranh hiệu quả.' },
+
+  { id:'us1943', name:'Hoa Kỳ (Thế Chiến II)', year:'1943–1951', type:'war', debtPeak:150, gdpDrop:-13, stockDrop:null, unemployment:5, recoveryGDP:6, levers:null,
+    trigger:'Chi phí Thế Chiến II. Suy thoái hậu chiến khi chuyển đổi.',
+    bubble:'Nợ tăng lên 150% GDP do chi tiêu chiến tranh. Tăng trưởng 13% nhờ sản xuất quân sự.',
+    dep:'Suy thoái hậu chiến ngắn. GDP giảm 13% khi chuyển đổi kinh tế. Thất nghiệp tăng 5%.',
+    rec:'Duy trì lãi suất thấp ngay cả khi kinh tế phục hồi mạnh. Tăng trưởng danh nghĩa 11%. Phục hồi 6 năm GDP.',
+    lesson:'Mỹ (người thắng) phục hồi nhanh. Bretton Woods thiết lập USD là đồng tiền dự trữ thế giới — lợi thế chiến lược dài hạn.' },
+
+  { id:'nor1990', name:'Na Uy', year:'1984–1996', type:'def', debtPeak:211, gdpDrop:-4, stockDrop:null, unemployment:null, recoveryGDP:5, levers:4,
+    trigger:'Giá hàng hóa giảm (dầu). Bong bóng bất động sản vỡ.',
+    bubble:'Giá nhà tăng 19%/năm. Nợ 211% GDP. Tín dụng nới lỏng mạnh sau tự do hóa tài chính 1984.',
+    dep:'GDP giảm 4%. Giá nhà giảm 38%. Ngân hàng gặp vấn đề thanh toán.',
+    rec:'Quốc hữu hóa ngân hàng nhanh chóng. Cải tổ thị trường lao động. Lãi suất từ từ giảm. Phục hồi 5 năm GDP.',
+    lesson:'Na Uy quốc hữu hóa ngân hàng quyết đoán → phục hồi tương đối nhanh. Mô hình Bắc Âu: can thiệp mạnh nhưng có cấu trúc.' },
+
+  { id:'fin1991', name:'Phần Lan', year:'1987–2001', type:'def', debtPeak:272, gdpDrop:-12, stockDrop:-36, unemployment:13, recoveryGDP:7, levers:7,
+    trigger:'Bong bóng bất động sản vỡ sau tự do hóa tài chính. Sụp đổ Liên Xô ảnh hưởng xuất khẩu.',
+    bubble:'Cổ phiếu tăng 18%/năm. Nợ 272% GDP. Tự do hóa tài chính đột ngột + tín dụng bùng nổ.',
+    dep:'GDP giảm 12%. Thất nghiệp tăng 13% — tỷ lệ cao nhất EU khi đó. Cổ phiếu giảm 36%, nhà giảm 32%.',
+    rec:'Quốc hữu hóa ngân hàng. Phá giá Mark Phần Lan. 7/9 đòn bẩy. Phục hồi 7 năm GDP — tốt so với độ sâu khủng hoảng.',
+    lesson:'Khủng hoảng sâu nhưng phục hồi tốt nhờ hành động quyết đoán. Phá giá tiền tệ giúp cạnh tranh xuất khẩu.' },
+
+  { id:'swe1991', name:'Thụy Điển', year:'1987–2000', type:'def', debtPeak:239, gdpDrop:-6, stockDrop:-34, unemployment:9, recoveryGDP:3, levers:7,
+    trigger:'Bong bóng bất động sản và cổ phiếu. Tự do hóa tài chính 1985.',
+    bubble:'Nợ tăng 15% GDP → 239% GDP. Nhà tăng, cổ phiếu tăng mạnh. Tín dụng bùng nổ sau tự do hóa.',
+    dep:'GDP giảm 6%. Cổ phiếu giảm 34%. Thất nghiệp tăng 9%. Ngân hàng mất khả năng thanh toán.',
+    rec:'Quốc hữu hóa ngân hàng. Phá giá Krona (rời ERM). 7/9 đòn bẩy. Phục hồi chỉ 3 năm GDP — nhanh nhất nhóm Bắc Âu.',
+    lesson:'Mô hình Thụy Điển được toàn thế giới học theo: quốc hữu hóa nhanh, tái cấp vốn, tách tài sản xấu vào AMC. Phục hồi xuất sắc.' },
+
+  { id:'jp1991', name:'Nhật Bản', year:'1987–2017', type:'def', debtPeak:307, gdpDrop:null, stockDrop:-67, unemployment:3, recoveryGDP:20, levers:7,
+    trigger:'Bong bóng bất động sản và chứng khoán vỡ sau khi BOJ thắt chặt mạnh 1989-90.',
+    bubble:'Nợ tăng 24% GDP → 307% GDP. Cổ phiếu tăng 28%/năm. BOJ tăng lãi suất 450 bp.',
+    dep:'Cổ phiếu giảm 67%. Nhà giảm 43%. BOJ phản ứng chậm — "Thập kỷ mất mát" kéo thành 2 thập kỷ. Zombie banks.',
+    rec:'M0 tăng 58% GDP (Abenomics). Lãi suất xuống 0% sau đó âm. 7/9 đòn bẩy nhưng kéo dài. Phục hồi sau 2013 — sau 20+ năm.',
+    lesson:'Ví dụ điển hình của "Đẩy dây" — QE kém hiệu quả khi phí rủi ro đã thấp. Phản ứng quá chậm, thiếu quyết đoán ban đầu = Thập kỷ mất mát nhân đôi.' },
+
+  { id:'us2008', name:'Hoa Kỳ 2008', year:'2004–2014', type:'def', debtPeak:349, gdpDrop:-4, stockDrop:-50, unemployment:5, recoveryGDP:4, levers:6,
+    trigger:'Bong bóng bất động sản subprime. Shadow banking. Chứng khoán hóa MBS/CDO.',
+    bubble:'Nợ tăng 38% GDP → 349% GDP. Subprime mortgage, CDO, CDS. Dòng vốn 8% GDP. Lãi suất tăng 400 bp.',
+    dep:'GDP giảm 4%. Cổ phiếu giảm 50%. Lehman Brothers phá sản. Hệ thống tài chính suýt sụp đổ hoàn toàn.',
+    rec:'Fed hạ lãi suất về 0% rất nhanh. QE1, QE2, QE3. TARP $700B. ARRA $787B. 6/9 đòn bẩy. Phục hồi 4 năm GDP.',
+    lesson:'Phản ứng nhanh và học từ 1930s. Kết quả tốt hơn nhiều Đại Suy Thoái. Nhưng QE làm bất bình đẳng tăng vì lợi người giàu hơn.' },
+
+  { id:'grc2008', name:'Hy Lạp', year:'2005–2018', type:'def', debtPeak:206, gdpDrop:-27, stockDrop:-91, unemployment:15, recoveryGDP:null, levers:null,
+    trigger:'Khủng hoảng Eurozone. Mất tiếp cận thị trường vốn. Không có chủ quyền tiền tệ.',
+    bubble:'Nợ tăng 40% GDP → 206% GDP. Dòng vốn 22% GDP. Thâm hụt tài khoản vãng lai 13% GDP.',
+    dep:'GDP giảm 27% — tệ nhất trong 48 trường hợp giảm phát. Cổ phiếu giảm 91%. Thất nghiệp tăng 15%. Không thể in Euro.',
+    rec:'Chưa phục hồi hoàn toàn. Chương trình troika (EU/ECB/IMF). Thắt lưng buộc bụng nghiêm khắc. Tsipras dân túy lên nắm quyền.',
+    lesson:'Bẫy Eurozone: nợ bằng Euro nhưng không kiểm soát được tiền tệ. Thắt lưng buộc bụng mà không có công cụ tiền tệ = thảm kịch kéo dài.' },
+
+  { id:'irl2008', name:'Ireland', year:'2005–2017', type:'def', debtPeak:600, gdpDrop:-10, stockDrop:-75, unemployment:9, recoveryGDP:7, levers:4,
+    trigger:'Bong bóng bất động sản nghiêm trọng. Ngân hàng vay nước ngoài quá mức.',
+    bubble:'Nợ >600% GDP — một trong cao nhất. Bất động sản bùng nổ dữ dội. Ngân hàng vay nước ngoài tài trợ cho vay.',
+    dep:'GDP giảm 10%. Cổ phiếu giảm 75%. Nhà giảm mạnh. Ngân hàng cần giải cứu khổng lồ.',
+    rec:'Bảo lãnh ngân hàng 2008. NAMA (AMC). Hỗ trợ EU/IMF. Phục hồi 7 năm nhờ cải cách cơ cấu linh hoạt hơn Hy Lạp.',
+    lesson:'Ireland chấp nhận thắt lưng buộc bụng nhưng duy trì thuế doanh nghiệp thấp và FDI — phục hồi tốt hơn nhiều so với Hy Lạp.' },
+
+  { id:'ita2008', name:'Ý', year:'2005–2017', type:'def', debtPeak:260, gdpDrop:-9, stockDrop:-70, unemployment:6, recoveryGDP:null, levers:null,
+    trigger:'Khủng hoảng Eurozone. Lãi suất sovereign spread tăng. Tăng trưởng thấp kinh niên.',
+    bubble:'Nợ 260% GDP. Liên quan gián tiếp khủng hoảng Eurozone.',
+    dep:'GDP giảm 9%. Cổ phiếu giảm 70%. "Zombie banks" phổ biến. Chưa phục hồi hết.',
+    rec:'ECB "Whatever it takes" (Draghi 2012) là bước ngoặt. QE ECB. Nhưng Ý không có cải tổ cơ cấu đủ.',
+    lesson:'ECB hành động trễ nhưng mạnh mẽ khi Draghi phát biểu 2012. Không có cải tổ cơ cấu đủ mạnh = phục hồi yếu.' },
+
+  { id:'esp2008', name:'Tây Ban Nha', year:'2005–2017', type:'def', debtPeak:300, gdpDrop:-9, stockDrop:-60, unemployment:16, recoveryGDP:8, levers:null,
+    trigger:'Bong bóng bất động sản nghiêm trọng. Ngân hàng tiết kiệm (Cajas) rủi ro cao.',
+    bubble:'Bất động sản bùng nổ. Nợ ~300% GDP. Thâm hụt tài khoản vãng lai lớn.',
+    dep:'GDP giảm 9%. Thất nghiệp tăng 16% — cao nhất EU. Cổ phiếu giảm 60%.',
+    rec:'Hỗ trợ ESM từ Eurozone. Cải tổ lao động. Dần phục hồi sau 8 năm nhờ ECB QE.',
+    lesson:'Cải tổ thị trường lao động quyết liệt + hỗ trợ ECB = phục hồi tốt hơn Hy Lạp dù khởi đầu tệ như nhau.' },
+
+  { id:'prt2008', name:'Bồ Đào Nha', year:'2007–2017', type:'def', debtPeak:300, gdpDrop:-7, stockDrop:-50, unemployment:8, recoveryGDP:7, levers:null,
+    trigger:'Khủng hoảng Eurozone. Mất tiếp cận thị trường vốn 2011.',
+    bubble:'Nợ ~300% GDP. Thâm hụt tài khoản vãng lai lớn.',
+    dep:'GDP giảm 7%. Thất nghiệp tăng 8%. Cần giải cứu EU/IMF 2011.',
+    rec:'Chương trình EU/IMF 2011. Thắt lưng buộc bụng + cải tổ. Phục hồi 7 năm.',
+    lesson:'Bồ Đào Nha thoát chương trình giải cứu 2014 — thành công hơn Hy Lạp nhờ thị trường lao động linh hoạt hơn.' },
+
+  { id:'hun2008', name:'Hungary', year:'2005–2017', type:'def', debtPeak:214, gdpDrop:-7, stockDrop:-60, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Khủng hoảng tài chính 2008 + nợ ngoại tệ lớn (CHF, EUR).',
+    bubble:'Nợ tăng 45% GDP → 214% GDP. Vay nặng bằng franc Thụy Sĩ.',
+    dep:'GDP giảm 7%. Cổ phiếu giảm 60%. Forint mất giá mạnh làm nợ CHF tăng vọt.',
+    rec:'IMF/EU hỗ trợ. Conversion khoản vay CHF về HUF. Phục hồi dần.',
+    lesson:'Nguy hiểm của vay ngoại tệ cho hộ gia đình: khi tiền tệ mất giá, gánh nặng nợ thực tế tăng vọt dù không vay thêm.' },
+
+  { id:'aut2008', name:'Áo', year:'2005–2017', type:'def', debtPeak:279, gdpDrop:-4, stockDrop:-66, unemployment:null, recoveryGDP:3, levers:5,
+    trigger:'Khủng hoảng tài chính 2008. Ngân hàng Áo có exposure lớn tại Đông Âu.',
+    bubble:'Nợ tăng 19% GDP → 279% GDP. Cổ phiếu tăng 20%/năm.',
+    dep:'GDP giảm 4%. Cổ phiếu giảm 66%. Ngân hàng Áo gặp khó khăn.',
+    rec:'ECB QE. Tái cấp vốn ngân hàng. 5/9 đòn bẩy. Phục hồi 3 năm GDP.',
+    lesson:'Áo hưởng lợi từ ECB nhưng cũng chịu rủi ro Đông Âu. Exposure ngân hàng khu vực là rủi ro ẩn trong bong bóng.' },
+
+  { id:'deu2008', name:'Đức', year:'2006–2017', type:'def', debtPeak:261, gdpDrop:-7, stockDrop:-53, unemployment:null, recoveryGDP:3, levers:6,
+    trigger:'Khủng hoảng tài chính toàn cầu 2008. Đức không có bong bóng nội địa.',
+    bubble:'Không có bong bóng rộng. Nợ 261% GDP. Gắn kết với kinh tế Mỹ và Eurozone.',
+    dep:'GDP giảm 7%. Cổ phiếu giảm 53%. Ngân hàng Đức có exposure lớn với MBS Mỹ.',
+    rec:'ECB QE. Gói kích thích tài khóa Đức. Quốc hữu hóa một số ngân hàng. 6/9 đòn bẩy. Phục hồi 3 năm.',
+    lesson:'Đức phục hồi nhanh nhờ nền tảng cơ cấu mạnh (xuất khẩu, Kurzarbeit). Nhưng đã hỗ trợ Eurozone qua ECB.' },
+
+  { id:'nld2008', name:'Hà Lan', year:'2006–2017', type:'def', debtPeak:300, gdpDrop:-5, stockDrop:-60, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Khủng hoảng tài chính 2008 + bong bóng nhà đất.',
+    bubble:'Nợ ~300% GDP. Bất động sản đắt đỏ.',
+    dep:'GDP giảm 5%. Cổ phiếu giảm 60%. Ngân hàng gặp vấn đề.',
+    rec:'ECB QE. Phục hồi dần 5 năm.',
+    lesson:'Hà Lan chịu tác động do hệ thống tài chính lớn so với GDP. ECB là công cụ cứu trợ chính.' },
+
+  { id:'uk2008', name:'Anh', year:'2005–2015', type:'def', debtPeak:450, gdpDrop:-6, stockDrop:-45, unemployment:3, recoveryGDP:5, levers:6,
+    trigger:'Bong bóng bất động sản và tài chính. Ngân hàng Northern Rock, RBS.',
+    bubble:'Nợ ~450% GDP. Trung tâm tài chính toàn cầu = exposure rủi ro cao.',
+    dep:'GDP giảm 6%. Cổ phiếu giảm 45%. Northern Rock "bank run" đầu tiên ở Anh từ 1866.',
+    rec:'BoE hạ lãi suất nhanh, QE lớn. Quốc hữu hóa RBS, Lloyds. 6/9 đòn bẩy. Phục hồi 5 năm.',
+    lesson:'Anh phản ứng quyết đoán, học từ lịch sử 1930s. Phục hồi tốt hơn nhiều so với Eurozone nhờ kiểm soát tiền tệ.' },
+
+  // INFLATIONARY
+  { id:'deu1918', name:'Đức (Siêu LF)', year:'1918–1925', type:'war', debtPeak:158, gdpDrop:-5, stockDrop:-97, unemployment:16, recoveryGDP:15, levers:5,
+    trigger:'Thất bại WWI. Nợ bồi thường 132 tỷ Mark vàng bằng ngoại tệ. In tiền tràn lan.',
+    bubble:'Nợ tăng lên 158% GDP trong chiến tranh. 64% GDP nợ ngoại tệ. Kinh tế chiến tranh → thống kê bình thường không áp dụng.',
+    dep:'GDP giảm 5%. Cổ phiếu giảm 97% tính bằng ngoại tệ thực. Thất nghiệp tăng 16%. Siêu lạm phát >10,000%. 1 USD = 4.2 nghìn tỷ Mark 1923.',
+    rec:'Rentenmark 11/1923. Kế hoạch Dawes 1924 — tái cơ cấu nợ, vay $200M từ Mỹ. Lạm phát dừng ngay. Phục hồi 15 năm GDP.',
+    lesson:'Khi nợ ngoại tệ quá lớn, in tiền nội tệ chỉ tạo siêu lạm phát không giải quyết nợ. Cần tái cơ cấu nợ và hỗ trợ bên ngoài (Dawes). Lòng tin tiền tệ được khôi phục rất nhanh khi cải cách đúng.' },
+
+  { id:'arg1980', name:'Argentina (1980s)', year:'1977–1988', type:'inf', debtPeak:null, gdpDrop:-12, stockDrop:null, unemployment:null, recoveryGDP:10, levers:null,
+    trigger:'Nợ ngoại tệ lớn + lãi suất Mỹ tăng mạnh (Volcker shock). Tháo chạy vốn.',
+    bubble:'Tự do hóa tài chính. Vay ngoại tệ rẻ. Tiêu dùng bùng nổ.',
+    dep:'GDP giảm 12%. Lạm phát cao. Vốn tháo chạy. Mất tiếp cận thị trường vốn quốc tế.',
+    rec:'Tái cơ cấu nợ với IMF. Kéo dài nhiều năm. Lạm phát dai dẳng.',
+    lesson:'Volcker shock 1979-82 (lãi suất USD tăng vọt) đẩy nhiều nước vay USD vào khủng hoảng. Mối nguy của vay ngoại tệ ngắn hạn.' },
+
+  { id:'bra1980', name:'Brazil (1980s)', year:'1977–1987', type:'inf', debtPeak:null, gdpDrop:-10, stockDrop:null, unemployment:null, recoveryGDP:8, levers:null,
+    trigger:'Nợ ngoại tệ + Volcker shock. "Thập kỷ mất mát" Mỹ Latin.',
+    bubble:'Bùng nổ kinh tế nhờ vay nước ngoài. Phụ thuộc vào dòng vốn.',
+    dep:'GDP giảm 10%. Siêu lạm phát kéo dài. Mất tiếp cận thị trường.',
+    rec:'Nhiều kế hoạch ổn định kinh tế thất bại. Plano Real (1994) mới thành công cuối cùng.',
+    lesson:'Brazil cần nhiều lần thử mới thoát siêu lạm phát — cho thấy tầm quan trọng của lòng tin và cơ chế thể chế.' },
+
+  { id:'chl1981', name:'Chile', year:'1978–1995', type:'inf', debtPeak:null, gdpDrop:-14, stockDrop:null, unemployment:null, recoveryGDP:6, levers:null,
+    trigger:'Tự do hóa tài chính đột ngột + Volcker shock + giá đồng giảm.',
+    bubble:'Tự do hóa tài chính 1975-1982. Bong bóng tín dụng ngắn hạn.',
+    dep:'GDP giảm 14%. Ngân hàng sụp đổ. Tiền mất giá.',
+    rec:'Quốc hữu hóa ngân hàng. Cải tổ cơ cấu theo Washington Consensus. Phục hồi mạnh sau 1985.',
+    lesson:'Chile phục hồi nhờ cải tổ cơ cấu triệt để — trở thành mô hình cho cải cách kinh tế Mỹ Latin.' },
+
+  { id:'mex1981', name:'Mexico', year:'1979–1991', type:'inf', debtPeak:null, gdpDrop:-8, stockDrop:null, unemployment:null, recoveryGDP:6, levers:null,
+    trigger:'Nợ ngoại tệ + giá dầu giảm + Volcker shock. Vỡ nợ 1982.',
+    bubble:'Bùng nổ nhờ dầu cao. Vay ngoại tệ ồ ạt.',
+    dep:'Vỡ nợ 8/1982 — khởi đầu "Khủng hoảng nợ Mỹ Latin". GDP giảm 8%. Lạm phát cao.',
+    rec:'Kế hoạch Brady (1989) — tái cơ cấu nợ có hệ thống. IMF. Phục hồi dần.',
+    lesson:'Mexico 1982 là sự kiện mở đầu khủng hoảng nợ Mỹ Latin. Kế hoạch Brady (1989) là mô hình tái cơ cấu nợ ngoại tệ.' },
+
+  { id:'tha1996', name:'Thái Lan', year:'1993–2004', type:'inf', debtPeak:183, gdpDrop:-14, stockDrop:-87, unemployment:null, recoveryGDP:5, levers:8,
+    trigger:'Bong bóng vốn nước ngoài. Nợ ngoại tệ 51% GDP. Dự trữ kiệt bảo vệ Baht.',
+    bubble:'Nợ tăng 44% GDP → 183% GDP. Dòng vốn 15% GDP. Tỷ giá hối đoái thực định giá cao 15%+.',
+    dep:'GDP giảm 14%. Cổ phiếu giảm 87%. Tiền mất giá 19%. Lạm phát 8%. Dự trữ kiệt sức bảo vệ tỷ giá.',
+    rec:'Thả nổi Baht 7/1997. IMF $17.2B. 8/9 đòn bẩy. Cán cân vãng lai cải thiện 21% GDP. Phục hồi 5 năm.',
+    lesson:'Khởi phát khủng hoảng Châu Á 1997. Học từ Thái Lan: dự trữ ngoại hối không đủ để bảo vệ tỷ giá lâu dài khi cơ bản yếu.' },
+
+  { id:'idn1997', name:'Indonesia', year:'1994–2012', type:'inf', debtPeak:104, gdpDrop:-14, stockDrop:-89, unemployment:null, recoveryGDP:5, levers:7,
+    trigger:'Khủng hoảng Châu Á 1997. Nợ ngoại tệ 51% GDP. Đồng Rupiah sụp đổ.',
+    bubble:'Tăng trưởng 7%. Dòng vốn 5% GDP. Nợ 104% GDP. Đồng tiền định giá cao 19%.',
+    dep:'GDP giảm 14%. Cổ phiếu giảm 89%. Tiền mất giá 110%. Lạm phát 59%. Bạo loạn. Suharto từ chức.',
+    rec:'Thả nổi Rupiah. IMF $43B. Quốc hữu hóa ngân hàng. 7/9 đòn bẩy. Phục hồi 5 năm.',
+    lesson:'Indonesia thiệt hại nặng nhất khủng hoảng Châu Á vì nhiều yếu tố rủi ro nhất. Bất ổn chính trị kéo dài khủng hoảng.' },
+
+  { id:'kor1997', name:'Hàn Quốc', year:'1994–2001', type:'inf', debtPeak:null, gdpDrop:-7, stockDrop:-65, unemployment:null, recoveryGDP:3, levers:7,
+    trigger:'Khủng hoảng Châu Á 1997. Chaebol over-leveraged. Nợ ngắn hạn ngoại tệ lớn.',
+    bubble:'Tăng trưởng mạnh. Chaebol vay ngoại tệ ngắn hạn tài trợ đầu tư dài hạn.',
+    dep:'GDP giảm 7%. Cổ phiếu giảm 65%. Won mất giá mạnh.',
+    rec:'IMF $58B. Cải tổ chaebol quyết liệt (Big Deal). 7/9 đòn bẩy. Phục hồi 3 năm — nhanh nhất nhóm Châu Á.',
+    lesson:'Hàn Quốc phục hồi nhanh nhất nhờ cải tổ cơ cấu triệt để (Big Deal giải thể chaebol yếu). Khủng hoảng như cơ hội cải tổ.' },
+
+  { id:'mys1997', name:'Malaysia', year:'1994–2001', type:'inf', debtPeak:null, gdpDrop:-8, stockDrop:-80, unemployment:null, recoveryGDP:4, levers:5,
+    trigger:'Khủng hoảng Châu Á 1997. Ringgit mất giá. Capital flight.',
+    bubble:'Tăng trưởng mạnh. Bong bóng bất động sản và chứng khoán.',
+    dep:'GDP giảm 8%. Cổ phiếu giảm 80%. Ringgit mất giá.',
+    rec:'KHÔNG dùng IMF — kiểm soát vốn (capital controls) thay thế. Ringit cố định về USD. Phục hồi 4 năm.',
+    lesson:'Malaysia là trường hợp ngoại lệ: kiểm soát vốn thay IMF. Mahathir từ chối IMF, cố định Ringgit. Kết quả tương đương các nước dùng IMF.' },
+
+  { id:'phl1997', name:'Philippines', year:'1994–2008', type:'inf', debtPeak:null, gdpDrop:-5, stockDrop:-70, unemployment:null, recoveryGDP:5, levers:7,
+    trigger:'Khủng hoảng Châu Á 1997. Peso mất giá.',
+    bubble:'Tăng trưởng nhờ vốn nước ngoài. Bong bóng tài sản.',
+    dep:'GDP giảm 5% — ít nhất trong nhóm Châu Á. Cổ phiếu giảm 70%.',
+    rec:'IMF. 7/9 đòn bẩy. Phục hồi 5 năm.',
+    lesson:'Philippines ít thiệt hại nhất vì nợ ngoại tệ ít nhất và hệ thống ngân hàng bảo thủ hơn.' },
+
+  { id:'rus1997', name:'Nga', year:'1996–2006', type:'inf', debtPeak:null, gdpDrop:-10, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Vỡ nợ GKO tháng 8/1998. Ruble mất giá. Hiệu ứng lan từ khủng hoảng Châu Á.',
+    bubble:'Lãi suất GKO cực cao thu hút vốn nước ngoài vào trái phiếu ngắn hạn.',
+    dep:'Vỡ nợ GKO. Ruble mất giá mạnh. GDP giảm 10%. Lạm phát cao.',
+    rec:'Ruble yếu hơn → xuất khẩu cạnh tranh hơn. Giá dầu phục hồi → phục hồi mạnh từ 2000.',
+    lesson:'Nga phục hồi nhờ phá giá và giá dầu tăng — không nhờ chính sách tài khóa hay tiền tệ thông thường. Phụ thuộc hàng hóa là con dao hai lưỡi.' },
+
+  { id:'col1998', name:'Colombia', year:'1995–2008', type:'inf', debtPeak:null, gdpDrop:-5, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Tín dụng bùng nổ + sụp đổ bất động sản + hiệu ứng lây từ Brasil.',
+    bubble:'Tín dụng tư nhân tăng vọt. Bất động sản bong bóng.',
+    dep:'GDP giảm 5%. Bất động sản giảm mạnh.',
+    rec:'IMF. Cải tổ ngân hàng. Phục hồi 5 năm.',
+    lesson:'Colombia có cải tổ tương đối tốt, phục hồi ổn định.' },
+
+  { id:'ecu1998', name:'Ecuador', year:'1995–2009', type:'inf', debtPeak:null, gdpDrop:-9, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Ngân hàng khủng hoảng. Vỡ nợ chủ quyền 1999. Đô la hóa 2000.',
+    bubble:'Tự do hóa tài chính + bong bóng tín dụng.',
+    dep:'GDP giảm 9%. Hầu hết ngân hàng vỡ. Vỡ nợ sovereign.',
+    rec:'Đô la hóa 2000 — từ bỏ đồng sucre để lấy lại lòng tin. IMF. Phục hồi nhờ dầu.',
+    lesson:'Đô la hóa là biện pháp cực đoan khi mất hoàn toàn lòng tin vào đồng tiền. Từ bỏ chủ quyền tiền tệ để ổn định.' },
+
+  { id:'tur1993', name:'Thổ Nhĩ Kỳ (1993)', year:'1990–1995', type:'inf', debtPeak:null, gdpDrop:-8, stockDrop:null, unemployment:null, recoveryGDP:4, levers:null,
+    trigger:'Thâm hụt tài khoản vãng lai + lạm phát cao kinh niên + đầu cơ tiền tệ.',
+    bubble:'Tín dụng tăng mạnh. Nhập khẩu bùng nổ.',
+    dep:'GDP giảm 8%. Tiền mất giá lớn. Lạm phát cao.',
+    rec:'IMF. Cải tổ ngân hàng. Phục hồi 4 năm.',
+    lesson:'Thổ Nhĩ Kỳ tái phạm lỗi tương tự nhiều lần — cơ cấu thể chế yếu = dễ tái phát.' },
+
+  { id:'mex1994', name:'Mexico', year:'1991–2005', type:'inf', debtPeak:null, gdpDrop:-10, stockDrop:-50, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'"Khủng hoảng Tequila" 12/1994. Phá giá Peso đột ngột. Hiệu ứng lây toàn cầu.',
+    bubble:'Neo Peso vào USD. Thâm hụt tài khoản vãng lai lớn. Nợ ngắn hạn ngoại tệ (Tesobonos).',
+    dep:'Phá giá Peso 12/1994. GDP giảm 10%. Cổ phiếu giảm 50%. Lạm phát tăng.',
+    rec:'Gói cứu trợ Mỹ $50B (Clinton). IMF. Phục hồi 5 năm nhờ NAFTA và xuất khẩu.',
+    lesson:'"Tequila Effect" lan sang Mỹ Latin. Gói cứu trợ lớn từ Mỹ quyết định tốc độ phục hồi. NAFTA là neo tự do thương mại quan trọng.' },
+
+  { id:'bgr1995', name:'Bulgaria', year:'1995–2003', type:'inf', debtPeak:null, gdpDrop:-10, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Khủng hoảng ngân hàng. Siêu lạm phát 1997. Mất lòng tin hoàn toàn.',
+    bubble:'Tăng trưởng yếu nhưng tích lũy nợ. Ngân hàng quản lý kém.',
+    dep:'GDP giảm 10%. Siêu lạm phát 1997 (>1000%/năm). Kinh tế sụp đổ.',
+    rec:'Currency Board 1997 (peg BGN vào DEM/EUR). IMF. Ổn định ngay. Phục hồi nhanh.',
+    lesson:'Currency Board (như đô la hóa) dừng siêu lạm phát Bulgaria ngay lập tức. Cơ chế cam kết cứng là cần thiết khi mất lòng tin hoàn toàn.' },
+
+  { id:'arg2001', name:'Argentina 2001', year:'1998–2012', type:'inf', debtPeak:78, gdpDrop:-15, stockDrop:-82, unemployment:3, recoveryGDP:5, levers:6,
+    trigger:'Convertibility system sụp đổ. Vỡ nợ $100B — lớn nhất lịch sử khi đó. Nợ 47% GDP bằng USD.',
+    bubble:'Dòng vốn 11% GDP. Nợ tăng → 78% GDP. Tỷ giá hối đoái thực định giá cao 39%.',
+    dep:'GDP giảm 15%. Cổ phiếu giảm 82%. Peso mất giá 77%. Lạm phát 32%. Thất nghiệp tăng 3%. Bất ổn chính trị — 5 tổng thống trong 2 tuần.',
+    rec:'Bỏ convertibility. Vỡ nợ $100B. Phá giá Peso. IMF. Cán cân vãng lai cải thiện 7% GDP. Phục hồi 5 năm.',
+    lesson:'Argentina 2001 là ví dụ điển hình: neo tỷ giá cứng nhắc trong thời gian dài tạo tích lũy mất cân bằng khổng lồ. Vỡ nợ + phá giá + cải tổ → phục hồi.' },
+
+  { id:'isl2008', name:'Iceland', year:'2005–2016', type:'inf', debtPeak:null, gdpDrop:-10, stockDrop:null, unemployment:null, recoveryGDP:5, levers:6,
+    trigger:'Hệ thống ngân hàng quy mô 10x GDP sụp đổ. Dòng vốn rút đột ngột.',
+    bubble:'Ba ngân hàng lớn mở rộng quốc tế điên rồ. Tổng tài sản ngân hàng = 10x GDP.',
+    dep:'Ba ngân hàng quốc hữu hóa 2008. GDP giảm 10%. Krona mất giá.',
+    rec:'Khác biệt: để ngân hàng thất bại, bảo vệ người gửi tiền nội địa, KHÔNG bảo lãnh cho nhà đầu tư nước ngoài. IMF. Phục hồi 5 năm.',
+    lesson:'Iceland chứng minh: để ngân hàng bốc cháy (không cứu hết) cộng với phá giá tiền tệ = phục hồi tốt. Không cứu nhà đầu tư nước ngoài là quyết định đúng.' },
+
+  { id:'rus2008', name:'Nga (2008)', year:'2005–2011', type:'inf', debtPeak:null, gdpDrop:-8, stockDrop:-70, unemployment:null, recoveryGDP:3, levers:null,
+    trigger:'Khủng hoảng tài chính toàn cầu + giá dầu giảm mạnh cuối 2008.',
+    bubble:'Giá dầu cao → bùng nổ kinh tế. Dòng vốn nước ngoài mạnh.',
+    dep:'GDP giảm 8%. Cổ phiếu giảm 70%. Ruble mất giá.',
+    rec:'Dự trữ ngoại hối lớn giúp quản lý tỷ giá. Giá dầu phục hồi 2009 → kinh tế phục hồi 3 năm.',
+    lesson:'Dự trữ ngoại hối lớn là "vùng đệm" quan trọng. Nga dùng dự trữ quản lý phá giá có trật tự thay vì thả nổi đột ngột.' },
+
+  { id:'rus2014', name:'Nga (2014)', year:'2012–2016', type:'inf', debtPeak:null, gdpDrop:-4, stockDrop:-50, unemployment:null, recoveryGDP:3, levers:null,
+    trigger:'Giá dầu giảm 50% + lệnh trừng phạt sau Ukraine. Ruble sụp đổ.',
+    bubble:'Kinh tế phụ thuộc dầu. Dòng vốn nước ngoài.',
+    dep:'GDP giảm 4%. Ruble mất giá 50%. Lạm phát tăng.',
+    rec:'CBR tăng lãi suất mạnh để chặn Ruble. Giá dầu phục hồi một phần. Phục hồi 3 năm.',
+    lesson:'Lệnh trừng phạt = dạng khủng hoảng mới. CBR quyết đoán tăng lãi suất mạnh (17%) ngăn panic đổi Ruble được.' },
+
+  { id:'tur2000', name:'Thổ Nhĩ Kỳ (2000)', year:'1997–2003', type:'inf', debtPeak:null, gdpDrop:-6, stockDrop:-70, unemployment:null, recoveryGDP:4, levers:null,
+    trigger:'Khủng hoảng ngân hàng và cán cân thanh toán. IMF neo tỷ giá thất bại.',
+    bubble:'Chương trình neo tỷ giá IMF 1999-2001 tạo bong bóng tín dụng.',
+    dep:'Khủng hoảng tháng 2/2001. GDP giảm 6%. Cổ phiếu giảm 70%. Lira mất giá 50%.',
+    rec:'Thả nổi Lira. IMF. Erdogan/AKP lên nắm quyền 2002. Ổn định và tăng trưởng mạnh 2002-2007.',
+    lesson:'Neo tỷ giá với IMF bảo trợ thất bại khi cơ bản không đủ mạnh. Nhưng phục hồi rất nhanh sau phá giá.' },
+
+  { id:'per1980', name:'Peru (1982)', year:'1980–1986', type:'inf', debtPeak:null, gdpDrop:-13, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Nợ ngoại tệ + Volcker shock + giá hàng hóa giảm.',
+    bubble:'Vay ngoại tệ ồ ạt. Phụ thuộc xuất khẩu hàng hóa.',
+    dep:'GDP giảm 13%. Lạm phát cao. Cuộc khủng hoảng nợ Mỹ Latin.',
+    rec:'IMF. Tái cơ cấu nợ. Kéo dài nhiều năm.',
+    lesson:'Peru phải qua nhiều giai đoạn khủng hoảng liên tiếp trước khi ổn định trong thập niên 1990.' },
+
+  { id:'per1987', name:'Peru (Hyperinflation)', year:'1986–1995', type:'inf', debtPeak:null, gdpDrop:-25, stockDrop:null, unemployment:null, recoveryGDP:7, levers:null,
+    trigger:'Chính sách García (1985-90) in tiền, từ chối trả nợ IMF → siêu lạm phát.',
+    bubble:'García cắt thanh toán nợ IMF, tăng chi tiêu → bùng nổ ngắn hạn.',
+    dep:'GDP giảm 25%. Siêu lạm phát (>7500% năm 1990). Kinh tế sụp đổ hoàn toàn.',
+    rec:'Fujishock 1990. Fujimori áp dụng thắt lưng buộc bụng cực đoan. IMF. Phục hồi 7 năm.',
+    lesson:'Từ chối trả nợ IMF + in tiền tràn lan = thảm kịch. Siêu lạm phát Peru chứng minh hậu quả của chính sách dân túy tài chính.' },
+
+  { id:'arg1989', name:'Argentina (Hyperinflation)', year:'1987–1993', type:'inf', debtPeak:null, gdpDrop:-8, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Siêu lạm phát đỉnh điểm. Austral Plan thất bại. Khủng hoảng chính trị.',
+    bubble:'Nhiều lần thử ổn định thất bại. In tiền bù thâm hụt.',
+    dep:'GDP giảm 8%. Siêu lạm phát (>3000% năm 1989). Cướp bóc.',
+    rec:'Kế hoạch Convertibility 1991 (Cavallo) — neo Peso vào USD 1:1. Lạm phát dừng ngay. Phục hồi mạnh 1991-94.',
+    lesson:'Argentina cần neo tỷ giá cứng để dừng siêu lạm phát. Convertibility hoạt động tốt ngắn hạn nhưng tạo ra vấn đề dài hạn dẫn đến 2001.' },
+
+  { id:'bra1990', name:'Brazil (Hyperinflation)', year:'1987–1995', type:'inf', debtPeak:null, gdpDrop:-5, stockDrop:null, unemployment:null, recoveryGDP:5, levers:null,
+    trigger:'Siêu lạm phát kinh niên. Nhiều kế hoạch ổn định thất bại.',
+    bubble:'In tiền bù thâm hụt. Lạm phát trở thành cơ chế phân phối.',
+    dep:'GDP giảm 5%. Lạm phát lên tới 2000%+ năm 1994.',
+    rec:'Plano Real 1994 (Cardoso/Franco): đồng Real mới, thắt chặt tiền tệ. Lạm phát dừng. Phục hồi 5 năm.',
+    lesson:'Plano Real thành công nhờ cách tiếp cận sáng tạo: URV (đơn vị tham chiếu thực) làm bàn đạp chuyển sang đồng tiền mới. Không cần neo cứng 1:1 như Argentina.' }
+];
+
+// ──────────── RENDER CASES ────────────
+let currentFilter = 'all';
+
+function renderCases() {
+  const grid = document.getElementById('cases-grid');
+  grid.innerHTML = '';
+  const q = document.getElementById('srch').value.toLowerCase();
+  cases.forEach(c => {
+    const show = (currentFilter === 'all' || c.type === currentFilter) && 
+                 (c.name.toLowerCase().includes(q) || c.year.includes(q));
+    const el = document.createElement('div');
+    el.className = `case-card ${c.type}${!show ? ' hide' : ''}`;
+    el.onclick = () => openModal(c.id);
+
+    const typeName = { def: 'Giảm phát', inf: 'Lạm phát', war: 'Chiến tranh' }[c.type];
+    const gdp = c.gdpDrop ? `<div class="cc-stat"><div class="v red">${c.gdpDrop}%</div><div class="l">GDP Giảm</div></div>` : '<div class="cc-stat"><div class="v gld">—</div><div class="l">GDP Giảm</div></div>';
+    const stock = c.stockDrop ? `<div class="cc-stat"><div class="v red">${c.stockDrop}%</div><div class="l">CP Giảm</div></div>` : '<div class="cc-stat"><div class="v gld">—</div><div class="l">CP Giảm</div></div>';
+    const rec = c.recoveryGDP ? `<div class="cc-stat"><div class="v grn">${c.recoveryGDP}n</div><div class="l">Phục Hồi GDP</div></div>` : '<div class="cc-stat"><div class="v amb">Chưa</div><div class="l">Phục Hồi</div></div>';
+
+    el.innerHTML = `
+      <div class="cc-head">
+        <div style="display:flex;align-items:center;gap:.4rem;flex:1;min-width:0;flex-wrap:wrap">
+          <span class="cc-year">${c.year}</span>
+          <span class="cc-name">${c.name}</span>
+        </div>
+        <span class="cc-type ${c.type}">${typeName}</span>
+      </div>
+      <div class="cc-stats">${gdp}${stock}${rec}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+function filterCases() { renderCases(); }
+function filterType(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCases();
+}
+
+// ──────────── MODAL ────────────
+function openModal(id) {
+  const c = cases.find(x => x.id === id);
+  if (!c) return;
+  const typeName = { def: 'Giảm Phát', inf: 'Lạm Phát', war: 'Chiến Tranh / Siêu LF' }[c.type];
+
+  document.getElementById('m-year').textContent = `${c.year}  ·  ${typeName}`;
+  document.getElementById('m-title').textContent = c.name;
+
+  const stats = [
+    { v: c.debtPeak ? c.debtPeak + '%' : '—', l: 'Nợ/GDP Đỉnh', cls: 'mv amb' },
+    { v: c.gdpDrop ? c.gdpDrop + '%' : '—', l: 'GDP Giảm', cls: 'mv red' },
+    { v: c.stockDrop ? c.stockDrop + '%' : '—', l: 'Cổ Phiếu ↓', cls: 'mv red' },
+    { v: c.recoveryGDP ? c.recoveryGDP + ' năm' : 'Chưa', l: 'Phục Hồi GDP', cls: c.recoveryGDP ? 'mv grn' : 'mv' }
+  ];
+  document.getElementById('m-stats').innerHTML = stats.map(s => `<div class="ms"><div class="${s.cls}">${s.v}</div><div class="ml">${s.l}</div></div>`).join('');
+
+  const phases = [
+    { label: 'Giai Đoạn Bong Bóng / Chiến Tranh', cls: 'bubble', text: c.bubble },
+    { label: 'Giai Đoạn Suy Thoái / Khủng Hoảng', cls: 'dep', text: c.dep },
+    { label: 'Giai Đoạn Tái Lạm Phát / Phục Hồi', cls: 'rec', text: c.rec }
+  ];
+  document.getElementById('m-phases').innerHTML = phases.map(p => `<div class="mphase ${p.cls}"><div class="mp-label">${p.label}</div><p>${p.text}</p></div>`).join('');
+  document.getElementById('m-lesson').innerHTML = `<strong>Bài Học:</strong> ${c.lesson}`;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalBtn(); }
+function closeModalBtn() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ──────────── CHARTS ────────────
+function renderCharts() {
+  const recData = [
+    { label: 'Nhật Bản 1987', val: 20, color: '#e05252' },
+    { label: 'Pháp 1926', val: 21, color: '#e05252' },
+    { label: 'Mỹ 1926', val: 7, color: '#f0a830' },
+    { label: 'Phần Lan 1987', val: 7, color: '#f0a830' },
+    { label: 'Ireland 2005', val: 7, color: '#f0a830' },
+    { label: 'Anh 1927', val: 5, color: '#c9a84c' },
+    { label: 'Mỹ 2004', val: 4, color: '#4caf7d' },
+    { label: 'Thái Lan 1993', val: 5, color: '#4caf7d' },
+    { label: 'Thụy Điển 1987', val: 3, color: '#4caf7d' },
+    { label: 'Hàn Quốc 1994', val: 3, color: '#4caf7d' },
+  ];
+  const rc = document.getElementById('recovery-chart');
+  rc.innerHTML = recData.map(d => `
+    <div class="chart-bar-item">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill" style="width:${(d.val/22)*100}%;background:${d.color}">
+          <span class="chart-bar-val">${d.val} năm</span>
+        </div>
+      </div>
+    </div>`).join('');
+
+  const leverData = [
+    { label: 'Phần Lan 1987', val: 7, color: '#4caf7d' },
+    { label: 'Thụy Điển 1987', val: 7, color: '#4caf7d' },
+    { label: 'Nhật Bản 1987', val: 7, color: '#4caf7d' },
+    { label: 'Mỹ 1926', val: 8, color: '#5b8dee' },
+    { label: 'Thái Lan 1993', val: 8, color: '#5b8dee' },
+    { label: 'Mỹ 2004', val: 6, color: '#c9a84c' },
+    { label: 'Đức 2006', val: 6, color: '#c9a84c' },
+    { label: 'Iceland 2005', val: 6, color: '#c9a84c' },
+    { label: 'Anh 1927', val: 1, color: '#e05252' },
+    { label: 'Hy Lạp 2005', val: null, color: '#aaa9a0' },
+  ];
+  const lc = document.getElementById('lever-chart');
+  lc.innerHTML = leverData.map(d => `
+    <div class="chart-bar-item">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill" style="width:${d.val ? (d.val/9)*100 : 5}%;background:${d.color}">
+          <span class="chart-bar-val">${d.val ? d.val+'/9' : 'N/A'}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ──────────── NAV ────────────
+function show(id, tab) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  tab.classList.add('active');
+  window.scrollTo({ top: 60, behavior: 'smooth' });
+  if (id === 'p3-stats') renderCharts();
+}
+
+// Init
+renderCases();
+
+</script>
+</body>
+</html>

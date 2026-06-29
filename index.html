@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ray Dalio · Thư Viện Phân Tích Nợ Lớn</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg:     #0b0f15;
+  --bg2:    #111720;
+  --bg3:    #18202c;
+  --sur:    #1c2535;
+  --bdr:    rgba(196,148,40,.18);
+  --bdr2:   rgba(196,148,40,.35);
+  --gold:   #c49428;
+  --gold2:  #e8b840;
+  --gold-l: rgba(196,148,40,.10);
+  --gold-m: rgba(196,148,40,.22);
+  --red:    #c03232;
+  --green:  #2a9460;
+  --blue:   #3478c0;
+  --tx:     #ddd6c8;
+  --txd:    #7a7060;
+  --txb:    #f0e8d8;
+  --hairline: rgba(196,148,40,.14);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--tx);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 80px 24px 60px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hairline);
+  text-align: center;
+}
+
+/* Ambient glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(196,148,40,.09) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 40% at 20% 100%, rgba(48,90,160,.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Cycle curve background SVG */
+.hero-curve {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.14;
+}
+
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 5vw, 52px);
+  font-weight: 700;
+  color: var(--txb);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold2);
+}
+
+.hero-sub {
+  font-size: 14px;
+  color: var(--txd);
+  margin-top: 14px;
+  position: relative;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.hero-rule {
+  width: 52px;
+  height: 1px;
+  background: var(--gold);
+  margin: 20px auto 0;
+  opacity: .55;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+  position: relative;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat .n {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold2);
+  line-height: 1;
+}
+
+.hero-stat .l {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .1em;
+  color: var(--txd);
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+.hero-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--hairline);
+  align-self: center;
+}
+
+/* ── MAIN ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 52px 24px 80px;
+}
+
+/* ── CATEGORY ── */
+.category {
+  margin-bottom: 52px;
+}
+
+.cat-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.cat-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: var(--gold);
+  padding: 4px 10px;
+  border: 1px solid var(--bdr);
+  border-radius: 3px;
+  background: var(--gold-l);
+}
+
+.cat-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--txb);
+  letter-spacing: -.01em;
+}
+
+.cat-line {
+  flex: 1;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.cat-desc {
+  font-size: 13px;
+  color: var(--txd);
+  margin-bottom: 18px;
+  margin-top: -10px;
+  font-style: italic;
+}
+
+/* ── CARD GRID ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.card-grid.single {
+  grid-template-columns: 1fr;
+  max-width: 560px;
+}
+
+/* ── CARD ── */
+.card {
+  display: block;
+  text-decoration: none;
+  background: var(--bg2);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 22px 24px 20px;
+  transition: all .22s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--card-accent, var(--gold)) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity .22s;
+}
+
+.card:hover {
+  border-color: var(--bdr2);
+  background: var(--bg3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,.35), 0 0 0 1px var(--bdr);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--card-accent, var(--gold));
+  margin-bottom: 10px;
+  opacity: .8;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--txb);
+  line-height: 1.3;
+  margin-bottom: 10px;
+  letter-spacing: -.01em;
+}
+
+.card-desc {
+  font-size: 12.5px;
+  color: var(--txd);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .1em;
+  color: var(--txd);
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+
+.card-arrow {
+  margin-left: auto;
+  color: var(--card-accent, var(--gold));
+  font-size: 16px;
+  opacity: .5;
+  transition: opacity .2s, transform .2s;
+}
+
+.card:hover .card-arrow {
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+/* Version badge */
+.card-badge {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  color: var(--card-accent, var(--gold));
+  background: var(--gold-l);
+  border: 1px solid var(--bdr);
+  border-radius: 3px;
+  padding: 2px 7px;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--hairline);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--txd);
+  font-size: 11.5px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .05em;
+  background: var(--bg2);
+}
+
+footer span {
+  color: var(--gold);
+}
+
+/* ── BREADCRUMB NAV ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(11,15,21,.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--hairline);
+  padding: 0 24px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--txb);
+}
+
+.topbar-sep {
+  color: var(--txd);
+  font-size: 12px;
+}
+
+.topbar-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.topbar-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  margin-left: auto;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: .4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+  .hero-stats { gap: 16px; }
+  .hero-divider { display: none; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div class="topbar-logo">Ray Dalio</div>
+  <div class="topbar-sep">/</div>
+  <div class="topbar-sub">Big Debt Crises</div>
+  <div class="topbar-dot"></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Background cycle curve SVG -->
+  <svg class="hero-curve" viewBox="0 0 1200 340" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Long debt cycle -->
+    <path d="M -50,200 C 80,200 120,140 200,100 C 280,60 340,50 420,80 C 500,110 540,160 580,200 C 620,240 650,260 700,240 C 750,220 780,180 850,150 C 920,120 960,110 1020,130 C 1080,150 1120,180 1200,170 L 1250,170"
+          fill="none" stroke="#c49428" stroke-width="1.5" stroke-dasharray="6,5"/>
+    <!-- Short debt cycle -->
+    <path d="M -50,210 C 60,205 100,190 160,170 C 220,150 260,140 320,155 C 380,170 400,195 440,205 C 480,215 510,210 560,190 C 610,170 640,155 700,160 C 760,165 790,180 840,190 C 890,200 930,195 980,178 C 1030,161 1070,148 1120,155 L 1250,158"
+          fill="none" stroke="#3478c0" stroke-width="1" stroke-dasharray="3,6" opacity=".6"/>
+    <!-- Zero line -->
+    <line x1="0" y1="195" x2="1200" y2="195" stroke="#c49428" stroke-width=".5" opacity=".3"/>
+    <!-- Phase markers -->
+    <circle cx="200" cy="100" r="4" fill="none" stroke="#c49428" stroke-width="1.2" opacity=".7"/>
+    <circle cx="420" cy="80" r="4" fill="none" stroke="#c49428" stroke-width="1.2" opacity=".7"/>
+    <circle cx="580" cy="200" r="4" fill="none" stroke="#c49428" stroke-width="1.2" opacity=".7"/>
+    <circle cx="700" cy="240" r="4" fill="none" stroke="#c49428" stroke-width="1.2" opacity=".7"/>
+    <circle cx="850" cy="150" r="4" fill="none" stroke="#c49428" stroke-width="1.2" opacity=".7"/>
+  </svg>
+
+  <div class="hero-eyebrow">Thư Viện Tài Liệu · Phân Tích Kinh Tế Vĩ Mô</div>
+  <h1 class="hero-title">Điều Hướng <em>Khủng Hoảng Nợ</em> Lớn</h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">Tổng hợp nghiên cứu dựa trên khuôn khổ phân tích của Ray Dalio — Bridgewater Associates — về cấu trúc, giai đoạn và bài học từ các cuộc khủng hoảng nợ lịch sử.</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="n">6</div>
+      <span class="l">Tài Liệu</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="n">48+</div>
+      <span class="l">Trường Hợp</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="n">100yr</div>
+      <span class="l">Dữ Liệu Lịch Sử</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="n">4</div>
+      <span class="l">Chủ Đề Chính</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- CATEGORY 1: TỔNG QUAN -->
+  <section class="category">
+    <div class="cat-header">
+      <div class="cat-num">01</div>
+      <div class="cat-title">Tổng Quan</div>
+      <div class="cat-line"></div>
+    </div>
+    <p class="cat-desc">Cái nhìn toàn cảnh về khuôn khổ phân tích khủng hoảng nợ của Ray Dalio — hai phiên bản thiết kế.</p>
+    <div class="card-grid">
+
+      <a class="card" href="overiew-ver1.html" target="_blank" style="--card-accent: #c49428;">
+        <div class="card-badge">V1</div>
+        <div class="card-kicker">Tổng Quan · Phiên Bản 1</div>
+        <div class="card-title">Điều Hướng Các Cuộc Khủng Hoảng Nợ Lớn</div>
+        <p class="card-desc">Toàn cảnh hệ thống: bản đồ chu kỳ nợ dài hạn, các nguyên tắc cốt lõi và ba đòn bẩy chính sách mà ngân hàng trung ương sử dụng để xử lý khủng hoảng.</p>
+        <div class="card-meta">
+          <span class="card-tag">Tổng quan</span>
+          <span class="card-tag">Ray Dalio</span>
+          <span class="card-tag">Nguyên tắc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" href="overview-ver2.html" target="_blank" style="--card-accent: #e8b840;">
+        <div class="card-badge">V2</div>
+        <div class="card-kicker">Tổng Quan · Phiên Bản 2</div>
+        <div class="card-title">Nguyên Tắc Điều Hướng Khủng Hoảng Nợ Lớn</div>
+        <p class="card-desc">Phiên bản thiết kế nâng cao: trực quan hóa tương tác về chu kỳ nợ, bong bóng tài sản và bốn đòn bẩy giảm nợ — với bố cục tối giản, thanh lịch hơn.</p>
+        <div class="card-meta">
+          <span class="card-tag">Tổng quan</span>
+          <span class="card-tag">Interactive</span>
+          <span class="card-tag">Nguyên tắc</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY 2: CHU KỲ NỢ -->
+  <section class="category">
+    <div class="cat-header">
+      <div class="cat-num">02</div>
+      <div class="cat-title">Chu Kỳ Nợ</div>
+      <div class="cat-line"></div>
+    </div>
+    <p class="cat-desc">Phân tích chi tiết hai dạng chu kỳ nợ cổ điển — lạm phát và giảm phát — qua từng giai đoạn hình thành, đỉnh điểm và tháo gỡ.</p>
+    <div class="card-grid">
+
+      <a class="card" href="chu-ky-no-lam-phat-co-dien.html" target="_blank" style="--card-accent: #d46030;">
+        <div class="card-kicker">Chu Kỳ Nợ · Lạm Phát</div>
+        <div class="card-title">Chu Kỳ Nợ Lạm Phát Cổ Điển</div>
+        <p class="card-desc">Phân tích 27 trường hợp lịch sử: nợ ngoại tệ là yếu tố trung tâm, tiền tệ mất giá trung bình −60%, năm giai đoạn chu kỳ và bản đồ vĩ mô tương tác.</p>
+        <div class="card-meta">
+          <span class="card-tag">27 trường hợp</span>
+          <span class="card-tag">Nợ ngoại tệ</span>
+          <span class="card-tag">5 giai đoạn</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" href="chu-ky-no-giam-phat-co-dien.html" target="_blank" style="--card-accent: #3478c0;">
+        <div class="card-kicker">Chu Kỳ Nợ · Giảm Phát</div>
+        <div class="card-title">Chu Kỳ Nợ Giảm Phát Cổ Điển</div>
+        <p class="card-desc">Biến thể giảm phát của chu kỳ nợ: nợ trong nước là chủ yếu, ngân hàng trung ương có thể tiền tệ hóa nợ, áp lực giảm giá kéo dài và vòng xoáy suy thoái tài sản.</p>
+        <div class="card-meta">
+          <span class="card-tag">Nợ nội địa</span>
+          <span class="card-tag">Giảm phát</span>
+          <span class="card-tag">5 giai đoạn</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY 3: NGHIÊN CỨU TRƯỜNG HỢP -->
+  <section class="category">
+    <div class="cat-header">
+      <div class="cat-num">03</div>
+      <div class="cat-title">Nghiên Cứu Trường Hợp Lịch Sử</div>
+      <div class="cat-line"></div>
+    </div>
+    <p class="cat-desc">Phân tích sâu từng cuộc khủng hoảng nợ lịch sử — số liệu, diễn biến chính sách và bài học rút ra.</p>
+    <div class="card-grid single">
+
+      <a class="card" href="khung-hoang-no-hoa-ky.html" target="_blank" style="--card-accent: #c03232;">
+        <div class="card-kicker">Case Study · Hoa Kỳ</div>
+        <div class="card-title">Khủng Hoảng Nợ Hoa Kỳ 1928–1937</div>
+        <p class="card-desc">Đại Suy Thoái — trường hợp kinh điển nhất trong lịch sử hiện đại: bong bóng cổ phiếu 1928, sụp đổ 1929–1932, chính sách New Deal và phục hồi 1933–1937. Dữ liệu theo tháng qua timeline tương tác.</p>
+        <div class="card-meta">
+          <span class="card-tag">1928–1937</span>
+          <span class="card-tag">Đại Suy Thoái</span>
+          <span class="card-tag">New Deal</span>
+          <span class="card-tag">Timeline</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY 4: PHÂN TÍCH CHỈ SỐ -->
+  <section class="category">
+    <div class="cat-header">
+      <div class="cat-num">04</div>
+      <div class="cat-title">Phân Tích Chỉ Số Kinh Tế</div>
+      <div class="cat-line"></div>
+    </div>
+    <p class="cat-desc">Tương quan giữa các chỉ số vĩ mô — GDP, lạm phát, thất nghiệp, tỷ giá — qua các chu kỳ khủng hoảng và suy thoái lịch sử.</p>
+    <div class="card-grid single">
+
+      <a class="card" href="tuong-quan-chi-so-kinh-te.html" target="_blank" style="--card-accent: #2a9460;">
+        <div class="card-kicker">Phân Tích Chỉ Số · Big Debt Crises</div>
+        <div class="card-title">Tương Quan Các Chỉ Số Kinh Tế Qua Chu Kỳ Khủng Hoảng</div>
+        <p class="card-desc">Dashboard tổng hợp: biểu đồ tương quan đa chiều giữa GDP, lãi suất Fed, tỷ lệ thất nghiệp, tỷ giá, PMI và doanh số bán lẻ qua các giai đoạn khủng hoảng và suy thoái lớn trong lịch sử.</p>
+        <div class="card-meta">
+          <span class="card-tag">GDP</span>
+          <span class="card-tag">Lãi suất Fed</span>
+          <span class="card-tag">Thất nghiệp</span>
+          <span class="card-tag">Tỷ giá</span>
+          <span class="card-tag">PMI</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>Ray Dalio · Bridgewater Associates</span> &nbsp;·&nbsp; Big Debt Crises &nbsp;·&nbsp; Phân Tích Lịch Sử &nbsp;·&nbsp; Phiên bản tài liệu nội bộ
+</footer>
+
+</body>
+</html>

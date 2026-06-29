@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khủng hoảng Nợ Hoa Kỳ 1928–1937 — Ray Dalio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Spline+Sans+Mono:wght@300;400;500&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+:root {
+  --paper: #f5f0e6;
+  --paper2: #ede7d8;
+  --paper3: #e5deca;
+  --white: #fdfaf3;
+  --ink: #1a1510;
+  --ink2: #2e2818;
+  --muted: #7a7060;
+  --faint: #b5a888;
+  --bdr: #d4c9b0;
+  --bdr2: #c0b298;
+
+  --gold: #8a6010;
+  --gold2: #b88020;
+  --gold-l: rgba(138,96,16,.1);
+  --gold-m: rgba(138,96,16,.2);
+
+  --bull: #2a6040;   /* green - growth */
+  --bear: #8a2020;   /* red - crisis */
+  --pol: #1a3a7a;    /* blue - policy */
+  --war: #6a2060;    /* purple - FDR */
+
+  --bull-l: rgba(42,96,64,.1);
+  --bear-l: rgba(138,32,32,.1);
+  --pol-l: rgba(26,58,122,.1);
+  --war-l: rgba(106,32,96,.1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: 'Source Sans 3', sans-serif; font-weight: 300; line-height: 1.7; }
+
+/* ── HEADER ── */
+.masthead {
+  background: var(--ink);
+  padding: 0;
+  border-bottom: 3px solid var(--gold2);
+}
+.masthead-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 36px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.masthead-kicker {
+  font-family: 'Spline Sans Mono', monospace;
+  font-size: 10px; color: var(--gold2); letter-spacing: .2em; text-transform: uppercase;
+}
+.masthead-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-weight: 900; color: #f2e8d0; line-height: 1.1; text-align: center;
+}
+.masthead-title em { font-style: italic; color: var(--gold2); }
+.masthead-sub { font-family: 'Spline Sans Mono', monospace; font-size: 10px; color: rgba(242,232,208,.45); text-align: right; line-height: 1.5; }
+.masthead-bottom {
+  display: flex; justify-content: center; gap: 0;
+  background: var(--gold2);
+}
+.period-tab {
+  padding: 8px 20px; cursor: pointer; font-family: 'Spline Sans Mono', monospace;
+  font-size: 11px; letter-spacing: .08em; color: rgba(26,21,16,.7); border-right: 1px solid rgba(26,21,16,.15);
+  transition: all .2s; text-transform: uppercase;
+}
+.period-tab:last-child { border-right: none; }
+.period-tab:hover { background: rgba(26,21,16,.1); color: var(--ink); }
+.period-tab.active { background: var(--ink); color: var(--gold2); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--ink2); padding: 10px 36px;
+  display: flex; gap: 0; overflow-x: auto;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.stat-box { flex-shrink: 0; padding: 6px 24px; border-right: 1px solid rgba(255,255,255,.08); text-align: center; }
+.stat-box:last-child { border-right: none; }
+.sb-val { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; line-height: 1; }
+.sb-val.red { color: #e06050; } .sb-val.grn { color: #60b080; } .sb-val.gld { color: var(--gold2); }
+.sb-lbl { font-family: 'Spline Sans Mono', monospace; font-size: 8.5px; color: rgba(255,255,255,.35); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
+
+/* ── MAIN ── */
+.main-wrap { max-width: 1200px; margin: 0 auto; padding: 0; }
+
+/* ── PERIOD SECTIONS ── */
+.period { display: none; }
+.period.active { display: block; }
+
+/* ── 2-COL LAYOUT ── */
+.cols { display: grid; grid-template-columns: 1fr 360px; gap: 0; border-top: 1px solid var(--bdr); }
+.col-main { padding: 28px 32px; border-right: 1px solid var(--bdr); }
+.col-side { padding: 24px 22px; background: var(--white); }
+
+/* ── SECTION HEADING ── */
+.period-header { margin-bottom: 24px; padding-bottom: 18px; border-bottom: 2px solid var(--bdr); }
+.period-date { font-family: 'Spline Sans Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.period-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 6px; }
+.period-deck { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 600px; }
+
+/* ── TIMELINE (horizontal scroll) ── */
+.timeline-scroll { overflow-x: auto; margin-bottom: 24px; }
+.timeline-scroll::-webkit-scrollbar { height: 4px; }
+.timeline-scroll::-webkit-scrollbar-thumb { background: var(--bdr2); border-radius: 2px; }
+.timeline { display: flex; gap: 0; min-width: max-content; }
+.tl-event {
+  width: 160px; flex-shrink: 0; padding: 14px 12px;
+  border-right: 1px solid var(--bdr);
+  cursor: pointer; transition: background .15s;
+  position: relative;
+}
+.tl-event:last-child { border-right: none; }
+.tl-event:hover { background: var(--paper2); }
+.tl-event.active { background: var(--paper3); }
+.tl-event::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; }
+.tl-event.bull::before { background: var(--bull); }
+.tl-event.bear::before { background: var(--bear); }
+.tl-event.pol::before { background: var(--pol); }
+.tl-event.fdr::before { background: var(--war); }
+.tl-date { font-family: 'Spline Sans Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .06em; margin-bottom: 4px; }
+.tl-title { font-size: 11.5px; font-weight: 600; color: var(--ink); line-height: 1.3; }
+.tl-val { font-family: 'Spline Sans Mono', monospace; font-size: 11px; margin-top: 5px; }
+
+/* ── EVENT DETAIL ── */
+.event-detail {
+  background: var(--white); border: 1px solid var(--bdr); border-radius: 4px;
+  padding: 18px 20px; margin-bottom: 22px;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.ed-date { font-family: 'Spline Sans Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: .12em; margin-bottom: 3px; }
+.ed-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.ed-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* ── NEWSPAPER CLIPS ── */
+.newspaper { margin-bottom: 16px; }
+.np-clip {
+  background: var(--white); border: 1px solid var(--bdr);
+  border-top: 3px solid; padding: 12px 14px; margin-bottom: 10px;
+  position: relative;
+}
+.np-clip.bear { border-top-color: var(--bear); }
+.np-clip.bull { border-top-color: var(--bull); }
+.np-clip.pol { border-top-color: var(--pol); }
+.np-clip.fdr { border-top-color: var(--war); }
+.np-source { font-family: 'Spline Sans Mono', monospace; font-size: 8.5px; color: var(--muted); margin-bottom: 4px; letter-spacing: .06em; }
+.np-headline { font-family: 'Playfair Display', serif; font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.35; margin-bottom: 5px; }
+.np-text { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+
+/* ── ANALYSIS CARDS ── */
+.analysis { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.ac {
+  background: var(--white); border: 1px solid var(--bdr); border-radius: 4px;
+  padding: 14px;
+}
+.ac-label { font-family: 'Spline Sans Mono', monospace; font-size: 8.5px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 5px; }
+.ac-title { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.ac-body { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.ac-body strong { color: var(--ink2); }
+
+/* ── DATA CHARTS ── */
+.data-chart { margin-bottom: 20px; }
+.dc-title { font-family: 'Spline Sans Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 12px; }
+.bar-list { display: flex; flex-direction: column; gap: 7px; }
+.bar-item { display: flex; align-items: center; gap: 8px; }
+.bar-name { font-size: 11px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+.bar-track { flex: 1; background: var(--paper2); border-radius: 2px; height: 18px; overflow: hidden; position: relative; }
+.bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; transition: width .8s ease; }
+.bar-label { font-family: 'Spline Sans Mono', monospace; font-size: 9.5px; padding: 0 8px; white-space: nowrap; }
+.bar-fill.bear { background: var(--bear); color: white; }
+.bar-fill.bull { background: var(--bull); color: white; }
+.bar-fill.pol { background: var(--pol); color: white; }
+.bar-fill.gold { background: var(--gold); color: white; }
+
+/* ── QUOTE ── */
+.pullquote {
+  border-left: 3px solid var(--gold2); padding: 12px 16px; margin: 16px 0;
+  background: var(--gold-l); font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 13.5px; color: var(--ink2); line-height: 1.65;
+}
+.pullquote cite { display: block; font-style: normal; font-size: 10px; font-family: 'Spline Sans Mono', monospace; color: var(--muted); margin-top: 6px; }
+
+/* ── POLICY TIMELINE (vertical) ── */
+.policy-tl { margin-bottom: 16px; }
+.ptl-item { display: flex; gap: 12px; margin-bottom: 14px; align-items: flex-start; }
+.ptl-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; font-family: 'Spline Sans Mono', monospace; }
+.ptl-dot.bull { color: var(--bull); border-color: var(--bull); background: var(--bull-l); }
+.ptl-dot.bear { color: var(--bear); border-color: var(--bear); background: var(--bear-l); }
+.ptl-dot.pol { color: var(--pol); border-color: var(--pol); background: var(--pol-l); }
+.ptl-dot.fdr { color: var(--war); border-color: var(--war); background: var(--war-l); }
+.ptl-body { flex: 1; }
+.ptl-date { font-family: 'Spline Sans Mono', monospace; font-size: 9px; color: var(--muted); margin-bottom: 2px; }
+.ptl-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.ptl-text { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+
+/* ── LESSON BOX ── */
+.lesson {
+  background: var(--gold-l); border: 1px solid var(--gold-m);
+  border-radius: 4px; padding: 14px 16px; margin-bottom: 14px;
+}
+.lesson-head { font-family: 'Spline Sans Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 6px; }
+.lesson p { font-size: 12.5px; color: var(--ink2); line-height: 1.65; }
+
+/* ── SIDE COLUMN ── */
+.side-section { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--bdr); }
+.side-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.side-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 12px; border-bottom: 2px solid var(--bdr2); padding-bottom: 8px; }
+
+/* ── GAUGE GRID ── */
+.gauges { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.gauge { background: var(--paper); border: 1px solid var(--bdr); border-radius: 3px; padding: 9px; text-align: center; }
+.gv { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+.gv.red { color: var(--bear); } .gv.grn { color: var(--bull); } .gv.gld { color: var(--gold); } .gv.blu { color: var(--pol); }
+.gl { font-size: 9px; color: var(--muted); font-family: 'Spline Sans Mono', monospace; letter-spacing: .04em; line-height: 1.3; }
+
+/* ── TAG ── */
+.tag { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 9.5px; font-family: 'Spline Sans Mono', monospace; margin: 2px; }
+.tag.bear { background: var(--bear-l); color: var(--bear); border: 1px solid rgba(138,32,32,.25); }
+.tag.bull { background: var(--bull-l); color: var(--bull); border: 1px solid rgba(42,96,64,.25); }
+.tag.pol { background: var(--pol-l); color: var(--pol); border: 1px solid rgba(26,58,122,.25); }
+.tag.fdr { background: var(--war-l); color: var(--war); border: 1px solid rgba(106,32,96,.25); }
+.tag.gld { background: var(--gold-l); color: var(--gold); border: 1px solid var(--gold-m); }
+
+/* ── LIST ── */
+.li { list-style: none; }
+.li li { padding: 5px 0; font-size: 12px; color: var(--ink2); border-bottom: 1px solid var(--bdr); display: flex; gap: 8px; align-items: flex-start; line-height: 1.45; }
+.li li:last-child { border-bottom: none; }
+.li li::before { content: '▸'; color: var(--gold2); flex-shrink: 0; margin-top: 1px; font-size: 9px; }
+
+/* ── COMPARISON TABLE ── */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 11.5px; margin: 12px 0; }
+.cmp-table th { background: var(--paper3); padding: 7px 10px; text-align: left; font-family: 'Spline Sans Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); border-bottom: 2px solid var(--bdr2); }
+.cmp-table td { padding: 7px 10px; border-bottom: 1px solid var(--bdr); color: var(--ink); vertical-align: top; line-height: 1.4; }
+.cmp-table tr:hover td { background: var(--paper2); }
+.tv-red { color: var(--bear); font-weight: 600; }
+.tv-grn { color: var(--bull); font-weight: 600; }
+
+/* PERIOD BREADCRUMB */
+.period-nav {
+  display: flex; align-items: center; gap: 0;
+  background: var(--paper3); border-bottom: 1px solid var(--bdr);
+  padding: 0 36px; overflow-x: auto;
+}
+.pn-item {
+  padding: 10px 18px; font-size: 12px; cursor: pointer;
+  color: var(--muted); border-right: 1px solid var(--bdr);
+  transition: all .15s; white-space: nowrap; display: flex; align-items: center; gap: 6px;
+}
+.pn-item:hover { background: var(--paper2); color: var(--ink); }
+.pn-item.active { background: var(--white); color: var(--ink); font-weight: 600; }
+.pn-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* FULL WIDTH TIMELINE SVG */
+.svg-wrap { background: var(--white); border: 1px solid var(--bdr); border-radius: 4px; padding: 16px; margin-bottom: 24px; overflow: hidden; }
+.svg-wrap svg { width: 100%; height: auto; }
+
+@media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } .col-side { border-top: 1px solid var(--bdr); } }
+@media (max-width: 700px) { .analysis { grid-template-columns: 1fr; } .gauges { grid-template-columns: 1fr 1fr; } .masthead-top { flex-direction: column; align-items: flex-start; gap: 8px; } }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-top">
+    <div class="masthead-kicker">Ray Dalio · Bridgewater Associates · Phần 2 · Nghiên cứu Tình huống Chi tiết</div>
+    <div class="masthead-title">Khủng hoảng Nợ Hoa Kỳ<br><em>& Sự Điều Chỉnh Vĩ Đại</em></div>
+    <div class="masthead-sub">Cuộc Đại suy thoái<br>1928 – 1937</div>
+  </div>
+  <div class="masthead-bottom">
+    <div class="period-tab active" onclick="switchPeriod('bubble',this)">1927–1929 · Bong Bóng</div>
+    <div class="period-tab" onclick="switchPeriod('crash',this)">1929–1930 · Sụp Đổ</div>
+    <div class="period-tab" onclick="switchPeriod('depression',this)">1931–1932 · Đại Suy Thoái</div>
+    <div class="period-tab" onclick="switchPeriod('fdr',this)">1933 · FDR Hành Động</div>
+    <div class="period-tab" onclick="switchPeriod('recovery',this)">1933–1937 · Phục Hồi & Tái Sụt</div>
+    <div class="period-tab" onclick="switchPeriod('lessons',this)">Bài Học</div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-box"><div class="sb-val red">−89%</div><div class="sb-lbl">Dow Jones đỉnh→đáy</div></div>
+  <div class="stat-box"><div class="sb-val red">−31.5%</div><div class="sb-lbl">GDP 1929→1933</div></div>
+  <div class="stat-box"><div class="sb-val red">25%</div><div class="sb-lbl">Thất nghiệp đỉnh</div></div>
+  <div class="stat-box"><div class="sb-val red">9,000+</div><div class="sb-lbl">Ngân hàng sụp đổ</div></div>
+  <div class="stat-box"><div class="sb-val gld">4 năm</div><div class="sb-lbl">Từ đỉnh đến đáy</div></div>
+  <div class="stat-box"><div class="sb-val gld">7 năm</div><div class="sb-lbl">Phục hồi GDP 1929</div></div>
+  <div class="stat-box"><div class="sb-val grn">+15.3%</div><div class="sb-lbl">Dow ngày FDR mở NH</div></div>
+  <div class="stat-box"><div class="sb-val grn">1936</div><div class="sb-lbl">GDP trở lại mức 1929</div></div>
+</div>
+
+<div class="main-wrap">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: BUBBLE 1927-1929 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-bubble" class="period active">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">1922–1929 · Giai Đoạn Bong Bóng</div>
+    <div class="period-title">"Roaring Twenties" — Từ Thịnh Vượng Thực đến Bong Bóng Đầu Cơ</div>
+    <div class="period-deck">Nước Mỹ sau Thế chiến I bước vào kỷ nguyên công nghệ bùng nổ: radio, ô tô, điện khí hóa. Tăng trưởng thực 1922–1927 là lành mạnh. Nhưng từ 1927, bong bóng đầu cơ tràn ngập khi Fed hạ lãi suất và tín dụng đòn bẩy bùng nổ ngoài tầm kiểm soát.</div>
+  </div>
+
+  <!-- FULL PERIOD VISUAL -->
+  <div class="svg-wrap">
+    <svg viewBox="0 0 840 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a6040" stop-opacity=".08"/><stop offset="100%" stop-color="#2a6040" stop-opacity="0"/></linearGradient>
+        <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8a2020" stop-opacity=".1"/><stop offset="100%" stop-color="#8a2020" stop-opacity="0"/></linearGradient>
+      </defs>
+      <!-- background zones -->
+      <rect x="30" y="20" width="380" height="160" fill="url(#bg1)" rx="2"/>
+      <rect x="410" y="20" width="220" height="160" fill="url(#bg2)" rx="2" opacity=".5"/>
+      <!-- grid -->
+      <line x1="30" y1="80" x2="820" y2="80" stroke="#d4c9b0" stroke-width=".8" stroke-dasharray="3,4"/>
+      <line x1="30" y1="140" x2="820" y2="140" stroke="#d4c9b0" stroke-width=".8" stroke-dasharray="3,4"/>
+      <!-- Zone labels -->
+      <text x="35" y="35" fill="#2a6040" font-size="9" font-family="Spline Sans Mono" opacity=".7">Tăng trưởng lành mạnh</text>
+      <text x="415" y="35" fill="#8a2020" font-size="9" font-family="Spline Sans Mono" opacity=".7">Bong bóng đầu cơ</text>
+      <!-- Time axis -->
+      <line x1="30" y1="170" x2="820" y2="170" stroke="#c0b298" stroke-width="1"/>
+      <text x="30" y="184" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1922</text>
+      <text x="175" y="184" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1924</text>
+      <text x="320" y="184" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1926</text>
+      <text x="415" y="184" fill="#8a2020" font-size="9" font-family="Spline Sans Mono" font-weight="500">1927</text>
+      <text x="520" y="184" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1928</text>
+      <text x="660" y="184" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1929</text>
+      <text x="784" y="184" fill="#8a2020" font-size="9" font-family="Spline Sans Mono">Sụp đổ</text>
+      <!-- DOW curve -->
+      <path d="M 40,145 C 90,142 140,135 190,128 C 240,121 290,115 330,108 C 360,103 390,98 410,95 C 430,90 455,80 490,65 C 525,50 560,42 600,38 C 630,36 660,38 690,40 C 720,37 750,30 790,28"
+        fill="none" stroke="#8a2020" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M 40,145 C 90,142 140,135 190,128 C 240,121 290,115 330,108 C 360,103 390,98 410,95 C 430,90 455,80 490,65 C 525,50 560,42 600,38 C 630,36 660,38 690,40 C 720,37 750,30 790,28 L 790,170 L 40,170 Z"
+        fill="url(#bg2)" opacity=".4"/>
+      <!-- GDP curve (flat healthy then diverges) -->
+      <path d="M 40,148 C 90,145 140,140 190,134 C 240,128 290,122 330,116 C 360,112 390,108 410,105 C 435,102 460,98 490,95 C 520,92 550,89 590,87 C 620,85 660,83 720,81 C 760,79 790,78 810,77"
+        fill="none" stroke="#2a6040" stroke-width="1.5" stroke-dasharray="5,3" opacity=".7"/>
+      <!-- Margin debt arrow -->
+      <path d="M 420,90 C 460,75 530,55 600,42" fill="none" stroke="#b88020" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#mkt)"/>
+      <text x="480" y="72" fill="#b88020" font-size="8.5" font-family="Spline Sans Mono">Margin debt ↑</text>
+      <!-- Fed rate cut annotation -->
+      <line x1="415" y1="25" x2="415" y2="165" stroke="#1a3a7a" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+      <text x="418" y="42" fill="#1a3a7a" font-size="8" font-family="Spline Sans Mono">Fed hạ LS</text>
+      <text x="418" y="52" fill="#1a3a7a" font-size="8" font-family="Spline Sans Mono">1927</text>
+      <!-- Legend -->
+      <line x1="40" y1="15" x2="68" y2="15" stroke="#8a2020" stroke-width="2.5"/>
+      <text x="72" y="18" fill="#7a7060" font-size="8.5" font-family="Spline Sans Mono">Cổ phiếu (Dow)</text>
+      <line x1="200" y1="15" x2="228" y2="15" stroke="#2a6040" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="232" y="18" fill="#7a7060" font-size="8.5" font-family="Spline Sans Mono">GDP thực</text>
+      <defs><marker id="mkt" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#b88020" opacity=".7"/></marker></defs>
+    </svg>
+  </div>
+
+  <!-- ANALYSIS CARDS -->
+  <div class="analysis">
+    <div class="ac">
+      <div class="ac-label">Giai Đoạn 1: 1922–1927</div>
+      <div class="ac-title">Tăng Trưởng Lành Mạnh Thực Sự</div>
+      <div class="ac-body">Điện khí hóa, ô tô, radio — công nghệ thực. Năng suất công nhân nhà máy tăng <strong>75%</strong> (1922–1928). Lợi nhuận doanh nghiệp đạt kỷ lục. Tiền lương thực tế tăng <strong>+20%</strong>. Thị trường chứng khoán tăng <strong>+150%</strong> (1922–1927) nhưng có cơ sở. Nợ tăng phù hợp với thu nhập.</div>
+    </div>
+    <div class="ac">
+      <div class="ac-label">Giai Đoạn 2: 1927–1929</div>
+      <div class="ac-title">Bong Bóng Đầu Cơ Mất Kiểm Soát</div>
+      <div class="ac-body">Fed hạ lãi suất xuống <strong>3.5%</strong> (1927) để giúp châu Âu giữ vàng → tín dụng rẻ thổi phồng đầu cơ. Cổ phiếu P/E đạt <strong>30×</strong>. Margin debt bùng nổ. Investment trusts: <strong>5 quỹ mới/tuần</strong>. Văn phòng môi giới ngoài Wall St tăng <strong>+50%</strong>.</div>
+    </div>
+    <div class="ac">
+      <div class="ac-label">Sáng Tạo Tài Chính Nguy Hiểm 1</div>
+      <div class="ac-title">Khoản Vay Margin (Call Money)</div>
+      <div class="ac-body">Cho vay để mua cổ phiếu bên ngoài hệ thống ngân hàng được quản lý. Tỷ lệ từ tổ chức phi ngân hàng: từ <strong>24%</strong> (đầu 1928) lên <strong>58%</strong> (tháng 10/1929). Fed không thể cấp thanh khoản khẩn cấp cho những tổ chức này khi khủng hoảng xảy ra.</div>
+    </div>
+    <div class="ac">
+      <div class="ac-label">Sáng Tạo Tài Chính Nguy Hiểm 2</div>
+      <div class="ac-title">Investment Trusts — Đòn Bẩy Trên Đòn Bẩy</div>
+      <div class="ac-body">Quỹ phát hành cổ phiếu để mua cổ phiếu khác. Nhiều quỹ dùng đòn bẩy. Nhà đầu tư mua cổ phiếu quỹ bằng margin. Quỹ mới chiếm <strong>1/3 vốn mới huy động</strong> năm 1929. Khi sụp đổ — tất cả đòn bẩy giải phóng đồng thời.</div>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "Kỷ nguyên mới… có nghĩa là thịnh vượng lâu dài, chấm dứt chu kỳ bùng nổ và suy thoái cũ, sự tăng trưởng ổn định về của cải và tiền tiết kiệm của người dân Mỹ, [và] giá cổ phiếu liên tục tăng."
+    <cite>— Tâm lý thị trường phổ biến, 1928–1929</cite>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-head">Bài học từ Giai đoạn Bong bóng</div>
+    <p>NHTW chỉ nhìn vào lạm phát CPI (thấp) và GDP (tốt) mà bỏ qua nợ tích lũy để mua tài sản tài chính. Tăng trưởng năng suất thực 1922–1927 bị ngoại suy quá mức sang 1927–1929. Bong bóng tệ nhất không đi kèm lạm phát cao — mà đi kèm <strong>lạm phát tài sản được tài trợ bởi nợ</strong>.</p>
+  </div>
+</div>
+
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">Số Liệu Giai Đoạn Bong Bóng</div>
+    <div class="gauges">
+      <div class="gauge"><div class="gv grn">+150%</div><div class="gl">Cổ phiếu 1922–27</div></div>
+      <div class="gauge"><div class="gv red">30×</div><div class="gl">P/E tại đỉnh 1929</div></div>
+      <div class="gauge"><div class="gv red">+50%</div><div class="gl">Văn phòng môi giới</div></div>
+      <div class="gauge"><div class="gv grn">+75%</div><div class="gl">Năng suất 1922–28</div></div>
+    </div>
+  </div>
+  <div class="side-section">
+    <div class="side-title">7 Đặc Điểm Bong Bóng (theo Dalio)</div>
+    <ul class="li">
+      <li>Giá cao so với chuẩn truyền thống (P/E=30×)</li>
+      <li>Giá chiết khấu tăng tiếp tục từ mức cao</li>
+      <li>Tâm lý "Kỷ nguyên mới" — lạc quan tràn ngập</li>
+      <li>Đòn bẩy cao: margin debt, investment trusts</li>
+      <li>Người mua mới: nhà đầu tư thiếu kinh nghiệm ồ ạt vào</li>
+      <li>CSTT kích thích: Fed hạ LS 1927 thổi phồng thêm</li>
+      <li>Shadow banking ngoài giám sát: call money 58% ngoài Fed</li>
+    </ul>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tin Tức Thời Điểm (1929)</div>
+    <div class="np-clip bull">
+      <div class="np-source">Wall Street Journal · Đầu 1929</div>
+      <div class="np-headline">"Người ta không thể nhớ lại khi nào một năm mới lại đến với điều kiện kinh doanh lành mạnh hơn hiện nay"</div>
+    </div>
+    <div class="np-clip bear">
+      <div class="np-source">Nhà kinh tế Roger Babson · 9/1929</div>
+      <div class="np-headline">"Sớm hay muộn sẽ xảy ra sự sụp đổ và nó có thể rất tồi tệ"</div>
+      <div class="np-text">Bị chế giễu là "tiên tri tai ương". Dow giảm 3% ngay hôm đó — được gọi là "cú ngã Babson".</div>
+    </div>
+  </div>
+</div>
+</div><!-- end cols -->
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: CRASH 1929-1930 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-crash" class="period">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">1929–1930 · Sụp Đổ & Những Sai Lầm Đầu Tiên</div>
+    <div class="period-title">Thứ Năm Đen tháng 10/1929 — Bức Tường Domino Đầu Tiên Đổ</div>
+    <div class="period-deck">Fed thắt chặt 1928 → thị trường đảo chiều. Ngày 24/10/1929 "Thứ Năm Đen" — margin call lan rộng. Chính quyền Hoover phản ứng theo bản năng sai: thuế quan Smoot-Hawley, không cứu trợ ngân hàng, thắt lưng buộc bụng.</div>
+  </div>
+
+  <div class="policy-tl">
+    <div class="ptl-item">
+      <div class="ptl-dot bear">1</div>
+      <div class="ptl-body">
+        <div class="ptl-date">Tháng 1–8/1928</div>
+        <div class="ptl-title">Fed thắt chặt — Lãi suất tăng từ 3.5% lên 6%</div>
+        <div class="ptl-text">Để kiềm chế đầu cơ nhưng lo ngại nền kinh tế vẫn tốt, lạm phát thấp. Đây là điểm khởi đầu của sự đảo chiều — nhưng thị trường còn tiếp tục tăng thêm 1 năm.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">2</div>
+      <div class="ptl-body">
+        <div class="ptl-date">24/10/1929 — "Thứ Năm Đen"</div>
+        <div class="ptl-title">Thị trường sụp đổ — Margin Call lan rộng</div>
+        <div class="ptl-text">Dow giảm 11% trong ngày. Các ngân hàng lớn (JP Morgan, Chase) họp tại Fed New York để ổn định thị trường — thành công tạm thời. Nhưng vòng xoáy margin call không thể ngăn lại.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">3</div>
+      <div class="ptl-body">
+        <div class="ptl-date">Tháng 6/1930</div>
+        <div class="ptl-title">Đạo luật Thuế quan Smoot-Hawley — Sai lầm chết người</div>
+        <div class="ptl-text">1,028 nhà kinh tế ký kiến nghị phủ quyết — Hoover bác bỏ. Các nước trả đũa. Thương mại thế giới sụp đổ. GDP toàn cầu mất thêm nhiều phần trăm. Bài học kinh điển: đừng bảo hộ thương mại trong suy thoái.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot pol">4</div>
+      <div class="ptl-body">
+        <div class="ptl-date">Tháng 12/1930</div>
+        <div class="ptl-title">Ngân hàng Hoa Kỳ sụp đổ — 400,000 người gửi tiền</div>
+        <div class="ptl-text">JP Morgan, Chase từ chối cứu vì cho rằng mất khả năng thanh toán, không chỉ thiếu thanh khoản. Sụp đổ lớn nhất lịch sử. NYT: "Quân cờ domino đầu tiên trong thời kỳ suy thoái". Bước ngoặt mất niềm tin toàn quốc.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="analysis">
+    <div class="ac">
+      <div class="ac-label">Tại sao không cứu Ngân hàng Hoa Kỳ?</div>
+      <div class="ac-title">Sai lầm phân biệt Thanh khoản vs Khả năng TT</div>
+      <div class="ac-body">Các ngân hàng lớn cho rằng mất khả năng thanh toán (insolvent) → không đáng cứu. Giám đốc NH New York Broderick phản đối: ngân hàng vẫn có khả năng thanh toán và <strong>"quan trọng về mặt hệ thống"</strong>. Bị bác bỏ. Hậu quả: 10+ ngân hàng khác sụp đổ theo.</div>
+    </div>
+    <div class="ac">
+      <div class="ac-label">Tại sao Smoot-Hawley sai?</div>
+      <div class="ac-title">Thắt lưng buộc bụng + Bảo hộ thương mại = Thảm họa</div>
+      <div class="ac-body">Chi tiêu người này = Thu nhập người khác. Cắt nhập khẩu → Thu nhập xuất khẩu của nước ngoài giảm → Họ không mua được hàng Mỹ → Nền kinh tế Mỹ mất thêm cầu. Vòng lặp tử thần toàn cầu.</div>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "Khi nỗi đau kinh tế gia tăng, những lời kêu gọi của dân túy nhằm 'trừng phạt những chủ ngân hàng đã gây ra sự hỗn loạn' khiến các nhà hoạch định chính sách vô cùng khó khăn trong việc thực hiện các hành động cần thiết để cứu hệ thống tài chính."
+    <cite>— Ray Dalio</cite>
+  </div>
+
+  <div class="data-chart">
+    <div class="dc-title">Dow Jones — Đỉnh tháng 9/1929 đến Tháng 12/1930</div>
+    <div class="bar-list">
+      <div class="bar-item"><div class="bar-name">Sep 1929 (đỉnh)</div><div class="bar-track"><div class="bar-fill bull" style="width:100%"><div class="bar-label">381 điểm</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Oct 24 (Thứ 5 đen)</div><div class="bar-track"><div class="bar-fill bear" style="width:78%"><div class="bar-label">−11% trong ngày</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Oct 29 (Thứ 3 đen)</div><div class="bar-track"><div class="bar-fill bear" style="width:65%"><div class="bar-label">230 điểm</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Dec 1929</div><div class="bar-track"><div class="bar-fill bear" style="width:50%"><div class="bar-label">248 điểm (−35%)</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Dec 1930</div><div class="bar-track"><div class="bar-fill bear" style="width:38%"><div class="bar-label">164 điểm (−57%)</div></div></div></div>
+    </div>
+  </div>
+</div>
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">Số Liệu 1929–1930</div>
+    <div class="gauges">
+      <div class="gauge"><div class="gv red">−57%</div><div class="gl">Dow cuối 1930</div></div>
+      <div class="gauge"><div class="gv red">−15%</div><div class="gl">GDP thực 1930</div></div>
+      <div class="gauge"><div class="gv red">1,350</div><div class="gl">Ngân hàng vỡ 1930</div></div>
+      <div class="gauge"><div class="gv red">−10%</div><div class="gl">Giá hàng hóa</div></div>
+    </div>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Các Sai Lầm Chính Sách Hoover</div>
+    <ul class="li">
+      <li>Smoot-Hawley: thuế quan bảo hộ trong suy thoái → chiến tranh thương mại</li>
+      <li>Không cứu ngân hàng quan trọng hệ thống: "họ đáng bị trừng phạt"</li>
+      <li>Thắt lưng buộc bụng: cắt chi tiêu trong khi nền kinh tế co lại</li>
+      <li>Tin tưởng quá mức vào "cứu trợ gián tiếp" từ tư nhân</li>
+      <li>Dựa vào "đạo đức rủi ro" thay vì hành động quyết đoán</li>
+    </ul>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tin Tức Thời Điểm</div>
+    <div class="np-clip bear">
+      <div class="np-source">New York Times · 10/1929</div>
+      <div class="np-headline">Thị trường chứng khoán sụp đổ — 12,894,650 cổ phiếu được bán tháo trong hỗn loạn</div>
+    </div>
+    <div class="np-clip pol">
+      <div class="np-source">New York Times · 11/12/1930</div>
+      <div class="np-headline">Ngân hàng Hoa Kỳ đóng cửa: "Quân cờ domino đầu tiên trong thời kỳ suy thoái"</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: DEPRESSION 1931-1932 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-depression" class="period">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">1931–1932 · Đại Suy Thoái — Giai Đoạn Tồi Tệ Nhất</div>
+    <div class="period-title">Fed Tăng Lãi Suất Trong Suy Thoái — Bản Vị Vàng Trói Buộc Mọi Thứ</div>
+    <div class="period-deck">1931 là năm tệ nhất: khủng hoảng ở Áo, Đức lan sang toàn cầu. Anh phá neo vàng tháng 9/1931 → Fed TĂNG lãi suất để bảo vệ bản vị vàng của Mỹ. Quyết định sai lầm thảm khốc. GDP mất thêm 20%. Thất nghiệp tiến gần 25%.</div>
+  </div>
+
+  <div class="policy-tl">
+    <div class="ptl-item">
+      <div class="ptl-dot bear">A</div>
+      <div class="ptl-body">
+        <div class="ptl-date">Tháng 5/1931 — Credit-Anstalt (Áo) sụp đổ</div>
+        <div class="ptl-title">Khủng hoảng Châu Âu — Thiếu hụt Đô la Toàn cầu</div>
+        <div class="ptl-text">Credit-Anstalt, ngân hàng lớn nhất Áo, công bố lỗ 20 triệu USD. Đợt rút tiền lan ra toàn châu Âu. Đức mất 1/3 dự trữ vàng trong tháng 6. Thiếu hụt đô la toàn cầu — vì quá nhiều nợ bằng đô la cần đô la để trả.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot pol">B</div>
+      <div class="ptl-body">
+        <div class="ptl-date">20/6/1931 — Kế hoạch Hoover Moratorium</div>
+        <div class="ptl-title">Hoãn nợ 1 năm — Thị trường tăng tạm thời rồi sụp lại</div>
+        <div class="ptl-text">Dow tăng 12% trong 2 ngày sau thông báo. Rồi giảm khi rõ ràng kế hoạch quá nhỏ. <em>"Trong suốt thời kỳ Đại suy thoái, các thông báo tạo ra các làn sóng lạc quan trong bối cảnh suy giảm tổng cộng gần 90 phần trăm."</em> — Dalio</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">C</div>
+      <div class="ptl-body">
+        <div class="ptl-date">21/9/1931 — Anh rời Bản Vị Vàng</div>
+        <div class="ptl-title">GBP giảm 30% — Vàng chảy khỏi Mỹ</div>
+        <div class="ptl-text">Áp lực chuyển sang Mỹ: nhà đầu tư lo ngại Mỹ cũng phá giá → chuyển đổi đô la lấy vàng. Mỹ mất 10% dự trữ vàng trong 3 tuần. Thay vì nới lỏng, Fed làm điều ngược lại.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">D</div>
+      <div class="ptl-body">
+        <div class="ptl-date">9/10/1931 — Sai Lầm Chính Sách Tệ Nhất</div>
+        <div class="ptl-title">Fed TĂNG lãi suất từ 1.5% lên 3.5% để bảo vệ Bản Vị Vàng</div>
+        <div class="ptl-text">Thắt chặt mạnh nhất trong suy thoái sâu nhất. Lý do: giữ vàng không chảy ra. Tác dụng: thắt chặt tín dụng thêm, đẩy thêm ngân hàng sụp đổ, GDP tiếp tục lao dốc. Đây là sai lầm cơ chế — bản vị vàng trói buộc chính sách.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot pol">E</div>
+      <div class="ptl-body">
+        <div class="ptl-date">23/1/1932 — RFC (Reconstruction Finance Corp)</div>
+        <div class="ptl-title">Hoover thành lập RFC — Thanh khoản khẩn cấp cho ngân hàng</div>
+        <div class="ptl-text">Vốn 500 triệu + khả năng vay 3 tỷ. Đến 8/1932 cho 5,520 tổ chức vay 1.3 tỷ. Hiệu quả hạn chế vì chỉ cho vay dựa trên tài sản thế chấp "tốt" — không thể giúp những bên cần nhất.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">F</div>
+      <div class="ptl-body">
+        <div class="ptl-date">6/6/1932 — Revenue Act 1932</div>
+        <div class="ptl-title">Hoover tăng thuế để cân bằng ngân sách — Thảm họa</div>
+        <div class="ptl-text">Tăng thuế thu nhập, thuế doanh nghiệp, thuế tiêu thụ. Cố gắng cân bằng ngân sách trong suy thoái sâu. Kết quả: GDP co lại thêm, doanh thu thuế giảm, thâm hụt vẫn tăng. Bài học kinh điển về "thắt lưng buộc bụng mâu thuẫn".</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-chart" style="margin-top:20px">
+    <div class="dc-title">Thiệt hại kinh tế — 1929 đến đáy 1933</div>
+    <div class="bar-list">
+      <div class="bar-item"><div class="bar-name">GDP thực</div><div class="bar-track"><div class="bar-fill bear" style="width:31.5%"><div class="bar-label">−31.5%</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Dow Jones</div><div class="bar-track"><div class="bar-fill bear" style="width:89%"><div class="bar-label">−89%</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Thất nghiệp</div><div class="bar-track"><div class="bar-fill bear" style="width:25%"><div class="bar-label">+25 điểm %</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Giảm phát</div><div class="bar-track"><div class="bar-fill pol" style="width:30%"><div class="bar-label">−10%/năm</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">NH sụp đổ</div><div class="bar-track"><div class="bar-fill bear" style="width:60%"><div class="bar-label">9,000+ (1930–33)</div></div></div></div>
+    </div>
+  </div>
+</div>
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">Số Liệu Đáy 1932–1933</div>
+    <div class="gauges">
+      <div class="gauge"><div class="gv red">−31.5%</div><div class="gl">GDP 1929→1933</div></div>
+      <div class="gauge"><div class="gv red">25%</div><div class="gl">Thất nghiệp 1933</div></div>
+      <div class="gauge"><div class="gv red">41</div><div class="gl">Dow đáy 7/1932</div></div>
+      <div class="gauge"><div class="gv red">55.6B</div><div class="gl">GNP 1933 (tỷ USD)</div></div>
+    </div>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tại sao Bản Vị Vàng Gây Hại</div>
+    <div class="ac" style="background:var(--paper)">
+      <div class="ac-body">Bản vị vàng giống như nợ ngoại tệ: chủ nợ có thể đòi thanh toán bằng vàng, Fed không thể tự do in tiền. Khi vàng chảy ra, Fed phải <strong>thắt chặt</strong> (tăng lãi suất) thay vì nới lỏng. Đây là sai lầm thể chế — trói buộc công cụ chính sách vào thời điểm cần nhất.</div>
+    </div>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Hậu Quả Chính Trị</div>
+    <ul class="li">
+      <li>Đảng Cộng sản và Quốc xã Đức đều thắng lớn trong bầu cử</li>
+      <li>Hitler tăng từ 3% (1928) lên 18% (1930) ủng hộ</li>
+      <li>Nhật Bản chuyển sang quân phiệt — xâm lược Mãn Châu 1931</li>
+      <li>Bất bình đẳng Mỹ: 10% giàu nhất = 45% thu nhập + 85% tài sản</li>
+      <li>Roosevelt thắng cử tháng 11/1932 với 22.8M phiếu (Hoover 15.8M)</li>
+    </ul>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tin Tức Thời Điểm</div>
+    <div class="np-clip bear">
+      <div class="np-source">New York Times · 10/1931</div>
+      <div class="np-headline">Fed tăng lãi suất lên 3.5% để bảo vệ dự trữ vàng — nền kinh tế tiếp tục suy thoái</div>
+    </div>
+    <div class="np-clip bear">
+      <div class="np-source">NYT · Cuối 1932</div>
+      <div class="np-headline">32,000 vụ phá sản doanh nghiệp — 928 triệu USD nợ phải trả không thể trả</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: FDR 1933 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-fdr" class="period">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">1933 · FDR Nhậm Chức — Hành Động Quyết Đoán</div>
+    <div class="period-title">100 Ngày Đầu Tiên — Đảo Chiều Vận Mệnh Nước Mỹ</div>
+    <div class="period-deck">FDR nhậm chức 4/3/1933 trong bối cảnh tồi tệ nhất: 33 bang hạn chế rút tiền, GNP thấp nhất 31.5% dưới 1929. Ông hành động ngay và dứt khoát — phá neo vàng, cứu ngân hàng, kích thích kinh tế. Đây là mẫu kinh điển của Beautiful Deleveraging.</div>
+  </div>
+
+  <div class="policy-tl">
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">1</div>
+      <div class="ptl-body">
+        <div class="ptl-date">5/3/1933 — Ngày đầu tiên nhậm chức</div>
+        <div class="ptl-title">Kỳ Nghỉ Lễ Ngân Hàng Quốc Gia 4 Ngày + Đình Chỉ Xuất Khẩu Vàng</div>
+        <div class="ptl-text">Tách đô la khỏi vàng ngay lập tức. Cho phép Fed phát hành đô la bảo đảm bằng tài sản ngân hàng (không phải vàng). Mở khóa khả năng in tiền. Thành lập nhóm kiểm toán từng ngân hàng từ trên xuống.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">2</div>
+      <div class="ptl-body">
+        <div class="ptl-date">9/3/1933 — Emergency Banking Act</div>
+        <div class="ptl-title">Tái Cấp Vốn Hệ Thống Ngân Hàng — Quyền Hạn Chưa Từng Có</div>
+        <div class="ptl-text">Kiểm toán từng ngân hàng: (a) Tái cấp vốn bằng cổ phiếu ưu đãi RFC, (b) Sáp nhập với ngân hàng lành mạnh, hoặc (c) Đóng cửa. Ngân hàng quan trọng hệ thống: luôn được hỗ trợ. Bộ Tài chính bảo đảm tất cả khoản lỗ của Fed.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">3</div>
+      <div class="ptl-body">
+        <div class="ptl-date">12/3/1933 — "Fireside Chat" đầu tiên</div>
+        <div class="ptl-title">FDR Khôi Phục Niềm Tin — Truyền Thông Trực Tiếp Với Dân</div>
+        <div class="ptl-text"><em>"Đây là tiền tệ lành mạnh vì nó được hỗ trợ bởi các tài sản thực tế, tốt... Tôi có thể đảm bảo với bạn rằng giữ tiền trong một ngân hàng mở cửa trở lại sẽ an toàn hơn là cất giữ dưới nệm."</em> Kết quả: dân gửi 1 tỷ USD vào ngân hàng thay vì rút.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">4</div>
+      <div class="ptl-body">
+        <div class="ptl-date">15/3/1933 — Ngân Hàng Mở Cửa Trở Lại</div>
+        <div class="ptl-title">Dow Jones +15.3% — Lớn Nhất Trong Nhiều Năm</div>
+        <div class="ptl-text">Thị trường, sản xuất, đặt hàng — tất cả chạm đáy chính xác vào tháng 3/1933. Đây là bằng chứng: đáy khủng hoảng trùng khớp với thời điểm hành động chính sách quyết đoán, không phải cải thiện tự nhiên của nền kinh tế.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">5</div>
+      <div class="ptl-body">
+        <div class="ptl-date">5/4 – 16/6/1933 — "100 Ngày" Lập Pháp</div>
+        <div class="ptl-title">CCC · FERA · TVA · PWA · HOLC · Glass-Steagall II + FDIC</div>
+        <div class="ptl-text">CCC: 2.5 triệu việc làm cho thanh niên. FERA: 500 triệu cứu trợ. TVA: điện + hạ tầng. PWA: 3.3 tỷ công trình công cộng. HOLC: tái cấp vốn thế chấp. FDIC: bảo hiểm tiền gửi 2,500 USD.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "Những gì đã xảy ra vào tháng 8 năm 1971, khi tôi đang làm nhân viên tại Sàn giao dịch chứng khoán New York, cũng giống hệt những gì đã xảy ra vào năm 1933. Tôi đã không nghiên cứu những gì đã xảy ra vào năm 1933, vì vậy tôi đã sai một cách đau đớn. Đó là lần đầu tiên tôi ngạc nhiên trước những sự kiện chưa từng xảy ra trong cuộc đời mình nhưng đã xảy ra nhiều lần trong lịch sử."
+    <cite>— Ray Dalio về bài học từ 1933</cite>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-head">Tại sao 1933 hoạt động — Beautiful Deleveraging</div>
+    <p>Phá neo vàng → In tiền không giới hạn → Bù đắp tín dụng bị phá hủy → Tăng trưởng danh nghĩa vượt lãi suất → Chu kỳ tự củng cố đảo chiều từ tiêu cực sang tích cực. Đây chính xác là công thức Beautiful Deleveraging: in tiền đủ để bù lực giảm phát, không quá mức gây lạm phát.</p>
+  </div>
+</div>
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">Kết Quả Tức Thì</div>
+    <div class="gauges">
+      <div class="gauge"><div class="gv grn">+15.3%</div><div class="gl">Dow ngày mở cửa NH</div></div>
+      <div class="gauge"><div class="gv grn">+50%</div><div class="gl">Sản xuất 4 tháng sau</div></div>
+      <div class="gauge"><div class="gv grn">+45%</div><div class="gl">Giá bán buôn 3–7/33</div></div>
+      <div class="gauge"><div class="gv grn">+100%</div><div class="gl">Đơn đặt hàng máy móc</div></div>
+    </div>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Chính Sách FDR — Công Thức Đúng</div>
+    <ul class="li">
+      <li><strong>Phá neo vàng:</strong> mở khóa in tiền → bù đắp tín dụng biến mất</li>
+      <li><strong>Tái cấp vốn ngân hàng:</strong> bảo vệ hệ thống quan trọng, cho phép nhỏ vỡ</li>
+      <li><strong>Truyền thông tốt:</strong> Fireside Chats khôi phục niềm tin tâm lý</li>
+      <li><strong>Kích thích tài khóa mạnh:</strong> 100 ngày lập pháp — đồng bộ với tiền tệ</li>
+      <li><strong>FDIC:</strong> bảo hiểm tiền gửi → chấm dứt Bank Runs</li>
+    </ul>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tin Tức Thời Điểm</div>
+    <div class="np-clip fdr">
+      <div class="np-source">New York Times · 6/3/1933</div>
+      <div class="np-headline">Roosevelt tuyên bố kỳ nghỉ lễ ngân hàng — Đình chỉ xuất khẩu vàng</div>
+    </div>
+    <div class="np-clip fdr">
+      <div class="np-source">New York Times · 15/3/1933</div>
+      <div class="np-headline">Ngân hàng mở cửa trở lại — Dân gửi 1 tỷ USD thay vì rút. Dow +15.3%</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: RECOVERY 1933-1937 -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-recovery" class="period">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">1933–1937 · Phục Hồi Mạnh & Suy Thoái Kép</div>
+    <div class="period-title">Beautiful Deleveraging Thực Sự — Rồi Sai Lầm Cổ Điển: Thắt Chặt Quá Sớm</div>
+    <div class="period-deck">1933–1936: Phục hồi mạnh nhất trong lịch sử Mỹ. GDP trở lại mức 1929 vào 1936. Dow tăng 4 lần từ đáy. Nhưng Fed thắt chặt 1936–37 vì lo lạm phát → Suy thoái kép 1937–38. Bài học: đừng rút kích thích quá sớm.</div>
+  </div>
+
+  <div class="analysis">
+    <div class="ac">
+      <div class="ac-label">1933–1936: Giai Đoạn Tuyệt Vời</div>
+      <div class="ac-title">Beautiful Deleveraging Được Thực Hiện Đúng</div>
+      <div class="ac-body">GDP tăng trung bình <strong>+9%/năm</strong> từ 1933–1937. Cổ phiếu tăng gần <strong>4 lần</strong> từ đáy. Thất nghiệp giảm từ 25% xuống 14%. Lạm phát thấp (1–3%). Tăng trưởng danh nghĩa vượt lãi suất — công thức đúng.</div>
+    </div>
+    <div class="ac">
+      <div class="ac-label">1937–1938: Suy Thoái Kép</div>
+      <div class="ac-title">Fed Thắt Chặt Khi Chưa Thoát Hoàn Toàn</div>
+      <div class="ac-body">Fed tăng gấp đôi yêu cầu dự trữ (8% → 16%) qua 3 giai đoạn 8/1936–5/1937. Lo ngại dự trữ ngân hàng "dư thừa" gây lạm phát. Kết quả: GDP giảm 11% trong 1 năm, thất nghiệp tăng lại, cổ phiếu giảm 49%.</div>
+    </div>
+  </div>
+
+  <!-- Recovery chart -->
+  <div class="data-chart">
+    <div class="dc-title">Chỉ Số Dow Jones — 1933 đến 1938 (từ đáy)</div>
+    <div class="bar-list">
+      <div class="bar-item"><div class="bar-name">Jul 1932 (đáy)</div><div class="bar-track"><div class="bar-fill bear" style="width:11%"><div class="bar-label">41 điểm</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Mar 1933 (FDR)</div><div class="bar-track"><div class="bar-fill pol" style="width:15%"><div class="bar-label">53 → 61 (+15.3%)</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Jul 1933</div><div class="bar-track"><div class="bar-fill fdr" style="width:27%"><div class="bar-label">109 (+100% từ đáy)</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">1934–1935</div><div class="bar-track"><div class="bar-fill fdr" style="width:35%"><div class="bar-label">130–140 (ổn định)</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Đỉnh 8/1937</div><div class="bar-track"><div class="bar-fill bull" style="width:48%"><div class="bar-label">189 (+360% từ đáy)</div></div></div></div>
+      <div class="bar-item"><div class="bar-name">Đáy 3/1938 (kép)</div><div class="bar-track"><div class="bar-fill bear" style="width:25%"><div class="bar-label">98 (−49% từ đỉnh)</div></div></div></div>
+    </div>
+  </div>
+
+  <div class="policy-tl">
+    <div class="ptl-item">
+      <div class="ptl-dot fdr">✓</div>
+      <div class="ptl-body">
+        <div class="ptl-date">1933–1936: Phục Hồi Kỷ Lục</div>
+        <div class="ptl-title">Tăng trưởng GDP +9%/năm — Nhanh Nhất Lịch Sử Mỹ</div>
+        <div class="ptl-text">GDP trở về mức 1929 vào năm 1936. Nhà +10%/năm, cổ phiếu +4×, thất nghiệp giảm từ 25% xuống 14%. Lạm phát kiểm soát ở mức 1–3%. Đây là Beautiful Deleveraging — tỷ lệ nợ/GDP giảm đồng thời kinh tế phục hồi.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">✗</div>
+      <div class="ptl-body">
+        <div class="ptl-date">8/1936–5/1937 — Sai Lầm Thắt Chặt Sớm</div>
+        <div class="ptl-title">Fed tăng Yêu Cầu Dự Trữ Gấp Đôi</div>
+        <div class="ptl-text">Lo ngại 2 tỷ USD dự trữ ngân hàng "dư thừa" có thể gây lạm phát. Tăng yêu cầu dự trữ từ 8% lên 16% qua 3 đợt. Bộ Tài chính cũng thắt lưng buộc bụng tài khóa. Bệnh nhân chưa khỏi hẳn đã ngừng kháng sinh.</div>
+      </div>
+    </div>
+    <div class="ptl-item">
+      <div class="ptl-dot bear">↓</div>
+      <div class="ptl-body">
+        <div class="ptl-date">1937–1938: Suy Thoái Kép</div>
+        <div class="ptl-title">GDP −11% trong 1 Năm — Cổ Phiếu −49%</div>
+        <div class="ptl-text">Thất nghiệp tăng từ 14% lên 19%. Sản xuất công nghiệp giảm mạnh. Fed phải đảo ngược chính sách và kích thích mạnh trở lại. Chỉ phục hồi khi chi tiêu quốc phòng (chuẩn bị Thế chiến II) tạo kích thích tài khóa khổng lồ.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-head">Bài học từ Suy Thoái Kép 1937</div>
+    <p>Giai đoạn "Pushing on a String" kết thúc thực sự khi <strong>tín dụng tư nhân tự phục hồi</strong>, bảng cân đối hộ gia đình và doanh nghiệp lành mạnh trở lại — <em>không phải</em> khi GDP đơn thuần bằng đỉnh cũ. Thất nghiệp 14% và bảng cân đối hộ gia đình vẫn còn yếu → chưa thoát hoàn toàn.</p>
+  </div>
+</div>
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">So Sánh: Trước và Sau FDR</div>
+    <table class="cmp-table">
+      <thead><tr><th>Chỉ Số</th><th>Đáy 1933</th><th>1936</th></tr></thead>
+      <tbody>
+        <tr><td>GDP</td><td class="tv-red">55.6 tỷ</td><td class="tv-grn">83.8 tỷ</td></tr>
+        <tr><td>Thất nghiệp</td><td class="tv-red">25%</td><td class="tv-grn">17%</td></tr>
+        <tr><td>Dow Jones</td><td class="tv-red">41</td><td class="tv-grn">163</td></tr>
+        <tr><td>Giá hàng hóa</td><td class="tv-red">−10%/năm</td><td class="tv-grn">+2%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tại sao 1937 sai?</div>
+    <ul class="li">
+      <li>Thất nghiệp 14% — vẫn còn cao bất thường</li>
+      <li>Bảng cân đối hộ gia đình chưa phục hồi hoàn toàn</li>
+      <li>Tín dụng tư nhân chưa tự mở rộng được</li>
+      <li>Fed thắt chặt khi chưa rời "pushing on a string"</li>
+      <li>Lặp lại sai lầm: lo lạm phát khi chưa cần lo</li>
+    </ul>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Tin Tức Thời Điểm</div>
+    <div class="np-clip fdr">
+      <div class="np-source">Time Magazine · 8/1932</div>
+      <div class="np-headline">Thị trường phục hồi vì dòng vàng chảy ra đã chấm dứt — nhà đầu tư lạc quan</div>
+    </div>
+    <div class="np-clip bear">
+      <div class="np-source">NYT · 1937</div>
+      <div class="np-headline">Fed lo ngại lạm phát — tăng yêu cầu dự trữ. Thị trường bắt đầu sụp đổ trở lại</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PERIOD: LESSONS -->
+<!-- ═══════════════════════════════════════════ -->
+<div id="p-lessons" class="period">
+<div class="cols">
+<div class="col-main">
+  <div class="period-header">
+    <div class="period-date">Đúc Kết & Bài Học</div>
+    <div class="period-title">10 Bài Học Phổ Quát từ Khủng Hoảng Mỹ 1928–1937</div>
+    <div class="period-deck">Đây là trường hợp kinh điển nhất về giảm đòn bẩy giảm phát. Mọi sai lầm và thành công đều được lặp lại trong lịch sử — và Dalio nhấn mạnh Bernanke đã học từ đây để xử lý 2008.</div>
+  </div>
+
+  <div class="analysis">
+    <div class="ac"><div class="ac-label">Bài Học 1</div><div class="ac-title">Bản vị vàng = Nợ ngoại tệ trá hình</div><div class="ac-body">Khi nợ bằng tiền neo giá cứng (vàng), NHTW bị trói buộc — không thể in tiền khi cần nhất. Fed phải <strong>thắt chặt 1931 trong suy thoái sâu</strong> vì phải bảo vệ dự trữ vàng. Bài học: đồng tiền fiat linh hoạt mới cho phép Beautiful Deleveraging.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 2</div><div class="ac-title">Shadow banking là nguồn rủi ro hệ thống</div><div class="ac-body">Call money (1929) = MBS/CDO (2007) = cùng một hiện tượng: đòn bẩy tích lũy ngoài giám sát. 58% thị trường margin đến từ tổ chức ngoài Fed → Fed không thể cứu khi khủng hoảng. NHTW phải giám sát <strong>toàn bộ hệ thống tài chính</strong>, không chỉ ngân hàng thành viên.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 3</div><div class="ac-title">Thắt lưng buộc bụng trong suy thoái = vòng lặp tử thần</div><div class="ac-body">Revenue Act 1932: tăng thuế cố cân bằng ngân sách → GDP co thêm → doanh thu thuế giảm → thâm hụt tăng. Chi tiêu người này = thu nhập người khác. Cắt giảm trong suy thoái nghĩa là thu hẹp nền kinh tế thêm.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 4</div><div class="ac-title">Cứu ngân hàng quan trọng hệ thống là bắt buộc</div><div class="ac-body">Ngân hàng Hoa Kỳ (400,000 người gửi): bị để sụp đổ vì tranh cãi insolvent/illiquid. Hậu quả: 10+ ngân hàng khác sụp theo. <strong>Phân biệt thanh khoản vs khả năng thanh toán</strong> — một ngân hàng "quan trọng hệ thống" cần được bảo vệ bất kể tình trạng vốn.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 5</div><div class="ac-title">Đáy trùng với hành động chính sách quyết đoán</div><div class="ac-body">Tất cả chỉ số kinh tế đạt đáy <strong>chính xác vào tháng 3/1933</strong> — đúng khi FDR phá neo vàng và tung gói kích thích. Không phải ngẫu nhiên. Hành động đúng và đủ quy mô <em>tạo ra đáy</em> — không phải chờ đáy rồi mới hành động.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 6</div><div class="ac-title">Phá neo tiền tệ + In tiền = Khởi động Beautiful Deleveraging</div><div class="ac-body">FDR phá neo vàng → Dow +15.3% ngay hôm đó, +50% sản xuất trong 4 tháng. Dalio lặp lại: đây chính xác là điều xảy ra tháng 8/1971 khi Nixon phá Bretton Woods — thị trường tăng thay vì giảm. <strong>Học lịch sử để không bị bất ngờ.</strong></div></div>
+    <div class="ac"><div class="ac-label">Bài Học 7</div><div class="ac-title">Đừng rút kích thích khi còn "Pushing on a String"</div><div class="ac-body">Fed 1937: tăng yêu cầu dự trữ khi thất nghiệp vẫn 14% → suy thoái kép. Thử nghiệm y học: tế bào còn yếu mà ngừng kháng sinh sẽ tái phát. Chờ đến khi tín dụng tư nhân tự mở rộng, bảng cân đối lành mạnh.</div></div>
+    <div class="ac"><div class="ac-label">Bài Học 8</div><div class="ac-title">Dân túy là hậu quả tất yếu của quản lý sai</div><div class="ac-body">Bất bình đẳng: 10% giàu nhất = 85% tài sản + 45% thu nhập, trong khi thất nghiệp 25%. Cùng điều kiện ở Đức → Hitler. Tại Mỹ → FDR dân túy cánh tả. <strong>Hậu quả chính trị của khủng hoảng nợ có thể nguy hiểm hơn bản thân khủng hoảng kinh tế.</strong></div></div>
+  </div>
+
+  <div class="pullquote">
+    "Mặc dù cuộc Đại suy thoái đã xảy ra cách đây gần một thế kỷ, nhưng động lực của nó về cơ bản giống như những gì đã xảy ra vào khoảng năm 2008. Đó là lý do tại sao tôi đã xây dựng chỉ báo vào năm 2000 để phản ứng với các diễn biến của 2007–2008 — và nó hoạt động khi hầu hết mọi người đều bị bất ngờ."
+    <cite>— Ray Dalio</cite>
+  </div>
+</div>
+<div class="col-side">
+  <div class="side-section">
+    <div class="side-title">So Sánh 1929 vs 2008</div>
+    <table class="cmp-table">
+      <thead><tr><th></th><th>1929–33</th><th>2008–09</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Phản ứng</strong></td><td class="tv-red">Chậm, sai</td><td class="tv-grn">Nhanh, đúng</td></tr>
+        <tr><td><strong>GDP giảm</strong></td><td class="tv-red">−31.5%</td><td class="tv-grn">−4%</td></tr>
+        <tr><td><strong>TN đỉnh</strong></td><td class="tv-red">25%</td><td class="tv-grn">10%</td></tr>
+        <tr><td><strong>Thời gian suy t.</strong></td><td class="tv-red">4 năm</td><td class="tv-grn">18 tháng</td></tr>
+        <tr><td><strong>Phá neo tiền tệ</strong></td><td class="tv-red">Chờ đến 1933</td><td class="tv-grn">Đã sẵn fiat</td></tr>
+        <tr><td><strong>Cứu NH</strong></td><td class="tv-red">Không đủ</td><td class="tv-grn">TARP 700 tỷ</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="side-section">
+    <div class="side-title">Bài Học 9–10</div>
+    <div class="ac" style="background:var(--paper);margin-bottom:10px">
+      <div class="ac-label">Bài Học 9</div>
+      <div class="ac-title">Niềm tin và Truyền thông quan trọng</div>
+      <div class="ac-body">Fireside Chats của FDR đảo ngược bank run thành gửi tiền. Niềm tin vào hệ thống là điều kiện cần để thanh khoản lưu thông. Lãnh đạo có khả năng truyền thông tốt có thể rút ngắn khủng hoảng đáng kể.</div>
+    </div>
+    <div class="ac" style="background:var(--paper)">
+      <div class="ac-label">Bài Học 10</div>
+      <div class="ac-title">Kiến thức lịch sử = Vũ khí</div>
+      <div class="ac-body">Bernanke nghiên cứu kỹ Đại suy thoái → biết phải làm gì ngay từ 2008. Dalio xây dựng khuôn mẫu từ 1929 → bảo vệ khách hàng năm 2008. <strong>Học từ lịch sử của người khác để không phải trả học phí đắt.</strong></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- main-wrap -->
+
+<script>
+function switchPeriod(id, btn) {
+  document.querySelectorAll('.period').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+document.addEventListener('keydown', e => {
+  const tabs = Array.from(document.querySelectorAll('.period-tab'));
+  const active = document.querySelector('.period-tab.active');
+  let idx = tabs.indexOf(active);
+  if(e.key==='ArrowRight' && idx < tabs.length-1) tabs[idx+1].click();
+  if(e.key==='ArrowLeft' && idx > 0) tabs[idx-1].click();
+});
+</script>
+</body>
+</html>

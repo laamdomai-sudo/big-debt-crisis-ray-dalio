@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tương Quan Các Chỉ Số Kinh Tế Qua Chu Kỳ Khủng Hoảng</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@300;400;500&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --bg:#f4f0e8;--sur:#ffffff;--sur2:#f8f4ee;--sur3:#f0ebe0;
+  --ink:#19150e;--ink2:#2e2818;--muted:#7a7060;--faint:#b8ae9a;--bdr:#d5cbb8;--bdr2:#c2b89e;
+  --gold:#9a7020;--gold2:#c49428;--gl:rgba(154,112,32,.1);--gm:rgba(154,112,32,.2);
+  /* Indicator colors */
+  --gdp:#1a5298;    /* blue */
+  --fed:#8a1c1c;    /* red */
+  --uem:#2a7050;    /* green */
+  --fx: #7a3090;    /* purple */
+  --pmi:#c07020;    /* amber */
+  --ret:#1a7878;    /* teal */
+  /* Phase colors */
+  --exp:#2a6040;--peak:#b07010;--rec:#8a1c1c;--rec2:#c04818;--beau:#1a3680;--norm:#1a6060;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7}
+
+/* ── HEADER ── */
+.hdr{background:var(--ink);padding:22px 36px 18px;border-bottom:2px solid var(--gold2)}
+.hdr-kicker{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px}
+.hdr-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:#f0e8d4;line-height:1.15}
+.hdr-sub{font-size:11.5px;color:rgba(240,232,212,.45);font-family:'Spline Sans Mono',monospace;margin-top:5px;letter-spacing:.05em}
+
+/* ── NAV ── */
+.nav{background:#1e1a12;display:flex;gap:0;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,.07)}
+.ntab{padding:9px 18px;cursor:pointer;font-family:'Spline Sans Mono',monospace;font-size:10px;letter-spacing:.08em;color:rgba(240,232,212,.45);border-right:1px solid rgba(255,255,255,.06);transition:all .2s;text-transform:uppercase;white-space:nowrap}
+.ntab:last-child{border-right:none}
+.ntab:hover{background:rgba(255,255,255,.05);color:rgba(240,232,212,.8)}
+.ntab.on{background:var(--ink);color:var(--gold2)}
+
+/* ── MAIN ── */
+.main{max-width:1180px;margin:0 auto;padding:0}
+.sec{display:none}.sec.on{display:block;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.sec-wrap{padding:28px 32px}
+.sec-hdr{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.sec-tag{font-family:'Spline Sans Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);margin-bottom:4px}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.sec-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:680px}
+
+/* ── INDICATOR LEGEND ── */
+.ind-legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.ind-pill{display:flex;align-items:center;gap:7px;padding:6px 12px;background:var(--sur);border:1px solid var(--bdr);border-radius:4px;font-size:12px;font-weight:500;color:var(--ink2)}
+.ind-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* ── LEAD/LAG TIMELINE ── */
+.lag-wrap{background:var(--sur);border:1px solid var(--bdr);border-radius:6px;padding:22px;margin-bottom:22px;overflow:hidden}
+.lag-title{font-family:'Spline Sans Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin-bottom:16px}
+#lag-svg{width:100%;overflow:visible}
+
+/* ── CORRELATION MATRIX ── */
+.matrix-wrap{background:var(--sur);border:1px solid var(--bdr);border-radius:6px;padding:20px;margin-bottom:22px}
+.matrix-title{font-family:'Spline Sans Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin-bottom:14px}
+.matrix-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mx-cell{padding:8px 4px;text-align:center;border-radius:3px;position:relative;cursor:default;transition:transform .15s}
+.mx-cell:hover{transform:scale(1.08);z-index:2}
+.mx-label{font-family:'Spline Sans Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.04em}
+.mx-val{font-family:'Spline Sans Mono',monospace;font-size:13px;font-weight:500;line-height:1.2}
+.mx-sub{font-size:8.5px;color:var(--muted);line-height:1.2}
+
+/* ── PHASE TABLE ── */
+.phase-table{width:100%;border-collapse:collapse;margin-bottom:22px;font-size:12px}
+.phase-table th{padding:9px 12px;text-align:left;font-family:'Spline Sans Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);background:var(--sur2);border-bottom:2px solid var(--bdr2)}
+.phase-table td{padding:9px 12px;border-bottom:1px solid var(--bdr);color:var(--ink);vertical-align:top;line-height:1.4}
+.phase-table tr:hover td{background:var(--sur2)}
+.ph-badge{display:inline-block;padding:2px 8px;border-radius:2px;font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.05em;font-weight:500}
+
+/* ── INDICATOR DEEP DIVE ── */
+.ind-tabs{display:flex;border:1px solid var(--bdr);border-radius:5px;overflow:hidden;margin-bottom:18px;background:var(--sur2)}
+.ind-tab{flex:1;padding:8px 6px;cursor:pointer;text-align:center;font-size:10.5px;font-weight:500;color:var(--muted);border-right:1px solid var(--bdr);transition:all .15s}
+.ind-tab:last-child{border-right:none}
+.ind-tab:hover{background:var(--sur);color:var(--ink)}
+.ind-tab.on{background:var(--sur);color:var(--ink2);font-weight:600}
+.ind-content{display:none}.ind-content.on{display:block;animation:fi .2s ease}
+
+/* ── CARDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:18px}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:5px;padding:15px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card.gdp::before{background:var(--gdp)}.card.fed::before{background:var(--fed)}
+.card.uem::before{background:var(--uem)}.card.fx::before{background:var(--fx)}
+.card.pmi::before{background:var(--pmi)}.card.ret::before{background:var(--ret)}
+.card.gold::before{background:var(--gold)}
+.clb{font-family:'Spline Sans Mono',monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}
+.ct{font-size:13.5px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.cb{font-size:12px;color:var(--muted);line-height:1.6}
+.cb strong{color:var(--ink2)}
+
+/* ── ARROW FLOW ── */
+.flow-row{display:flex;align-items:center;gap:0;margin:18px 0;flex-wrap:wrap}
+.flow-item{background:var(--sur);border:1px solid var(--bdr);border-radius:4px;padding:10px 12px;text-align:center;flex:1;min-width:90px;transition:all .15s}
+.flow-item:hover{border-color:var(--bdr2);box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.flow-arrow{flex-shrink:0;color:var(--faint);font-size:20px;padding:0 4px}
+.fi-ind{font-family:'Spline Sans Mono',monospace;font-size:9px;letter-spacing:.08em;display:block;margin-bottom:2px;font-weight:500}
+.fi-name{font-size:11px;font-weight:600;color:var(--ink);line-height:1.3}
+.fi-lag{font-size:9.5px;color:var(--muted);margin-top:2px}
+
+/* ── QUOTE ── */
+.q{background:var(--gl);border-left:3px solid var(--gold2);border-radius:0 4px 4px 0;padding:12px 15px;margin:14px 0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13.5px;color:var(--ink2);line-height:1.65}
+.q cite{display:block;font-style:normal;font-size:9.5px;font-family:'Spline Sans Mono',monospace;color:var(--muted);margin-top:5px}
+
+/* ── INFOBOX ── */
+.ib{background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:13px 15px;margin:12px 0}
+.ib h4{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px}
+.ib p{font-size:12px;color:var(--muted);line-height:1.65}
+
+/* ── LIST ── */
+.li{list-style:none}
+.li li{padding:5px 0;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--bdr);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.li li:last-child{border-bottom:none}
+.li li::before{content:'▸';color:var(--gold2);flex-shrink:0;margin-top:1px;font-size:9px}
+
+/* ── HISTORICAL TABLE ── */
+.hist-wrap{overflow-x:auto;margin-bottom:20px}
+.hist-table{width:100%;border-collapse:collapse;font-size:11.5px;min-width:700px}
+.hist-table th{background:var(--sur3);padding:7px 10px;text-align:center;font-family:'Spline Sans Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:2px solid var(--bdr2)}
+.hist-table th:first-child{text-align:left}
+.hist-table td{padding:7px 10px;border-bottom:1px solid var(--bdr);text-align:center;vertical-align:top}
+.hist-table td:first-child{text-align:left;font-weight:600;color:var(--ink);font-size:11px}
+.hist-table tr:hover td{background:var(--sur2)}
+.up{color:#2a6040;font-weight:600}.dn{color:#8a1c1c;font-weight:600}.neutral{color:var(--muted)}
+.tag{display:inline-block;padding:1px 7px;border-radius:2px;font-size:9px;font-family:'Spline Sans Mono',monospace}
+.tag.exp{background:rgba(42,96,64,.1);color:var(--exp)}.tag.peak{background:rgba(176,112,16,.1);color:var(--peak)}
+.tag.rec{background:rgba(138,28,28,.1);color:var(--rec)}.tag.beau{background:rgba(26,54,128,.1);color:var(--beau)}
+.tag.norm{background:rgba(26,96,96,.1);color:var(--norm)}
+
+/* ── OKUN / TAYLOR SVG WRAP ── */
+.svgbox{background:var(--sur);border:1px solid var(--bdr);border-radius:5px;padding:16px;margin-bottom:18px}
+.svgbox-title{font-family:'Spline Sans Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:12px}
+
+/* SIGNAL ROW */
+.signal-row{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.sr-item{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--sur);border:1px solid var(--bdr);border-radius:4px}
+.sr-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.sr-body{flex:1}
+.sr-title{font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.sr-text{font-size:11.5px;color:var(--muted);line-height:1.55}
+.sr-text strong{color:var(--ink2)}
+
+h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--ink);margin:18px 0 10px}
+hr{border:none;border-top:1px solid var(--bdr);margin:18px 0}
+p{font-size:12.5px;color:var(--ink2);line-height:1.7;margin-bottom:9px}
+strong{color:var(--ink)}
+
+@media(max-width:800px){.g2,.g3{grid-template-columns:1fr}.flow-row{flex-direction:column}.flow-arrow{transform:rotate(90deg)}.matrix-grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-kicker">Phân tích Kinh tế Vĩ mô · Dựa trên Ray Dalio & Lý thuyết Chu kỳ</div>
+  <div class="hdr-title">Tương Quan Các Chỉ Số Kinh Tế<br>Qua Chu Kỳ Khủng Hoảng & Suy Thoái</div>
+  <div class="hdr-sub">GDP · Lãi suất Fed · Thất nghiệp · Tỷ giá hối đoái · PMI · Retail Sales — 6 chỉ số, 5 giai đoạn chu kỳ</div>
+</div>
+
+<div class="nav">
+  <div class="ntab on" onclick="nav('overview',this)">Tổng quan</div>
+  <div class="ntab" onclick="nav('leadlag',this)">Dẫn trước / Theo sau</div>
+  <div class="ntab" onclick="nav('phases',this)">Hành vi theo Giai đoạn</div>
+  <div class="ntab" onclick="nav('matrix',this)">Ma trận Tương quan</div>
+  <div class="ntab" onclick="nav('deep',this)">Phân tích Từng Chỉ số</div>
+  <div class="ntab" onclick="nav('signals',this)">Tín hiệu Thực chiến</div>
+  <div class="ntab" onclick="nav('history',this)">Dữ liệu Lịch sử</div>
+</div>
+
+<div class="main">
+
+<!-- ══════════════════════ OVERVIEW ══════════════════════ -->
+<div id="sec-overview" class="sec on">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Tổng quan</div>
+  <div class="sec-title">6 Chỉ Số — Một Hệ Thống Nhân Quả</div>
+  <div class="sec-desc">Không có chỉ số nào tồn tại độc lập. Mỗi biến số vừa là nguyên nhân vừa là hệ quả của các biến số khác. Hiểu đúng mối quan hệ nhân quả và độ trễ thời gian là chìa khóa đọc chu kỳ sớm.</div>
+</div>
+
+<div class="ind-legend">
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--gdp)"></div>GDP — Trễ 1 quý</div>
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--fed)"></div>Lãi suất Fed — Dẫn 6–18 tháng</div>
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--uem)"></div>Thất nghiệp — Trễ 2–6 tháng</div>
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--fx)"></div>Tỷ giá USD — Phức tạp / hỗn hợp</div>
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--pmi)"></div>PMI — Dẫn 2–4 tháng</div>
+  <div class="ind-pill"><div class="ind-dot" style="background:var(--ret)"></div>Retail Sales — Trùng / dẫn nhẹ</div>
+</div>
+
+<h3>Chuỗi Nhân Quả Tổng Thể</h3>
+<div class="flow-row">
+  <div class="flow-item" style="border-color:rgba(138,28,28,.3);background:rgba(138,28,28,.04)">
+    <span class="fi-ind" style="color:var(--fed)">① FED RATE</span>
+    <div class="fi-name">Lãi suất<br>Chính sách</div>
+    <div class="fi-lag">Công cụ chính sách<br>Hành động chủ động</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-item" style="border-color:rgba(192,112,32,.3);background:rgba(192,112,32,.04)">
+    <span class="fi-ind" style="color:var(--pmi)">② PMI</span>
+    <div class="fi-name">Sản xuất<br>Manufacturing</div>
+    <div class="fi-lag">Phản ứng nhanh nhất<br>+1–3 tháng</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-item" style="border-color:rgba(26,96,96,.3);background:rgba(26,96,96,.04)">
+    <span class="fi-ind" style="color:var(--ret)">③ RETAIL</span>
+    <div class="fi-name">Chi tiêu<br>Tiêu dùng</div>
+    <div class="fi-lag">Tiêu dùng thay đổi<br>+1–4 tháng</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-item" style="border-color:rgba(26,82,152,.3);background:rgba(26,82,152,.04)">
+    <span class="fi-ind" style="color:var(--gdp)">④ GDP</span>
+    <div class="fi-name">Sản lượng<br>Tổng thể</div>
+    <div class="fi-lag">Đo lường đầy đủ<br>+1–2 quý</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-item" style="border-color:rgba(42,112,80,.3);background:rgba(42,112,80,.04)">
+    <span class="fi-ind" style="color:var(--uem)">⑤ UNEMPLOYMENT</span>
+    <div class="fi-name">Thị trường<br>Lao động</div>
+    <div class="fi-lag">Phản ứng chậm nhất<br>+3–6 tháng sau GDP</div>
+  </div>
+  <div class="flow-arrow">→</div>
+  <div class="flow-item" style="border-color:rgba(122,48,144,.3);background:rgba(122,48,144,.04)">
+    <span class="fi-ind" style="color:var(--fx)">⑥ USD RATE</span>
+    <div class="fi-name">Tỷ giá<br>Hối đoái</div>
+    <div class="fi-lag">Phức tạp nhất<br>Dòng vốn + Lạm phát</div>
+  </div>
+</div>
+
+<div class="g2">
+  <div class="ib">
+    <h4>Vòng phản hồi: Lãi suất → Tín dụng → GDP</h4>
+    <p>Fed tăng lãi suất → Chi phí vay tăng → Đầu tư và tiêu dùng tín dụng giảm → PMI sản xuất giảm → Đơn hàng giảm → GDP co lại → Thất nghiệp tăng. Độ trễ tổng: <strong>12–24 tháng</strong> từ quyết định Fed đến GDP.</p>
+  </div>
+  <div class="ib">
+    <h4>Vòng phản hồi ngược: Thất nghiệp → Tiêu dùng → GDP</h4>
+    <p>Thất nghiệp tăng → Thu nhập hộ gia đình giảm → Retail sales giảm → Doanh thu doanh nghiệp giảm → Cắt giảm thêm nhân sự → GDP giảm thêm. <strong>Vòng tự củng cố tiêu cực</strong> cần can thiệp từ bên ngoài để phá vỡ.</p>
+  </div>
+</div>
+
+<h3>Tại sao PMI là Chỉ Số Quan Trọng Nhất để Dự Báo?</h3>
+<p>PMI dưới 50 (thu hẹp) thường xuất hiện <strong>2–4 tháng trước</strong> khi GDP công bố âm. Lý do: PMI đo lường đơn đặt hàng mới (forward-looking), trong khi GDP đo lường sản lượng đã tạo ra (backward-looking). PMI = "nhiệt kế thời gian thực" của nền kinh tế.</p>
+</div>
+</div>
+
+<!-- ══════════════════════ LEAD / LAG ══════════════════════ -->
+<div id="sec-leadlag" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Quan hệ Thời gian</div>
+  <div class="sec-title">Chỉ Số Dẫn Trước, Trùng Hợp & Theo Sau</div>
+  <div class="sec-desc">Phân loại 6 chỉ số theo quan hệ thời gian với chu kỳ kinh tế. Hiểu điều này giúp đọc tín hiệu sớm trước khi suy thoái/phục hồi xuất hiện trong GDP.</div>
+</div>
+
+<div class="lag-wrap">
+  <div class="lag-title">Sơ đồ Lead/Lag so với điểm đáy GDP (tháng 0)</div>
+  <svg id="lag-svg" viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#c2b89e"/></marker>
+    </defs>
+    <!-- Time axis -->
+    <line x1="40" y1="110" x2="790" y2="110" stroke="#c2b89e" stroke-width="1.5"/>
+    <marker id="tarr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#c2b89e"/></marker>
+    <!-- Zero mark (GDP bottom) -->
+    <line x1="420" y1="20" x2="420" y2="200" stroke="#1a3680" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="420" y="14" text-anchor="middle" fill="#1a3680" font-size="10" font-family="Spline Sans Mono" font-weight="500">GDP đáy</text>
+    <text x="420" y="215" text-anchor="middle" fill="#1a3680" font-size="9" font-family="Spline Sans Mono">Tháng 0</text>
+
+    <!-- Time labels -->
+    <text x="40"  y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−24</text>
+    <text x="120" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−18</text>
+    <text x="200" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−12</text>
+    <text x="280" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−9</text>
+    <text x="340" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−6</text>
+    <text x="380" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">−3</text>
+    <text x="460" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">+3</text>
+    <text x="520" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">+6</text>
+    <text x="600" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">+9</text>
+    <text x="660" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">+12</text>
+    <text x="740" y="125" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">+18</text>
+
+    <!-- Zone labels -->
+    <rect x="40" y="18" width="380" height="20" rx="3" fill="rgba(192,112,32,.08)" stroke="rgba(192,112,32,.2)" stroke-width="1"/>
+    <text x="230" y="32" text-anchor="middle" fill="#c07020" font-size="9.5" font-family="Spline Sans Mono">← DẪN TRƯỚC (Leading)</text>
+    <rect x="420" y="18" width="360" height="20" rx="3" fill="rgba(26,82,152,.06)" stroke="rgba(26,82,152,.18)" stroke-width="1"/>
+    <text x="600" y="32" text-anchor="middle" fill="#1a3680" font-size="9.5" font-family="Spline Sans Mono">THEO SAU (Lagging) →</text>
+
+    <!-- ① Fed Rate — turns down ~18 months before GDP bottom, turns up ~12 months after -->
+    <line x1="80" y1="50" x2="550" y2="50" stroke="var(--fed)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="80" cy="50" r="5" fill="var(--fed)"/>
+    <circle cx="550" cy="50" r="5" fill="var(--fed)"/>
+    <text x="85" y="46" fill="var(--fed)" font-size="9" font-family="Spline Sans Mono">Bắt đầu hạ LS (−18T)</text>
+    <text x="555" y="46" fill="var(--fed)" font-size="9" font-family="Spline Sans Mono">Bắt đầu tăng LS (+12T)</text>
+    <text x="45" y="60" fill="var(--fed)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">FED</text>
+
+    <!-- ② PMI — turns ~3-4 months before GDP bottom -->
+    <line x1="340" y1="75" x2="440" y2="75" stroke="var(--pmi)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="340" cy="75" r="5" fill="var(--pmi)"/>
+    <circle cx="440" cy="75" r="5" fill="var(--pmi)"/>
+    <text x="300" y="71" fill="var(--pmi)" font-size="9" font-family="Spline Sans Mono">PMI&lt;50 (−3T)</text>
+    <text x="445" y="71" fill="var(--pmi)" font-size="9" font-family="Spline Sans Mono">PMI&gt;50 (+2T)</text>
+    <text x="45" y="84" fill="var(--pmi)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">PMI</text>
+
+    <!-- ③ Retail Sales — turns ~2 months before GDP bottom -->
+    <line x1="368" y1="97" x2="455" y2="97" stroke="var(--ret)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="368" cy="97" r="5" fill="var(--ret)"/>
+    <circle cx="455" cy="97" r="5" fill="var(--ret)"/>
+    <text x="310" y="93" fill="var(--ret)" font-size="9" font-family="Spline Sans Mono">↓ (−2T)</text>
+    <text x="460" y="93" fill="var(--ret)" font-size="9" font-family="Spline Sans Mono">↑ (+1T)</text>
+    <text x="45" y="106" fill="var(--ret)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">RETAIL</text>
+
+    <!-- ④ GDP — at zero by definition -->
+    <circle cx="420" cy="118" r="7" fill="var(--gdp)"/>
+    <text x="45" y="126" fill="var(--gdp)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">GDP</text>
+    <text x="428" y="114" fill="var(--gdp)" font-size="9" font-family="Spline Sans Mono">Đáy (0)</text>
+
+    <!-- ⑤ Unemployment — peaks 3-6 months after GDP bottoms -->
+    <line x1="420" y1="145" x2="560" y2="145" stroke="var(--uem)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="420" cy="145" r="5" fill="var(--uem)"/>
+    <circle cx="560" cy="145" r="5" fill="var(--uem)"/>
+    <text x="425" y="141" fill="var(--uem)" font-size="9" font-family="Spline Sans Mono">Vẫn tăng sau đáy GDP</text>
+    <text x="565" y="141" fill="var(--uem)" font-size="9" font-family="Spline Sans Mono">Đỉnh (+3~6T)</text>
+    <text x="45" y="154" fill="var(--uem)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">UNEMP</text>
+
+    <!-- ⑥ USD Rate — complex, shown as range -->
+    <line x1="200" y1="170" x2="600" y2="170" stroke="var(--fx)" stroke-width="1.5" stroke-dasharray="6,3"/>
+    <circle cx="200" cy="170" r="4" fill="var(--fx)" opacity=".7"/>
+    <circle cx="600" cy="170" r="4" fill="var(--fx)" opacity=".7"/>
+    <text x="160" y="167" fill="var(--fx)" font-size="9" font-family="Spline Sans Mono">Mạnh (suy thoái KT)</text>
+    <text x="605" y="167" fill="var(--fx)" font-size="9" font-family="Spline Sans Mono">Yếu (phục hồi)</text>
+    <text x="45" y="178" fill="var(--fx)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">USD</text>
+
+    <!-- Vertical tick marks on time axis -->
+    <line x1="120" y1="106" x2="120" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="200" y1="106" x2="200" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="280" y1="106" x2="280" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="340" y1="106" x2="340" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="380" y1="106" x2="380" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="460" y1="106" x2="460" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="520" y1="106" x2="520" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="600" y1="106" x2="600" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="660" y1="106" x2="660" y2="114" stroke="#c2b89e" stroke-width="1"/>
+    <line x1="740" y1="106" x2="740" y2="114" stroke="#c2b89e" stroke-width="1"/>
+
+    <text x="790" y="113" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">→ tháng</text>
+  </svg>
+</div>
+
+<div class="g3">
+  <div class="card fed">
+    <div class="clb">Dẫn trước 6–18 tháng</div>
+    <div class="ct">🔴 Lãi suất Fed</div>
+    <div class="cb">Fed hành động TRƯỚC khi GDP phản ứng. Độ trễ trung bình: <strong>12–18 tháng</strong>. Đường cong lợi suất đảo ngược (ngắn hạn > dài hạn) = tín hiệu suy thoái đáng tin nhất, lead ~12–18T.</div>
+  </div>
+  <div class="card pmi">
+    <div class="clb">Dẫn trước 2–4 tháng</div>
+    <div class="ct">🟠 PMI Manufacturing</div>
+    <div class="cb">Đo đơn hàng mới — forward-looking. PMI &lt; 50 = sản xuất thu hẹp, thường xuất hiện <strong>2–3 tháng trước</strong> khi GDP âm được công bố. Tín hiệu sớm và đáng tin nhất trong ngắn hạn.</div>
+  </div>
+  <div class="card ret">
+    <div class="clb">Trùng hợp / dẫn nhẹ</div>
+    <div class="ct">🟦 Retail Sales</div>
+    <div class="cb">Tiêu dùng = 70% GDP Mỹ. Retail Sales tháng thường xuất hiện trước GDP quý. Khi YoY âm 2 tháng liên tiếp → <strong>GDP quý đó gần như chắc chắn âm</strong>.</div>
+  </div>
+  <div class="card gdp">
+    <div class="clb">Trùng hợp (đo hậu kỳ)</div>
+    <div class="ct">🔵 GDP</div>
+    <div class="cb">Công bố theo quý, trễ 1–3 tháng sau kỳ đo. Thường được điều chỉnh nhiều lần. Là tổng hợp — khi GDP âm đã được công bố, <strong>suy thoái thực ra đã bắt đầu từ lâu trước đó</strong>.</div>
+  </div>
+  <div class="card uem">
+    <div class="clb">Theo sau 3–6 tháng</div>
+    <div class="ct">🟢 Thất nghiệp</div>
+    <div class="cb">Chỉ số trễ nhất. Doanh nghiệp sa thải nhân viên <strong>sau khi</strong> đã thấy doanh thu giảm kéo dài. Thất nghiệp đạt đỉnh 3–6 tháng <strong>sau khi</strong> GDP chạm đáy.</div>
+  </div>
+  <div class="card fx">
+    <div class="clb">Hỗn hợp — phức tạp nhất</div>
+    <div class="ct">🟣 Tỷ giá USD</div>
+    <div class="cb">Trong suy thoái giảm phát: USD <strong>mạnh hơn</strong> (flight to safety). Trong suy thoái lạm phát: USD <strong>yếu hơn</strong>. Phụ thuộc loại khủng hoảng — không có quy luật đơn giản.</div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════ PHASES ══════════════════════ -->
+<div id="sec-phases" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Hành vi theo Giai đoạn</div>
+  <div class="sec-title">6 Chỉ Số Qua 5 Giai Đoạn Chu Kỳ</div>
+  <div class="sec-desc">Mỗi giai đoạn có "chữ ký" riêng của các chỉ số. Nhận ra chữ ký → biết đang ở đâu trong chu kỳ.</div>
+</div>
+
+<div class="hist-wrap">
+<table class="phase-table">
+  <thead>
+    <tr>
+      <th>Giai đoạn</th>
+      <th style="color:var(--fed)">Lãi suất Fed</th>
+      <th style="color:var(--pmi)">PMI</th>
+      <th style="color:var(--ret)">Retail Sales</th>
+      <th style="color:var(--gdp)">GDP</th>
+      <th style="color:var(--uem)">Thất nghiệp</th>
+      <th style="color:var(--fx)">USD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="ph-badge" style="background:rgba(42,96,64,.12);color:var(--exp)">① Mở rộng (Expansion)</span><br><span style="font-size:10px;color:var(--muted)">Nền kinh tế tăng trưởng lành mạnh</span></td>
+      <td><span class="up">↑ Tăng dần</span><br>Chống lạm phát</td>
+      <td><span class="up">55–65</span><br>Mở rộng mạnh</td>
+      <td><span class="up">+4–8% YoY</span><br>Tiêu dùng tốt</td>
+      <td><span class="up">+2–4%</span><br>Ổn định</td>
+      <td><span class="up">Thấp / giảm</span><br>4–5%</td>
+      <td><span class="neutral">Trung tính / nhẹ mạnh</span><br>Dòng vốn vào</td>
+    </tr>
+    <tr>
+      <td><span class="ph-badge" style="background:rgba(176,112,16,.12);color:var(--peak)">② Đỉnh (Peak)</span><br><span style="font-size:10px;color:var(--muted)">Thắt chặt bắt đầu đảo chiều</span></td>
+      <td><span class="up">Đỉnh cao</span><br>LS ngắn &gt; dài</td>
+      <td><span class="dn">50–55 → giảm</span><br>Bắt đầu chậm lại</td>
+      <td><span class="neutral">Chậm lại</span><br>+1–3% YoY</td>
+      <td><span class="neutral">Chậm lại</span><br>+1–2%</td>
+      <td><span class="neutral">Bắt đầu nhích lên</span><br>5–6%</td>
+      <td><span class="up">Mạnh nhất</span><br>LS cao thu hút vốn</td>
+    </tr>
+    <tr>
+      <td><span class="ph-badge" style="background:rgba(138,28,28,.12);color:var(--rec)">③ Suy thoái (Recession)</span><br><span style="font-size:10px;color:var(--muted)">GDP âm, tín dụng co lại</span></td>
+      <td><span class="dn">↓ Hạ nhanh</span><br>Về 0%</td>
+      <td><span class="dn">&lt; 50</span><br>Thu hẹp rõ ràng</td>
+      <td><span class="dn">Âm YoY</span><br>Hộ gia đình thắt</td>
+      <td><span class="dn">Âm 2 quý</span><br>Định nghĩa kỹ thuật</td>
+      <td><span class="dn">↑ Tăng nhanh</span><br>8–12%</td>
+      <td><span class="up">Mạnh (giảm phát)</span><br>Flight to safety</td>
+    </tr>
+    <tr>
+      <td><span class="ph-badge" style="background:rgba(26,54,128,.12);color:var(--beau)">④ Phục hồi (Recovery)</span><br><span style="font-size:10px;color:var(--muted)">Đáy đã qua, kích thích phát huy</span></td>
+      <td><span class="neutral">Duy trì thấp</span><br>0–1%</td>
+      <td><span class="up">Vượt 50 → 55</span><br>Đơn hàng trở lại</td>
+      <td><span class="up">Dương trở lại</span><br>+2–5% YoY</td>
+      <td><span class="up">Dương</span><br>+1–3%</td>
+      <td><span class="dn">Vẫn cao / đỉnh</span><br>Trễ 3–6T sau đáy GDP</td>
+      <td><span class="dn">Yếu dần</span><br>QE gây áp lực</td>
+    </tr>
+    <tr>
+      <td><span class="ph-badge" style="background:rgba(26,96,96,.12);color:var(--norm)">⑤ Bình thường hóa</span><br><span style="font-size:10px;color:var(--muted)">Chu kỳ mới khởi động</span></td>
+      <td><span class="up">↑ Bình thường hóa</span><br>2–3%</td>
+      <td><span class="up">55–60</span><br>Ổn định tốt</td>
+      <td><span class="up">+3–5% YoY</span><br>Tiêu dùng ổn</td>
+      <td><span class="up">+2–3%</span><br>Bền vững</td>
+      <td><span class="up">Giảm về bình thường</span><br>4–5%</td>
+      <td><span class="neutral">Trung tính</span><br>Cân bằng</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Nghịch lý: Thất nghiệp Tăng SAU khi GDP Phục Hồi</h3>
+<div class="g2">
+  <div class="ib">
+    <h4>Lý do Thất nghiệp Trễ (Okun's Law)</h4>
+    <p>Doanh nghiệp không sa thải ngay khi doanh thu giảm — họ chờ để xem có phục hồi không. Khi quyết định cắt giảm, GDP có thể đã bắt đầu phục hồi. Kết quả: <strong>thất nghiệp đạt đỉnh 3–6 tháng SAU khi GDP chạm đáy</strong>. Đây là bẫy tâm lý — người thường nhìn vào thất nghiệp để biết "đã qua đáy chưa" nhưng thực ra đã trễ.</p>
+  </div>
+  <div class="ib">
+    <h4>PMI < 50 không tự động = Suy thoái</h4>
+    <p>PMI dưới 50 (thu hẹp sản xuất) cần <strong>duy trì ít nhất 2–3 tháng liên tiếp</strong> mới có độ tin cậy cao. Một tháng duy nhất có thể do cú sốc tạm thời (giá dầu, thời tiết, địa chính trị). PMI Dịch vụ (Services PMI) thường ổn định hơn Manufacturing PMI và cần theo dõi song song.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════ MATRIX ══════════════════════ -->
+<div id="sec-matrix" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Ma trận Tương quan</div>
+  <div class="sec-title">Hướng & Độ Mạnh Tương Quan</div>
+  <div class="sec-desc">Bảng 6×6 thể hiện chiều hướng tương quan giữa các cặp chỉ số. Màu xanh = thuận chiều, màu đỏ = nghịch chiều, độ đậm = độ mạnh tương quan.</div>
+</div>
+
+<div class="matrix-wrap">
+  <div class="matrix-title">Ma trận tương quan (hướng trong suy thoái — khi chỉ số suy giảm)</div>
+  <div class="matrix-grid" id="mx-grid"><!-- built by JS --></div>
+</div>
+
+<div class="g2">
+  <div class="ib">
+    <h4>Cặp tương quan mạnh nhất: Fed Rate ↔ PMI</h4>
+    <p>Khi Fed tăng lãi suất, chi phí tồn kho và vay mua nguyên liệu tăng → sản xuất chậm lại → PMI giảm. Độ trễ: <strong>6–12 tháng</strong>. Đây là cặp tương quan nghịch chiều và đáng tin cậy nhất trong chu kỳ thắt chặt.</p>
+  </div>
+  <div class="ib">
+    <h4>Cặp phức tạp nhất: USD ↔ Everything</h4>
+    <p>USD tương quan <strong>dương</strong> với lãi suất Fed (rate differential). Nhưng tương quan <strong>âm</strong> với giá hàng hóa (commodities). Trong suy thoái giảm phát: USD mạnh. Trong lạm phát cao: USD yếu do thực chất lãi suất âm. Không có quy luật đơn giản.</p>
+  </div>
+</div>
+
+<h3>5 Cặp Tương Quan Quan Trọng Nhất</h3>
+<div class="signal-row">
+  <div class="sr-item">
+    <div class="sr-icon">📊</div>
+    <div class="sr-body">
+      <div class="sr-title"><span style="color:var(--fed)">Fed Rate</span> ↕ <span style="color:var(--gdp)">GDP</span> — Nghịch chiều, độ trễ 12–18 tháng</div>
+      <div class="sr-text">Fed tăng → GDP chậm lại sau 12–18T. Fed hạ → GDP phục hồi sau 6–18T. <strong>Kênh truyền dẫn:</strong> tín dụng đắt hơn → đầu tư doanh nghiệp giảm → tiêu dùng tín dụng giảm → GDP co lại. Độ trễ dài nên Fed thường "overshoot" cả hai hướng.</div>
+    </div>
+  </div>
+  <div class="sr-item">
+    <div class="sr-icon">📉</div>
+    <div class="sr-body">
+      <div class="sr-title"><span style="color:var(--pmi)">PMI</span> ↕ <span style="color:var(--gdp)">GDP</span> — Thuận chiều, PMI dẫn 2–3 tháng</div>
+      <div class="sr-text">PMI đo đơn hàng mới — là ý định của nhà sản xuất → phản ánh GDP tương lai. <strong>Rule of thumb:</strong> PMI &lt; 50 liên tục 3 tháng → GDP âm gần như chắc chắn. Mỗi 1 điểm PMI ≈ ~0.3–0.5% thay đổi GDP annualized.</div>
+    </div>
+  </div>
+  <div class="sr-item">
+    <div class="sr-icon">👥</div>
+    <div class="sr-body">
+      <div class="sr-title"><span style="color:var(--gdp)">GDP</span> ↕ <span style="color:var(--uem)">Thất nghiệp</span> — Nghịch chiều, Okun's Law</div>
+      <div class="sr-text"><strong>Định luật Okun:</strong> Mỗi 1% GDP giảm dưới tiềm năng → thất nghiệp tăng ~0.5–1%. Ví dụ: GDP giảm 2% → thất nghiệp tăng 1–2pp. Quan hệ ổn định qua nhiều chu kỳ nhưng hệ số thay đổi theo cơ cấu lao động.</div>
+    </div>
+  </div>
+  <div class="sr-item">
+    <div class="sr-icon">🛒</div>
+    <div class="sr-body">
+      <div class="sr-title"><span style="color:var(--ret)">Retail Sales</span> ↕ <span style="color:var(--gdp)">GDP</span> — Thuận chiều mạnh, trùng hợp</div>
+      <div class="sr-text">Tiêu dùng cá nhân = 60–70% GDP Mỹ. Retail Sales tháng phản ánh trực tiếp GDP quý. <strong>Retail YoY âm 2 tháng → GDP quý âm xác suất &gt;80%.</strong> Nhưng Retail không đo dịch vụ → chỉ 30% tiêu dùng. Theo dõi song song Consumer Spending rộng hơn.</div>
+    </div>
+  </div>
+  <div class="sr-item">
+    <div class="sr-icon">💱</div>
+    <div class="sr-body">
+      <div class="sr-title"><span style="color:var(--fed)">Fed Rate</span> ↕ <span style="color:var(--fx)">USD</span> — Thuận chiều, dẫn 1–3 tháng</div>
+      <div class="sr-text">Lãi suất cao hơn → USD hấp dẫn hơn với nhà đầu tư quốc tế → dòng vốn vào → USD mạnh. <strong>Tuy nhiên:</strong> nếu thị trường đã "định giá sẵn" đợt tăng lãi suất, phản ứng USD có thể ngược chiều kỳ vọng (buy the rumor, sell the fact).</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════ DEEP DIVE ══════════════════════ -->
+<div id="sec-deep" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Phân tích Chuyên sâu</div>
+  <div class="sec-title">Cơ Chế Hoạt Động Của Từng Chỉ Số</div>
+</div>
+
+<div class="ind-tabs">
+  <div class="ind-tab on" onclick="selInd('gdp',this)" style="color:var(--gdp)">GDP</div>
+  <div class="ind-tab" onclick="selInd('fed',this)" style="">Lãi suất Fed</div>
+  <div class="ind-tab" onclick="selInd('uem',this)" style="">Thất nghiệp</div>
+  <div class="ind-tab" onclick="selInd('fx',this)" style="">Tỷ giá USD</div>
+  <div class="ind-tab" onclick="selInd('pmi',this)" style="">PMI</div>
+  <div class="ind-tab" onclick="selInd('ret',this)" style="">Retail Sales</div>
+</div>
+
+<div id="ind-gdp" class="ind-content on">
+  <div class="g2">
+    <div class="card gdp"><div class="clb">Định nghĩa</div><div class="ct">Tổng sản phẩm quốc nội</div><div class="cb">Tổng giá trị sản lượng hàng hóa & dịch vụ cuối cùng trong 1 quý. Công bố sau 1–3 tháng, được điều chỉnh nhiều lần. <strong>Suy thoái kỹ thuật = 2 quý liên tiếp âm.</strong></div></div>
+    <div class="card gdp"><div class="clb">Hạn chế quan trọng</div><div class="ct">Chỉ số Lịch sử</div><div class="cb">Khi GDP âm được công bố, suy thoái thực ra đã bắt đầu 3–6 tháng trước. <strong>Không dùng để dự báo</strong> — chỉ dùng để xác nhận. Cần PMI và Retail Sales để đọc sớm.</div></div>
+  </div>
+  <h3>Cấu trúc GDP — Điều gì Quan trọng Nhất?</h3>
+  <div class="g3">
+    <div class="card gdp"><div class="clb">60–70% GDP</div><div class="ct">Tiêu dùng cá nhân (C)</div><div class="cb">Phần lớn nhất. Phụ thuộc: thu nhập, tín dụng, niềm tin tiêu dùng. Theo dõi: Retail Sales, Consumer Confidence, Credit Card Spending.</div></div>
+    <div class="card gdp"><div class="clb">15–20%</div><div class="ct">Đầu tư doanh nghiệp (I)</div><div class="cb">Nhạy cảm nhất với lãi suất. Giảm đầu tiên khi Fed thắt chặt. Theo dõi: Durable Goods Orders, Business Investment, PMI New Orders.</div></div>
+    <div class="card gdp"><div class="clb">~18%</div><div class="ct">Chi tiêu Chính phủ (G)</div><div class="cb">Ổn định nhất — không phụ thuộc thị trường. Tăng trong suy thoái (kích thích). Theo dõi: Budget deficit, Federal spending.</div></div>
+  </div>
+</div>
+
+<div id="ind-fed" class="ind-content">
+  <div class="g2">
+    <div class="card fed"><div class="clb">Cơ chế tác động</div><div class="ct">3 Kênh Truyền Dẫn Chính</div><div class="cb"><strong>(1) Kênh lãi suất:</strong> chi phí vay tăng → đầu tư và tín dụng tiêu dùng giảm. <strong>(2) Kênh tỷ giá:</strong> lãi suất cao → USD mạnh → xuất khẩu kém cạnh tranh. <strong>(3) Kênh tài sản:</strong> định giá giảm → hiệu ứng tài sản tiêu cực.</div></div>
+    <div class="card fed"><div class="clb">Yield Curve Inversion</div><div class="ct">Tín Hiệu Suy Thoái Số 1</div><div class="cb">Khi lãi suất ngắn hạn (2Y) &gt; dài hạn (10Y): đảo chiều đường cong lợi suất. Đã dự báo đúng mọi suy thoái Mỹ từ 1970 với <strong>lead time 12–18 tháng</strong>. False positive duy nhất: 1966.</div></div>
+  </div>
+  <div class="svgbox">
+    <div class="svgbox-title">Đường cong lợi suất bình thường vs đảo ngược</div>
+    <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="normGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#2a7050" stop-opacity=".15"/>
+          <stop offset="100%" stop-color="#2a7050" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="invGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8a1c1c" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#8a1c1c" stop-opacity=".12"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ── LEFT: NORMAL CURVE ── -->
+      <rect x="10" y="10" width="310" height="175" rx="5" fill="#f8f4ee" stroke="#d5cbb8" stroke-width="1"/>
+
+      <!-- Title badge -->
+      <rect x="20" y="18" width="100" height="18" rx="3" fill="rgba(42,112,80,.12)"/>
+      <text x="70" y="31" text-anchor="middle" fill="#2a7050" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">BÌNH THƯỜNG</text>
+
+      <!-- Y-axis label -->
+      <text x="22" y="55" fill="#b8ae9a" font-size="8.5" font-family="Spline Sans Mono">Lợi suất</text>
+      <text x="22" y="65" fill="#b8ae9a" font-size="8.5" font-family="Spline Sans Mono">(%)</text>
+      <line x1="48" y1="45" x2="48" y2="160" stroke="#d5cbb8" stroke-width="1"/>
+      <!-- Y ticks -->
+      <line x1="44" y1="60"  x2="48" y2="60"  stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="44" y1="90"  x2="48" y2="90"  stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="44" y1="120" x2="48" y2="120" stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="44" y1="150" x2="48" y2="150" stroke="#d5cbb8" stroke-width="1"/>
+      <text x="42" y="63"  text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">5%</text>
+      <text x="42" y="93"  text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">4%</text>
+      <text x="42" y="123" text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">3%</text>
+      <text x="42" y="153" text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">2%</text>
+
+      <!-- Grid lines -->
+      <line x1="48" y1="60"  x2="305" y2="60"  stroke="#e8e2d8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="48" y1="90"  x2="305" y2="90"  stroke="#e8e2d8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="48" y1="120" x2="305" y2="120" stroke="#e8e2d8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="48" y1="150" x2="305" y2="150" stroke="#e8e2d8" stroke-width=".6" stroke-dasharray="3,3"/>
+
+      <!-- X axis -->
+      <line x1="48" y1="160" x2="305" y2="160" stroke="#c2b89e" stroke-width="1.2"/>
+
+      <!-- Normal yield curve path: starts low-left (short term low yield), rises to right (long term high yield) -->
+      <!-- 3M=2%, 2Y=3%, 5Y=3.8%, 10Y=4.5%, 30Y=5% -->
+      <path d="M 65,150 C 100,148 130,136 165,118 C 200,100 230,82 265,68 C 278,63 292,60 302,58"
+        fill="none" stroke="#2a7050" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Area fill under normal curve -->
+      <path d="M 65,150 C 100,148 130,136 165,118 C 200,100 230,82 265,68 C 278,63 292,60 302,58 L 302,160 L 65,160 Z"
+        fill="url(#normGrad)"/>
+
+      <!-- Data points -->
+      <circle cx="65"  cy="150" r="4" fill="#2a7050"/>
+      <circle cx="130" cy="133" r="4" fill="#2a7050"/>
+      <circle cx="200" cy="100" r="4" fill="#2a7050"/>
+      <circle cx="265" cy="68"  r="4" fill="#2a7050"/>
+      <circle cx="302" cy="58"  r="4" fill="#2a7050"/>
+
+      <!-- X axis labels -->
+      <text x="65"  y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">3M</text>
+      <text x="130" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1Y</text>
+      <text x="200" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">2Y</text>
+      <text x="265" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">5Y</text>
+      <text x="302" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">10Y</text>
+
+      <!-- Label: Dài hạn > Ngắn hạn -->
+      <rect x="80" y="80" width="145" height="22" rx="3" fill="rgba(42,112,80,.1)" stroke="rgba(42,112,80,.2)" stroke-width="1"/>
+      <text x="152" y="95" text-anchor="middle" fill="#2a7050" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">Dài hạn &gt; Ngắn hạn ✓</text>
+
+      <!-- ── RIGHT: INVERTED CURVE ── -->
+      <rect x="360" y="10" width="310" height="175" rx="5" fill="#fff8f8" stroke="#d5cbb8" stroke-width="1"/>
+
+      <!-- Title badge -->
+      <rect x="370" y="18" width="180" height="18" rx="3" fill="rgba(138,28,28,.1)"/>
+      <text x="460" y="31" text-anchor="middle" fill="#8a1c1c" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">ĐẢO NGƯỢC ⚠ SUY THOÁI</text>
+
+      <!-- Y-axis -->
+      <line x1="398" y1="45" x2="398" y2="160" stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="394" y1="60"  x2="398" y2="60"  stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="394" y1="90"  x2="398" y2="90"  stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="394" y1="120" x2="398" y2="120" stroke="#d5cbb8" stroke-width="1"/>
+      <line x1="394" y1="150" x2="398" y2="150" stroke="#d5cbb8" stroke-width="1"/>
+      <text x="392" y="63"  text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">5%</text>
+      <text x="392" y="93"  text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">4%</text>
+      <text x="392" y="123" text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">3%</text>
+      <text x="392" y="153" text-anchor="end" fill="#b8ae9a" font-size="8" font-family="Spline Sans Mono">2%</text>
+
+      <!-- Grid lines -->
+      <line x1="398" y1="60"  x2="655" y2="60"  stroke="#f0e8e8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="398" y1="90"  x2="655" y2="90"  stroke="#f0e8e8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="398" y1="120" x2="655" y2="120" stroke="#f0e8e8" stroke-width=".6" stroke-dasharray="3,3"/>
+      <line x1="398" y1="150" x2="655" y2="150" stroke="#f0e8e8" stroke-width=".6" stroke-dasharray="3,3"/>
+
+      <!-- X axis -->
+      <line x1="398" y1="160" x2="655" y2="160" stroke="#c2b89e" stroke-width="1.2"/>
+
+      <!-- Inverted curve: starts high-left (short term HIGH yield), falls to right (long term lower yield) -->
+      <!-- 3M=5.25%, 1Y=5%, 2Y=4.6%, 5Y=4.2%, 10Y=3.9% -->
+      <path d="M 415,60 C 440,62 460,68 490,84 C 520,100 545,115 575,128 C 598,138 622,144 652,148"
+        fill="none" stroke="#8a1c1c" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- Area fill above inverted curve -->
+      <path d="M 415,60 C 440,62 460,68 490,84 C 520,100 545,115 575,128 C 598,138 622,144 652,148 L 652,60 L 415,60 Z"
+        fill="url(#invGrad)"/>
+
+      <!-- Data points -->
+      <circle cx="415" cy="60"  r="4" fill="#8a1c1c"/>
+      <circle cx="460" cy="68"  r="4" fill="#8a1c1c"/>
+      <circle cx="490" cy="84"  r="4" fill="#8a1c1c"/>
+      <circle cx="575" cy="128" r="4" fill="#8a1c1c"/>
+      <circle cx="652" cy="148" r="4" fill="#8a1c1c"/>
+
+      <!-- Spread annotation arrow -->
+      <line x1="652" y1="60" x2="652" y2="148" stroke="#8a1c1c" stroke-width="1" stroke-dasharray="3,2" opacity=".5"/>
+      <text x="658" y="100" fill="#8a1c1c" font-size="8.5" font-family="Spline Sans Mono">Spread</text>
+      <text x="658" y="110" fill="#8a1c1c" font-size="8.5" font-family="Spline Sans Mono">âm</text>
+
+      <!-- X axis labels -->
+      <text x="415" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">3M</text>
+      <text x="460" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">1Y</text>
+      <text x="490" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">2Y</text>
+      <text x="575" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">5Y</text>
+      <text x="652" y="174" text-anchor="middle" fill="#7a7060" font-size="9" font-family="Spline Sans Mono">10Y</text>
+
+      <!-- Label: Dài hạn < Ngắn hạn -->
+      <rect x="430" y="118" width="145" height="22" rx="3" fill="rgba(138,28,28,.1)" stroke="rgba(138,28,28,.2)" stroke-width="1"/>
+      <text x="502" y="133" text-anchor="middle" fill="#8a1c1c" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">Dài hạn &lt; Ngắn hạn ✗</text>
+
+      <!-- ── BOTTOM NOTE ── -->
+      <text x="340" y="196" text-anchor="middle" fill="#b8ae9a" font-size="9" font-family="Spline Sans Mono">Lead time suy thoái: 12–18 tháng sau khi đảo chiều · Chính xác 100% tại Mỹ từ 1970</text>
+    </svg>
+  </div>
+</div>
+
+<div id="ind-uem" class="ind-content">
+  <div class="g2">
+    <div class="card uem"><div class="clb">Định luật Okun</div><div class="ct">GDP ↔ Thất nghiệp</div><div class="cb">Mỗi 1% GDP tăng trên tiềm năng → thất nghiệp giảm ~0.5%. Ngược lại: GDP giảm 2% → TN tăng ~1–2pp. Hệ số Okun thay đổi theo cơ cấu lao động mỗi thập kỷ (giữa 0.4–1.0).</div></div>
+    <div class="card uem"><div class="clb">Tại sao Trễ nhất?</div><div class="ct">Chi phí sa thải cao</div><div class="cb">Doanh nghiệp chờ xem GDP có phục hồi không trước khi sa thải. Khi sa thải bắt đầu, GDP đã bắt đầu phục hồi. Kết quả: thất nghiệp đỉnh sau đáy GDP 3–6 tháng. <strong>Bẫy tâm lý quan trọng nhất.</strong></div></div>
+  </div>
+  <div class="ib">
+    <h4>NAIRU và Lạm phát — Đường Phillips</h4>
+    <p>Lý thuyết: thất nghiệp thấp → lạm phát tăng (đường Phillips). Thực tế hiện đại: mối quan hệ này yếu hơn nhiều. Sau 2008: thất nghiệp về 3.5% mà lạm phát vẫn thấp — do toàn cầu hóa, robot hóa, kỳ vọng lạm phát neo. <strong>NAIRU (tỷ lệ thất nghiệp tự nhiên) của Mỹ hiện ước tính ~4%.</strong></p>
+  </div>
+</div>
+
+<div id="ind-fx" class="ind-content">
+  <div class="g2">
+    <div class="card fx"><div class="clb">Quy luật giảm phát</div><div class="ct">USD mạnh trong Khủng hoảng Giảm phát</div><div class="cb">Khi khủng hoảng = giảm phát (Mỹ 2008, 1929): nhà đầu tư toàn cầu mua USD và Trái phiếu Kho bạc Mỹ (tài sản an toàn) → USD tăng ngay cả khi kinh tế Mỹ suy thoái. Nghịch lý nhưng đúng.</div></div>
+    <div class="card fx"><div class="clb">Quy luật lạm phát</div><div class="ct">USD yếu trong Khủng hoảng Lạm phát</div><div class="cb">Khi khủng hoảng = lạm phát (1970s, EM markets): Fed in tiền nhiều → cung USD tăng → USD yếu. Trong suy thoái lạm phát (stagflation): USD có thể yếu dù kinh tế suy giảm.</div></div>
+  </div>
+  <div class="g2">
+    <div class="card fx"><div class="clb">Petrodollar Cycle</div><div class="ct">Giá Dầu ↔ USD (Nghịch chiều)</div><div class="cb">Dầu được định giá bằng USD. Khi USD mạnh → dầu đắt hơn với nước ngoài → cầu giảm → giá dầu giảm. Và ngược lại. Đây là vòng lặp tự điều chỉnh giữa dầu và USD.</div></div>
+    <div class="card fx"><div class="clb">Carry Trade</div><div class="ct">Chênh lệch Lãi Suất → Dòng Vốn</div><div class="cb">Khi Fed tăng lãi suất nhiều hơn các NHTW khác → nhà đầu tư vay ngoại tệ lãi thấp, mua USD lãi cao → USD mạnh. Khi carry trade đảo chiều (risk-off) → USD biến động mạnh đột ngột.</div></div>
+  </div>
+</div>
+
+<div id="ind-pmi" class="ind-content">
+  <div class="g2">
+    <div class="card pmi"><div class="clb">Cách đọc PMI</div><div class="ct">&gt;50 = Mở rộng · &lt;50 = Thu hẹp</div><div class="cb">PMI = Purchasing Managers' Index. Khảo sát hàng tháng ~400 nhà quản lý mua hàng về: đơn hàng mới (30%), sản lượng (25%), việc làm (20%), thời gian giao hàng (15%), tồn kho (10%).</div></div>
+    <div class="card pmi"><div class="clb">Thành phần quan trọng nhất</div><div class="ct">New Orders Sub-index</div><div class="cb"><strong>New Orders</strong> (đơn hàng mới) là thành phần quan trọng nhất — phản ánh ý định tương lai. Khi New Orders giảm mà sản lượng vẫn tăng → tồn kho tích tụ → sản lượng sẽ giảm trong tháng tới.</div></div>
+  </div>
+  <div class="svgbox">
+    <div class="svgbox-title">PMI và chu kỳ kinh tế — Các ngưỡng quan trọng</div>
+    <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Zones -->
+      <rect x="40" y="10" width="520" height="30" fill="rgba(42,96,64,.07)" stroke="none"/>
+      <rect x="40" y="40" width="520" height="30" fill="rgba(192,112,32,.07)" stroke="none"/>
+      <rect x="40" y="70" width="520" height="40" fill="rgba(138,28,28,.07)" stroke="none"/>
+      <text x="560" y="30" fill="var(--bull)" font-size="9" font-family="Spline Sans Mono">55–65: Tăng trưởng mạnh</text>
+      <text x="560" y="58" fill="var(--pmi)" font-size="9" font-family="Spline Sans Mono">50–55: Mở rộng vừa</text>
+      <text x="560" y="80" fill="var(--fed)" font-size="9" font-family="Spline Sans Mono">&lt;50: Thu hẹp</text>
+      <text x="560" y="100" fill="var(--fed)" font-size="9" font-family="Spline Sans Mono">&lt;45: Suy thoái nặng</text>
+      <!-- 50 line -->
+      <line x1="40" y1="70" x2="550" y2="70" stroke="var(--fed)" stroke-width="1.5"/>
+      <text x="42" y="68" fill="var(--fed)" font-size="9.5" font-family="Spline Sans Mono" font-weight="500">50</text>
+      <!-- Sample PMI wave -->
+      <path d="M 50,20 C 80,18 110,22 140,30 C 170,38 200,48 230,55 C 255,62 275,68 295,74 C 315,80 335,86 360,90 C 385,94 405,92 430,85 C 455,78 475,68 500,58 C 520,50 535,42 545,35"
+        fill="none" stroke="var(--pmi)" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="295" cy="74" r="4" fill="var(--fed)"/>
+      <text x="300" y="72" fill="var(--fed)" font-size="8.5" font-family="Spline Sans Mono">Cắt 50 → Cảnh báo</text>
+    </svg>
+  </div>
+</div>
+
+<div id="ind-ret" class="ind-content">
+  <div class="g2">
+    <div class="card ret"><div class="clb">Tầm quan trọng</div><div class="ct">Đo Lường 30% Tiêu Dùng</div><div class="cb">Retail Sales = bán lẻ hàng hóa (không gồm dịch vụ). Tiêu dùng = 70% GDP, nhưng Retail Sales chỉ đo ~30% (hàng hóa). Để đo đầy đủ cần thêm Consumer Spending (PCE) từ Fed.</div></div>
+    <div class="card ret"><div class="clb">Adjusted vs Nominal</div><div class="ct">Cần Điều Chỉnh Lạm Phát</div><div class="cb">Retail Sales danh nghĩa có thể tăng khi lạm phát cao nhưng khối lượng thực không thay đổi. <strong>Luôn so sánh YoY sau điều chỉnh lạm phát</strong> để đánh giá đúng xu hướng tiêu dùng thực.</div></div>
+  </div>
+  <div class="ib">
+    <h4>Retail Sales và Chu kỳ Tín dụng</h4>
+    <p>Trong giai đoạn bong bóng: Retail Sales tăng vượt thu nhập vì được tài trợ bởi tín dụng tiêu dùng và equity withdrawal từ nhà (Mỹ 2004–2007). Khi bong bóng vỡ: tín dụng cạn, Retail Sales sụp đổ đột ngột hơn GDP nhiều. <strong>Đây là lý do tại sao suy thoái năm 2008 có vẻ "đột ngột" dù PMI và lãi suất đã cảnh báo từ lâu.</strong></p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════ SIGNALS ══════════════════════ -->
+<div id="sec-signals" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Tín Hiệu Thực Chiến</div>
+  <div class="sec-title">Đọc Chu Kỳ Bằng Tổ Hợp Chỉ Số</div>
+  <div class="sec-desc">Không có tín hiệu đơn lẻ nào đáng tin. Phải đọc tổ hợp nhiều chỉ số đồng thời — giống như bác sĩ không chỉ đo nhiệt độ mà kết hợp nhiều dấu hiệu lâm sàng.</div>
+</div>
+
+<h3>Tín Hiệu Suy Thoái — Độ Tin Cậy Cao</h3>
+<div class="signal-row">
+  <div class="sr-item" style="border-left:3px solid var(--fed)">
+    <div class="sr-icon">⚠️</div>
+    <div class="sr-body">
+      <div class="sr-title">Yield Curve Đảo Ngược (2Y &gt; 10Y) ≥ 3 tháng</div>
+      <div class="sr-text"><strong>Độ chính xác: 100% trong 60 năm (Mỹ).</strong> Suy thoái xảy ra 12–18 tháng sau. Cơ chế: ngân hàng vay ngắn hạn rẻ để cho vay dài hạn — khi curve đảo ngược, biên lợi nhuận ngân hàng âm → tín dụng thắt chặt → GDP giảm.</div>
+    </div>
+  </div>
+  <div class="sr-item" style="border-left:3px solid var(--pmi)">
+    <div class="sr-icon">⚠️</div>
+    <div class="sr-body">
+      <div class="sr-title">PMI Manufacturing &lt; 50 liên tiếp 3 tháng</div>
+      <div class="sr-text"><strong>Xác suất suy thoái: ~75–80%.</strong> Đặc biệt mạnh khi kết hợp New Orders sub-index giảm dưới 45. Nếu PMI Services cũng dưới 50 đồng thời: xác suất tăng lên &gt;90%.</div>
+    </div>
+  </div>
+  <div class="sr-item" style="border-left:3px solid var(--ret)">
+    <div class="sr-icon">⚠️</div>
+    <div class="sr-body">
+      <div class="sr-title">Retail Sales YoY âm 2 tháng liên tiếp + PCE giảm</div>
+      <div class="sr-text"><strong>Xác suất suy thoái: ~70%.</strong> Đặc biệt đáng lo khi kết hợp với Consumer Confidence giảm mạnh. Nếu Retail âm trong bối cảnh lạm phát thấp (không phải giảm vì thay thế bởi dịch vụ) → tín hiệu thực.</div>
+    </div>
+  </div>
+</div>
+
+<h3>Tín Hiệu Phục Hồi — Đọc Đáy Chu Kỳ</h3>
+<div class="signal-row">
+  <div class="sr-item" style="border-left:3px solid var(--pmi)">
+    <div class="sr-icon">✅</div>
+    <div class="sr-body">
+      <div class="sr-title">PMI Vượt 50 Từ Dưới Lên + New Orders Dẫn</div>
+      <div class="sr-text"><strong>Tín hiệu đáy sớm nhất.</strong> PMI vượt ngưỡng 50 thường xảy ra 1–2 tháng trước khi GDP dương trở lại. Ví dụ: PMI Mỹ vượt 50 tháng 5/2009, GDP dương Q3 2009. Xác nhận bằng New Orders sub-index &gt; 52.</div>
+    </div>
+  </div>
+  <div class="sr-item" style="border-left:3px solid var(--ret)">
+    <div class="sr-icon">✅</div>
+    <div class="sr-body">
+      <div class="sr-title">Retail Sales Dương YoY 2 Tháng Liên Tiếp</div>
+      <div class="sr-text"><strong>Xác nhận GDP đã chạm đáy.</strong> Thường xuất hiện 1–3 tháng sau đáy GDP. Nếu Retail dương trong bối cảnh tín dụng vẫn eo hẹp → tiêu dùng thực sự phục hồi, không chỉ do tín dụng.</div>
+    </div>
+  </div>
+  <div class="sr-item" style="border-left:3px solid var(--uem)">
+    <div class="sr-icon">❌ Bẫy</div>
+    <div class="sr-body">
+      <div class="sr-title">Đừng Dùng Thất Nghiệp để Xác Định Đáy</div>
+      <div class="sr-text"><strong>Sai lầm phổ biến nhất.</strong> Thất nghiệp đạt đỉnh 3–6 tháng SAU đáy GDP. Nếu đợi thất nghiệp giảm mới mua vào: đã bỏ lỡ 20–40% đợt phục hồi đầu tiên (thường là mạnh nhất). PMI và Retail Sales là chỉ số đúng để xác định đáy.</div>
+    </div>
+  </div>
+</div>
+
+<h3>Ma Trận Đọc Chu Kỳ Thực Chiến</h3>
+<div class="hist-wrap">
+<table class="phase-table">
+  <thead><tr><th>Tình huống</th><th>Kết hợp Chỉ số</th><th>Đọc</th><th>Xác suất</th></tr></thead>
+  <tbody>
+    <tr><td style="font-weight:600;color:var(--rec)">Sắp suy thoái</td><td>Yield curve đảo + PMI giảm + Retail chậm lại</td><td>Suy thoái 12–18T tới</td><td class="dn">&gt;80%</td></tr>
+    <tr><td style="font-weight:600;color:var(--rec)">Đang suy thoái</td><td>PMI &lt;50 + Retail âm + GDP âm + USD mạnh</td><td>Suy thoái giảm phát điển hình</td><td class="dn">Đang xảy ra</td></tr>
+    <tr><td style="font-weight:600;color:var(--beau)">Đáy hình thành</td><td>PMI vừa vượt 50 + Retail dương + Fed đang giữ lãi thấp</td><td>GDP sẽ dương trong 1–2 quý</td><td class="up">&gt;75%</td></tr>
+    <tr><td style="font-weight:600;color:var(--bull)">Đang phục hồi</td><td>PMI 52–55 + Retail +2–4% + GDP dương + TN vẫn cao</td><td>Beautiful Deleveraging — giai đoạn tốt nhất để đầu tư</td><td class="up">Xác nhận</td></tr>
+    <tr><td style="font-weight:600;color:var(--norm)">Cuối chu kỳ</td><td>PMI 55–60 + Retail mạnh + TN thấp + Yield curve phẳng dần</td><td>Cẩn trọng — bong bóng có thể đang hình thành</td><td class="neutral">Cần theo dõi</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ══════════════════════ HISTORY ══════════════════════ -->
+<div id="sec-history" class="sec">
+<div class="sec-wrap">
+<div class="sec-hdr">
+  <div class="sec-tag">Dữ liệu Lịch sử</div>
+  <div class="sec-title">Hành vi Các Chỉ Số Trong Các Cuộc Khủng Hoảng Lịch Sử</div>
+  <div class="sec-desc">So sánh hành vi 6 chỉ số qua 5 cuộc khủng hoảng lớn — xác nhận khuôn mẫu và ngoại lệ đáng lưu ý.</div>
+</div>
+
+<div class="hist-wrap">
+<table class="hist-table">
+  <thead>
+    <tr>
+      <th style="text-align:left;min-width:130px">Cuộc Khủng Hoảng</th>
+      <th>Loại</th>
+      <th style="color:var(--fed)">Lãi suất Fed<br>Đỉnh → Đáy</th>
+      <th style="color:var(--pmi)">PMI<br>Đáy</th>
+      <th style="color:var(--ret)">Retail<br>YoY đáy</th>
+      <th style="color:var(--gdp)">GDP<br>Giảm</th>
+      <th style="color:var(--uem)">Thất nghiệp<br>Tăng</th>
+      <th style="color:var(--fx)">USD<br>Hướng</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>🇺🇸 Đại Suy Thoái<br><span style="font-size:10px;color:var(--muted)">1929–1933</span></td>
+      <td><span class="tag rec">Giảm phát</span></td>
+      <td><span class="up">6%</span> → <span class="dn">thắt (!)</span></td>
+      <td><span class="dn">~30</span></td>
+      <td><span class="dn">−40%+</span></td>
+      <td><span class="dn">−31.5%</span></td>
+      <td><span class="dn">+22pp</span><br>→ 25%</td>
+      <td><span class="up">Mạnh</span><br>bản vị vàng</td>
+    </tr>
+    <tr>
+      <td>🇺🇸 Suy thoái 1973–75<br><span style="font-size:10px;color:var(--muted)">Stagflation</span></td>
+      <td><span class="tag peak">Lạm phát</span></td>
+      <td><span class="up">13%</span> → <span class="dn">5%</span></td>
+      <td><span class="dn">35–38</span></td>
+      <td><span class="dn">−5% thực</span></td>
+      <td><span class="dn">−3.2%</span></td>
+      <td><span class="dn">+4pp</span><br>→ 9%</td>
+      <td><span class="dn">Yếu</span><br>lạm phát 12%</td>
+    </tr>
+    <tr>
+      <td>🇯🇵 Bong bóng Tài sản<br><span style="font-size:10px;color:var(--muted)">1991–2003</span></td>
+      <td><span class="tag beau">Giảm phát</span></td>
+      <td><span class="up">6%</span> → <span class="dn">0%</span></td>
+      <td><span class="dn">45–48</span></td>
+      <td><span class="dn">−2~3%</span></td>
+      <td><span class="dn">−1~2%/năm</span></td>
+      <td><span class="dn">+4pp</span><br>→ 5%</td>
+      <td><span class="up">Mạnh dần</span><br>giảm phát</td>
+    </tr>
+    <tr>
+      <td>🇺🇸 Khủng hoảng TC 2008<br><span style="font-size:10px;color:var(--muted)">2008–2009</span></td>
+      <td><span class="tag beau">Giảm phát</span></td>
+      <td><span class="up">5.25%</span> → <span class="dn">0.25%</span></td>
+      <td><span class="dn">32.4<br>(12/2008)</span></td>
+      <td><span class="dn">−11.5%<br>YoY</span></td>
+      <td><span class="dn">−4.3%</span></td>
+      <td><span class="dn">+5.2pp</span><br>→ 10%</td>
+      <td><span class="up">Mạnh</span><br>flight to safety</td>
+    </tr>
+    <tr>
+      <td>🇺🇸 COVID Shock 2020<br><span style="font-size:10px;color:var(--muted)">Q2 2020</span></td>
+      <td><span class="tag norm">Ngoại sinh</span></td>
+      <td><span class="up">1.75%</span> → <span class="dn">0.25%</span></td>
+      <td><span class="dn">41.5<br>(4/2020)</span></td>
+      <td><span class="dn">−16%<br>1 tháng</span></td>
+      <td><span class="dn">−9.1%<br>Q2 2020</span></td>
+      <td><span class="dn">+11pp</span><br>→ 14.7%</td>
+      <td><span class="up">Mạnh tạm thời</span><br>rồi yếu (QE)</td>
+    </tr>
+    <tr>
+      <td>🌏 Khủng hoảng Châu Á<br><span style="font-size:10px;color:var(--muted)">1997–1998</span></td>
+      <td><span class="tag rec">Lạm phát EM</span></td>
+      <td><span class="dn">TĂNG cao</span><br>bảo vệ tiền tệ</td>
+      <td><span class="dn">35–40</span></td>
+      <td><span class="dn">Sụp đổ</span></td>
+      <td><span class="dn">−10~15%<br>(TH, Indo)</span></td>
+      <td><span class="dn">Tăng mạnh</span></td>
+      <td><span class="dn">Mất 60–80%</span><br>vs USD</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="q">
+  "Bất cứ khi nào bạn nhìn thấy các điều kiện giống như những điều kiện xảy ra trước những biến cố lớn trong lịch sử, hãy coi đó là cảnh báo — không phải là lý do để hoảng loạn, mà là lý do để cẩn thận và chuẩn bị."
+  <cite>— Ray Dalio, Principles for Navigating Big Debt Crises</cite>
+</div>
+
+<h3>Ngoại Lệ & Bài Học Quan Trọng</h3>
+<div class="g2">
+  <div class="ib">
+    <h4>COVID 2020 — Chu kỳ siêu nhanh</h4>
+    <p>Suy thoái sâu nhất trong lịch sử hiện đại nhưng ngắn nhất: chỉ 2 tháng (3–4/2020). PMI từ 49 xuống 41.5 rồi vọt lên 56 chỉ trong 3 tháng. Thất nghiệp từ 3.5% lên 14.7% rồi về 6% trong 1 năm. <strong>Lý do:</strong> không phải chu kỳ nợ — là cú sốc ngoại sinh + chính sách MP3 (tiền trực tiếp) quy mô chưa từng có.</p>
+  </div>
+  <div class="ib">
+    <h4>Nhật Bản 1991 — Khi Chỉ Số "Bình Thường" nhưng Thực Ra Rất Tệ</h4>
+    <p>PMI và Retail Sales của Nhật không bao giờ giảm mạnh như Mỹ 2008 — nhưng "Thập kỷ mất mát" kéo dài 20 năm. <strong>Lý do:</strong> GDP "âm nhẹ" liên tục, zombie banks không cho vay, giảm phát nhẹ nhưng bền. Bài học: GDP và PMI đo lường "cường độ" nhưng không đo được "thời gian kéo dài" của khủng hoảng nợ.</p>
+  </div>
+</div>
+</div>
+</div>
+
+</div><!-- main -->
+
+<script>
+function nav(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('on'));
+  document.getElementById('sec-' + id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function selInd(id, btn) {
+  document.querySelectorAll('.ind-content').forEach(c => c.classList.remove('on'));
+  document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('ind-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// Build correlation matrix
+const indicators = ['GDP','Fed Rate','Unemp.','USD','PMI','Retail'];
+const colors = ['var(--gdp)','var(--fed)','var(--uem)','var(--fx)','var(--pmi)','var(--ret)'];
+
+// Correlation matrix data (direction in recession)
+// +1 = moves same way, -1 = moves opposite, 0 = no clear correlation
+// Values are: correlation, label, description
+const matrix = [
+  // GDP, Fed, Unemp, USD, PMI, Retail
+  [['1.0','—',''],      ['-0.8','↗↘','Neg/Trễ'], ['-0.9','↔','Neg/Okun'], ['+0.4','↕','Mixed'],    ['+0.8','↗','Pos/Lead'], ['+0.9','↗','Pos/Coinc']],
+  [['-0.8','↘↗',''],   ['1.0','—',''],            ['+0.5','↕','Pos/trễ'],  ['+0.6','↗','Pos'],      ['-0.7','↘','Neg/Trễ'], ['-0.6','↘','Neg']],
+  [['-0.9','↔',''],    ['+0.5','↕',''],            ['1.0','—',''],          ['-0.3','↕','Phức tạp'], ['-0.8','↘','Neg/trễ'], ['-0.8','↘','Neg']],
+  [['+0.4','↕',''],    ['+0.6','↗',''],            ['-0.3','↕',''],         ['1.0','—',''],           ['+0.3','↕','Phức tạp'],['Mixed','↕','']],
+  [['+0.8','↗',''],    ['-0.7','↘',''],            ['-0.8','↘',''],         ['+0.3','↕',''],          ['1.0','—',''],         ['+0.7','↗','Pos']],
+  [['+0.9','↗',''],    ['-0.6','↘',''],            ['-0.8','↘',''],         ['Mixed','↕',''],         ['+0.7','↗',''],        ['1.0','—','']]
+];
+
+function corrColor(val) {
+  const v = parseFloat(val) || 0;
+  if (val === '1.0') return 'rgba(154,112,32,.15)';
+  if (val === 'Mixed') return 'rgba(122,48,144,.08)';
+  if (v >= 0.7) return 'rgba(42,96,64,.15)';
+  if (v >= 0.4) return 'rgba(42,96,64,.08)';
+  if (v <= -0.7) return 'rgba(138,28,28,.15)';
+  if (v <= -0.4) return 'rgba(138,28,28,.08)';
+  return 'rgba(192,112,32,.08)';
+}
+function corrTextColor(val) {
+  const v = parseFloat(val) || 0;
+  if (val === '1.0') return 'var(--gold)';
+  if (val === 'Mixed') return 'var(--fx)';
+  if (v >= 0.5) return 'var(--bull)';
+  if (v <= -0.5) return 'var(--bear)';
+  return 'var(--muted)';
+}
+
+const grid = document.getElementById('mx-grid');
+if(grid) {
+  // Header row
+  grid.appendChild(Object.assign(document.createElement('div'), {className:'mx-cell',style:'background:transparent'}));
+  indicators.forEach((ind, i) => {
+    const d = document.createElement('div');
+    d.className = 'mx-cell';
+    d.style.cssText = `background:transparent;display:flex;align-items:center;justify-content:center`;
+    d.innerHTML = `<div class="mx-label" style="color:${colors[i]};font-size:9px">${ind}</div>`;
+    grid.appendChild(d);
+  });
+  // Data rows
+  indicators.forEach((row, ri) => {
+    const rowLabel = document.createElement('div');
+    rowLabel.className = 'mx-cell';
+    rowLabel.style.cssText = 'background:transparent;display:flex;align-items:center;justify-content:flex-end;padding-right:4px';
+    rowLabel.innerHTML = `<div class="mx-label" style="color:${colors[ri]};font-size:9px">${row}</div>`;
+    grid.appendChild(rowLabel);
+    matrix[ri].forEach((cell, ci) => {
+      const d = document.createElement('div');
+      d.className = 'mx-cell';
+      d.style.cssText = `background:${corrColor(cell[0])};border-radius:4px`;
+      d.title = cell[2] || cell[0];
+      d.innerHTML = `<div class="mx-val" style="color:${corrTextColor(cell[0])};font-size:12px">${cell[0]}</div><div class="mx-sub">${cell[1]}</div>`;
+      grid.appendChild(d);
+    });
+  });
+}
+
+document.addEventListener('keydown', e => {
+  const tabs = Array.from(document.querySelectorAll('.ntab'));
+  const active = document.querySelector('.ntab.on');
+  let idx = tabs.indexOf(active);
+  if(e.key === 'ArrowRight' && idx < tabs.length-1) tabs[idx+1].click();
+  if(e.key === 'ArrowLeft' && idx > 0) tabs[idx-1].click();
+});
+</script>
+</body>
+</html>
